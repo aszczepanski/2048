@@ -31,6 +31,7 @@ int Game::play() {
 	while (!isTerminalState()) {
 		// getchar();
 		GameAction action = bestAction();
+		cout << action << endl;
 		int reward = makeMove(action);
 		score += reward;
 		drawer.draw(gameState);
