@@ -6,6 +6,7 @@ option(SET_DEBUG "Compiler debugging flags" ON)
 option(USE_STATIC_LIBS "Link with static libraries" OFF)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+include(BuildConfig)
 
 find_package(Boost 1.49.0 REQUIRED COMPONENTS program_options)
 
@@ -14,7 +15,11 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 include_directories(
 	src
-	${Boost_INCLUDE_DIRS})
+	${Boost_INCLUDE_DIRS}
+)
 
 # add new directories here
+add_subdirectory(src/common)
+add_subdirectory(src/eval)
+add_subdirectory(src/io)
 add_subdirectory(src/main)
