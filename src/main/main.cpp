@@ -7,6 +7,7 @@
 #include "common/ProgramOptions.h"
 #include "io/CProgramOptionsReader.h"
 
+#include "common/TuplesDescriptor.h"
 #include "io/IInputFileReader.h"
 #include "io/BasicInputFileReader.h"
 
@@ -18,8 +19,20 @@ int main(int argc, char* argv[]) {
 	CProgramOptionsReader programOptionsReader;
 	shared_ptr<ProgramOptions> programOptions = programOptionsReader.read(argc, argv);
 
-	Game game(programOptions);
-	game.play();
+	BasicInputFileReader inputFileReader;
+	shared_ptr<TuplesDescriptor> tuplesDescriptor = inputFileReader.read(programOptions->strategy);
+
+	Game game(programOptions, tuplesDescriptor);
+
+	float avg = 0.0;
+
+	for (int i=0; i<programOptions->games; i++) {
+		int score = game.play();
+		avg += score;
+		cout << i << ". score: " << score << " avg: " << avg / (float)(i+1) << endl;
+	}
+
+	cout << "avg: " << avg / static_cast<float>(programOptions->games) << endl;
 
 	return EXIT_SUCCESS;
 }

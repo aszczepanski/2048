@@ -1,5 +1,6 @@
 #include "io/CProgramOptionsReader.h"
 
+#include <chrono>
 #include <memory>
 #include <string>
 
@@ -13,10 +14,12 @@ shared_ptr<ProgramOptions> CProgramOptionsReader::read(int argc, char* argv[]) {
 	// TODO: implement it!
 
 	programOptions->strategy = "2048_a_weak_player";
-	programOptions->randomSeed = 23862;
+	// programOptions->strategy = "2048_entry_level";
+	programOptions->randomSeed = chrono::system_clock::now().time_since_epoch().count();
+	// programOptions->randomSeed = 23862;
 	programOptions->games = 1;
 	programOptions->maxRoundTime = 1;
-	programOptions->maxDepth = 4;
+	programOptions->maxDepth = 3;
 	programOptions->threads = 1;
 
 	return programOptions;
