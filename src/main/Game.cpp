@@ -9,36 +9,48 @@
 #include "common/GameState.h"
 #include "common/ProgramOptions.h"
 
+#include "eval/ExpectimaxEvaluator.h"
 #include "eval/RandomEvaluator.h"
 
 #include "io/ConsoleBoardDrawer.h"
 
 using namespace std;
 
-Game::Game(shared_ptr<ProgramOptions> programOptions)
-	: programOptions(programOptions), randomEngine(programOptions->randomSeed),
-		evaluator(make_shared<RandomEvaluator>(programOptions)) {
-	cout << programOptions->strategy << endl;
+Game::Game(shared_ptr<ProgramOptions> programOptions,
+		shared_ptr<TuplesDescriptor> tuplesDescriptor)
+	: programOptions(programOptions),
+		tuplesDescriptor(tuplesDescriptor),
+		positionRandomEngine(programOptions->randomSeed),
+		valueRandomEngine(programOptions->randomSeed),
+		// evaluator(make_shared<RandomEvaluator>(programOptions))
+		evaluator(make_shared<ExpectimaxEvaluator>(programOptions, tuplesDescriptor))
+{
 }
 
 int Game::play() {
+	evaluator->reset();
+
 	ConsoleBoardDrawer drawer;
 
-	score = 0;
-	gameState.initialize(randomEngine);
-	drawer.draw(gameState);
+	moveno = scorePenalty = 0;
+	scorePenalty += 2*gameState.initialize(positionRandomEngine, valueRandomEngine);
+
+	if (programOptions->verbose) {
+		drawer.draw(gameState);
+	}
 
 	while (!isTerminalState()) {
 		// getchar();
 		GameAction action = bestAction();
-		cout << action << endl;
-		int reward = makeMove(action);
-		score += reward;
-		drawer.draw(gameState);
-		cout << "score: " << score << endl;
+		// cout << action << endl;
+		makeMove(action);
+		if (programOptions->verbose) {
+			drawer.draw(gameState);
+			cout << "move: " << ++moveno << " score: " << gameState.scoreBoard() - scorePenalty << endl;
+		}
 	}
 
-	return score;
+	return gameState.scoreBoard() - scorePenalty;
 }
 
 bool Game::isTerminalState() {
@@ -51,16 +63,15 @@ GameAction Game::bestAction() {
 	return action;
 }
 
-int Game::makeMove(GameAction action) {
-	int reward = computeAfterstate(action);
+void Game::makeMove(GameAction action) {
+	computeAfterstate(action);
 	addRandomTile();
-	return reward;
 }
 
-int Game::computeAfterstate(GameAction action) {
-	return gameState.computeAfterstate(action);
+void Game::computeAfterstate(GameAction action) {
+	gameState.computeAfterstate(action);
 }
 
 void Game::addRandomTile() {
-	gameState.addRandomTile(randomEngine);
+	scorePenalty += 2*gameState.addRandomTile(positionRandomEngine, valueRandomEngine);
 }

@@ -7,28 +7,32 @@
 #include "common/GameAction.h"
 #include "common/GameState.h"
 #include "common/ProgramOptions.h"
+#include "common/TuplesDescriptor.h"
 
 #include "eval/IEvaluator.h"
 
 class Game {
 public:
-	explicit Game(std::shared_ptr<ProgramOptions> programOptions);
+	explicit Game(std::shared_ptr<ProgramOptions>, std::shared_ptr<TuplesDescriptor>);
 	int play();
 
 private:
 	void initialize();
 	bool isTerminalState();
 	GameAction bestAction();
-	int makeMove(GameAction);
-	int computeAfterstate(GameAction);
+	void makeMove(GameAction);
+	void computeAfterstate(GameAction);
 	void addRandomTile();
 
 	std::shared_ptr<ProgramOptions> programOptions;
+	std::shared_ptr<TuplesDescriptor> tuplesDescriptor;
 
-	int score;
+	int moveno;
+	int scorePenalty;
 	GameState gameState;
 
-	std::default_random_engine randomEngine;
+	std::default_random_engine positionRandomEngine;
+	std::default_random_engine valueRandomEngine;
 
 	std::shared_ptr<IEvaluator> evaluator;
 };

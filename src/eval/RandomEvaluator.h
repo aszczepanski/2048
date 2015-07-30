@@ -13,6 +13,7 @@
 class RandomEvaluator : public IEvaluator {
 public:
 	RandomEvaluator(std::shared_ptr<ProgramOptions>);
+	virtual void reset() {}
 	virtual GameAction bestAction(GameState);
 
 private:

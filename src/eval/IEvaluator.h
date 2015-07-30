@@ -6,6 +6,7 @@
 
 class IEvaluator {
 public:
+	virtual void reset() = 0;
 	virtual GameAction bestAction(GameState) = 0;
 };
 

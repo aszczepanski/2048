@@ -4,6 +4,8 @@
 
 #include "main/Game.h"
 
+#include "common/GameState.h"
+
 #include "common/ProgramOptions.h"
 #include "io/CProgramOptionsReader.h"
 
@@ -14,13 +16,14 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-	cout << "Hello, 2048" << endl;
-
 	CProgramOptionsReader programOptionsReader;
 	shared_ptr<ProgramOptions> programOptions = programOptionsReader.read(argc, argv);
+	if (programOptions == nullptr) return EXIT_SUCCESS;
 
 	BasicInputFileReader inputFileReader;
 	shared_ptr<TuplesDescriptor> tuplesDescriptor = inputFileReader.read(programOptions->strategy);
+
+	GameState::initializeTables();
 
 	Game game(programOptions, tuplesDescriptor);
 

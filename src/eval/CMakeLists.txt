@@ -1,6 +1,8 @@
 project(2048)
 
 set(SRCS_EVAL
+	ExpectimaxEvaluator.cpp
+	ExpectimaxEvaluator.h
 	IEvaluator.h
 	RandomEvaluator.cpp
 	RandomEvaluator.h
