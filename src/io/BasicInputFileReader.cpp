@@ -31,7 +31,7 @@ shared_ptr<TuplesDescriptor> BasicInputFileReader::read(const std::string& strat
 		for (int i=0; i<tuplesDescriptor->T; i++) {
 			file >> c;
 			assert(c == '{');
-			shared_ptr<Tuple> t = make_shared<Tuple>();
+			Tuple* t = &tuplesDescriptor->tuples[i];
 			file >> t->n >> t->m;
 			t->pts.resize(t->m);
 
@@ -56,8 +56,6 @@ shared_ptr<TuplesDescriptor> BasicInputFileReader::read(const std::string& strat
 			assert(c == '}');
 			file >> c;
 			assert(c == '}');
-
-			tuplesDescriptor->tuples[i] = t;
 		}
 		cout << "File was successfully read." << endl;
 	} else {
