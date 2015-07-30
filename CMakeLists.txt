@@ -6,6 +6,7 @@ option(SET_DEBUG "Compiler debugging flags" ON)
 option(USE_STATIC_LIBS "Link with static libraries" OFF)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+include(EnableCXX11)
 include(BuildConfig)
 
 find_package(Boost 1.49.0 REQUIRED COMPONENTS program_options)
