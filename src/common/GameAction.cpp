@@ -10,5 +10,6 @@ ostream& operator<<(ostream& out, const GameAction action) {
 	case RIGHT: return out << "RIGHT";
 	case UP: return out << "UP";
 	case DOWN: return out << "DOWN";
+	default: return out << "NO_ACTION";
 	}
 }

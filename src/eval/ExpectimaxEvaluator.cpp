@@ -103,7 +103,7 @@ float ExpectimaxEvaluator::visitRandomNode(int depth, GameState gameState) {
 
 	float res = (nonZeros > 0) ? (alpha/(float)nonZeros) : alpha;
 
-	pair<int, float> entry = make_pair<int, float>(depth, res);
+	pair<int, float> entry = make_pair(depth, res);
 	transpositionTable[gameState] = entry;
 
 	return res;

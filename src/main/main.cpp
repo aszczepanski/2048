@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
 
 	float avg = 0.0;
 
-	for (int i=0; i<programOptions->games; i++) {
+	for (unsigned i=0; i<programOptions->games; i++) {
 		int score = game.play();
 		avg += score;
 		cout << i << ". score: " << score << " avg: " << avg / (float)(i+1) << endl;
