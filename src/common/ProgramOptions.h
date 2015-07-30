@@ -10,6 +10,7 @@ struct ProgramOptions {
 	unsigned maxRoundTime;
 	unsigned maxDepth;
 	unsigned threads;
+	bool verbose;
 };
 
 #endif  // SRC_COMMON_PROGRAM_OPTIONS_H_
