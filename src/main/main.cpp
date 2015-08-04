@@ -5,6 +5,7 @@
 #include "main/Game.h"
 
 #include "common/GameState.h"
+#include "common/GameStats.h"
 
 #include "common/ProgramOptions.h"
 #include "io/CProgramOptionsReader.h"
@@ -27,15 +28,18 @@ int main(int argc, char* argv[]) {
 
 	Game game(programOptions, tuplesDescriptor);
 
+	GameStatsContainer gameStatsContainer;
 	float avg = 0.0;
 
 	for (unsigned i=0; i<programOptions->games; i++) {
-		int score = game.play();
-		avg += score;
-		cout << i << ". score: " << score << " avg: " << avg / (float)(i+1) << endl;
+		unique_ptr<GameStats> gameStats = move(game.play());
+		avg += gameStats->score;
+		cout << *gameStats << endl;
+		// cout << i << ". score: " << gameStats->score << " avg: " << avg / (float)(i+1) << endl;
+		gameStatsContainer.addGameStats(gameStats.get());
 	}
 
-	cout << "avg: " << avg / static_cast<float>(programOptions->games) << endl;
+	cout << gameStatsContainer << endl;
 
 	return EXIT_SUCCESS;
 }

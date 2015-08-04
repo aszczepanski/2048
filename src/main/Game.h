@@ -6,6 +6,7 @@
 
 #include "common/GameAction.h"
 #include "common/GameState.h"
+#include "common/GameStats.h"
 #include "common/ProgramOptions.h"
 #include "common/TuplesDescriptor.h"
 
@@ -14,7 +15,7 @@
 class Game {
 public:
 	explicit Game(std::shared_ptr<ProgramOptions>, std::shared_ptr<TuplesDescriptor>);
-	int play();
+	std::unique_ptr<GameStats> play();
 
 private:
 	void initialize();

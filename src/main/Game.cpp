@@ -1,5 +1,6 @@
 #include "main/Game.h"
 
+#include <chrono>
 #include <cstdio>
 #include <memory>
 #include <iostream>
@@ -7,6 +8,7 @@
 
 #include "common/GameAction.h"
 #include "common/GameState.h"
+#include "common/GameStats.h"
 #include "common/ProgramOptions.h"
 
 #include "eval/ExpectimaxEvaluator.h"
@@ -27,10 +29,12 @@ Game::Game(shared_ptr<ProgramOptions> programOptions,
 {
 }
 
-int Game::play() {
+unique_ptr<GameStats> Game::play() {
 	evaluator->reset();
 
 	ConsoleBoardDrawer drawer;
+
+	chrono::time_point<chrono::system_clock> startTimePoint = chrono::system_clock::now();
 
 	moveno = scorePenalty = 0;
 	scorePenalty += 2*gameState.initialize(positionRandomEngine, valueRandomEngine);
@@ -46,11 +50,22 @@ int Game::play() {
 		makeMove(action);
 		if (programOptions->verbose) {
 			drawer.draw(gameState);
-			cout << "move: " << ++moveno << " score: " << gameState.scoreBoard() - scorePenalty << endl;
+			cout << "move: " << moveno << " score: " << gameState.scoreBoard() - scorePenalty << endl;
 		}
 	}
 
-	return gameState.scoreBoard() - scorePenalty;
+	chrono::time_point<chrono::system_clock> endTimePoint = chrono::system_clock::now();
+	chrono::duration<int, std::milli> gameDuration
+		= chrono::duration_cast<chrono::duration<int, std::milli>>(endTimePoint - startTimePoint);
+
+	int score = gameState.scoreBoard() - scorePenalty;
+	return unique_ptr<GameStats>(
+		(new GameStats)
+			->setScore(score)
+			->setMoves(moveno)
+			->setDuration(gameDuration)
+			->setStage(GameStats::calculateStage(gameState))
+	);
 }
 
 bool Game::isTerminalState() {
@@ -66,6 +81,7 @@ GameAction Game::bestAction() {
 void Game::makeMove(GameAction action) {
 	computeAfterstate(action);
 	addRandomTile();
+	moveno++;
 }
 
 void Game::computeAfterstate(GameAction action) {
