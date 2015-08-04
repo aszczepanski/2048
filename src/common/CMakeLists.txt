@@ -5,6 +5,8 @@ set(SRCS_COMMON
 	GameAction.h
 	GameState.cpp
 	GameState.h
+	GameStats.cpp
+	GameStats.h
 	ProgramOptions.h
 	TuplesDescriptor.h
 )
