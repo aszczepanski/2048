@@ -12,9 +12,6 @@ class BasicInputFileReader : public IInputFileReader {
 public:
 	virtual std::shared_ptr<TuplesDescriptor> read(const std::string& strategy);
 
-private:
-	static const std::string STRATEGIES_DIRECTORY;
-	static const std::string STRATEGIES_EXTENSION;
 };
 
 #endif  // SRC_IO_BASIC_INPUT_FILE_READER_H_

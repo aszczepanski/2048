@@ -10,14 +10,11 @@
 
 using namespace std;
 
-const string BasicInputFileReader::STRATEGIES_DIRECTORY = "data/2048_strategies/";
-const string BasicInputFileReader::STRATEGIES_EXTENSION = ".bin.txt";
-
 shared_ptr<TuplesDescriptor> BasicInputFileReader::read(const std::string& strategy) {
 	shared_ptr<TuplesDescriptor> tuplesDescriptor = make_shared<TuplesDescriptor>();
 
 	fstream file;
-	file.open(STRATEGIES_DIRECTORY + strategy + STRATEGIES_EXTENSION, ios::in);
+	file.open(strategy, ios::in);
 	if (file.good()) {
 		cout << "Strategy file was successfully opened." << endl;
 
