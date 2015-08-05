@@ -122,7 +122,7 @@ void GameStatsContainer::addGameStats(const GameStats* gameStatsPtr) {
 	scoreAccumulators(gameStatsPtr->score);
 	durationAccumulators(gameStatsPtr->duration.count());
 
-	for (int i=0; i<27; i++) {
+	for (size_t i=0; i<27; i++) {
 		stagesAccumulators[i](gameStatsPtr->stage <= i ? 1 : 0);
 	}
 }

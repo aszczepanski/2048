@@ -19,7 +19,7 @@ shared_ptr<TuplesDescriptor> BasicInputFileReader::read(const std::string& strat
 	fstream file;
 	file.open(STRATEGIES_DIRECTORY + strategy + STRATEGIES_EXTENSION, ios::in);
 	if (file.good()) {
-		cout << "File was successfully opened." << endl;
+		cout << "Strategy file was successfully opened." << endl;
 
 		char c;
 		file >> c;
@@ -57,7 +57,7 @@ shared_ptr<TuplesDescriptor> BasicInputFileReader::read(const std::string& strat
 			file >> c;
 			assert(c == '}');
 		}
-		cout << "File was successfully read." << endl;
+		cout << "Strategy file was successfully read." << endl;
 	} else {
 		cout << "Error while opening an input file." << endl;
 	}
