@@ -12,6 +12,7 @@
 #include "common/ProgramOptions.h"
 
 #include "eval/ExpectimaxEvaluator.h"
+#include "eval/IterativeExpectimaxEvaluator.h"
 #include "eval/RandomEvaluator.h"
 
 #include "io/ConsoleBoardDrawer.h"
@@ -23,10 +24,14 @@ Game::Game(shared_ptr<ProgramOptions> programOptions,
 	: programOptions(programOptions),
 		tuplesDescriptor(tuplesDescriptor),
 		positionRandomEngine(programOptions->randomSeed),
-		valueRandomEngine(programOptions->randomSeed),
-		// evaluator(make_shared<RandomEvaluator>(programOptions))
-		evaluator(make_shared<ExpectimaxEvaluator>(programOptions, tuplesDescriptor))
+		valueRandomEngine(programOptions->randomSeed)
 {
+	// evaluator = make_shared<RandomEvaluator>(programOptions);
+	if (programOptions->maxRoundTime > 0) {
+		evaluator = make_shared<IterativeExpectimaxEvaluator>(programOptions, tuplesDescriptor);
+	} else {
+		evaluator = make_shared<ExpectimaxEvaluator>(programOptions, tuplesDescriptor);
+	}
 }
 
 unique_ptr<GameStats> Game::play() {
@@ -64,7 +69,7 @@ unique_ptr<GameStats> Game::play() {
 			->setScore(score)
 			->setMoves(moveno)
 			->setDuration(gameDuration)
-			->setStage(GameStats::calculateStage(gameState))
+			->setStage(gameState.calculateStage())
 	);
 }
 

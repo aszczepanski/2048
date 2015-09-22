@@ -3,9 +3,14 @@
 
 #include "eval/IEvaluator.h"
 
+#include <array>
 #include <memory>
 #include <unordered_map>
 #include <utility>
+
+#include <thread>
+#include <future>
+#include <mutex>
 
 #include "common/GameAction.h"
 #include "common/GameState.h"
@@ -18,19 +23,30 @@ public:
 	virtual void reset();
 	virtual GameAction bestAction(GameState);
 
-private:
-	GameAction visitTopLevelActionNode(GameState);
-	float visitActionNode(int depth, GameState);
-	float visitRandomNode(int depth, GameState);
+protected:
+	virtual GameAction bestActionInternal(GameState);
 
-	float evaluateState(GameState);
+	GameAction visitTopLevelActionNode(GameState);
+	TupleValueType visitActionNode(int depth, TupleValueType probability, GameState);
+	TupleValueType visitRandomNode(int depth, TupleValueType probability, GameState);
+
+	virtual bool isTimeLimitExceeded() {
+		return false;
+	}
 
 	int maxDepth;
 
-	std::unordered_map<uint64_t, std::pair<int, float> > transpositionTable;
+	std::unordered_map<uint64_t, std::pair<int, TupleValueType> > transpositionTable;
+	std::mutex transpositionTableMutex;
 
 	std::shared_ptr<ProgramOptions> programOptions;
 	std::shared_ptr<TuplesDescriptor> tuplesDescriptor;
+
+	/* stats */
+	std::array<unsigned long long, 20> depths;
+	unsigned long long cacheHits;
+
+	static const TupleValueType MIN_PROBABILITY_THRESHOLD;
 };
 
 #endif  // SRC_EVAL_EXPECTIMAX_EVALUATOR_H_
