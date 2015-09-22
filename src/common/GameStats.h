@@ -22,7 +22,7 @@ public:
 	GameStats* setScore(int score);
 	GameStats* setMoves(int moves);
 	GameStats* setDuration(DurationType duration);
-	GameStats* setStage(std::size_t);
+	GameStats* setStage(uint16_t stage);
 
 	friend std::ostream& operator<<(std::ostream&, const GameStats&);
 	friend class GameStatsHolder;
@@ -33,9 +33,8 @@ public:
 	DurationType duration;
 	std::size_t stage;
 
-	static std::size_t calculateStage(GameState);
-	static std::string stageToString(std::size_t stage);
-	const static uint8_t gameStages[27][4];
+	static std::string stageToString(uint32_t stage);
+	const static uint16_t gameStages[27];
 };
 
 class GameStatsContainer {

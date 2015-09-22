@@ -4,6 +4,7 @@
 #include <array>
 #include <cassert>
 #include <cmath>
+#include <cstdint>
 #include <memory>
 #include <iostream>
 #include <ostream>
@@ -20,34 +21,34 @@
 using namespace std;
 using namespace boost::accumulators;
 
-const uint8_t GameStats::gameStages[27][4] {
-	{15, 14, 13, 12},
-	{15, 14, 13},
-	{15, 14, 12},
-	{15, 14},
-	{15, 13, 12},
-	{15, 13},
-	{15, 13},
-	{15},
-	{14, 13, 12},
-	{14, 13},
-	{14, 12},
-	{14},
-	{13, 12},  // TODO: check the order
-	{13},
-	{12},
-	{11},
-	{10},
-	{9},
-	{8},
-	{7},
-	{6},
-	{5},
-	{4},
-	{3},
-	{2},
-	{1},
-	{0}
+const uint16_t GameStats::gameStages[27] {
+	1<<15 | 1<<14 | 1<<13 | 1<<12,
+	1<<15 | 1<<14 | 1<<13,
+	1<<15 | 1<<14 | 1<<12,
+	1<<15 | 1<<14,
+	1<<15 | 1<<13 | 1<<12,
+	1<<15 | 1<<13,
+	1<<15 | 1<<12,
+	1<<15,
+	1<<14 | 1<<13 | 1<<12,
+	1<<14 | 1<<13,
+	1<<14 | 1<<12,
+	1<<14,
+	1<<13 | 1<<12,
+	1<<13,
+	1<<12,
+	1<<11,
+	1<<10,
+	1<<9,
+	1<<8,
+	1<<7,
+	1<<6,
+	1<<5,
+	1<<4,
+	1<<3,
+	1<<2,
+	1<<1,
+	1<<0
 };
 
 GameStats* GameStats::setScore(int score) {
@@ -65,8 +66,13 @@ GameStats* GameStats::setDuration(DurationType duration) {
 	return this;
 }
 
-GameStats* GameStats::setStage(size_t stage) {
-	this->stage = stage;
+GameStats* GameStats::setStage(uint16_t stage) {
+	for (int i=25; i>=0; i--) {
+		if (gameStages[i] > stage) {
+			this->stage = i+1;
+			break;
+		}
+	}
 	return this;
 }
 
@@ -74,36 +80,29 @@ ostream& operator<<(ostream& out, const GameStats& gameStats) {
 	return out
 		<< gameStats.score
 		// << ", " << gameStats.moves
-		<< ", " << GameStats::stageToString(gameStats.stage)
+		<< ", " << GameStats::stageToString(GameStats::gameStages[gameStats.stage])
 		<< ", " << gameStats.duration.count();
 }
 
-size_t GameStats::calculateStage(GameState gameState) {
-	array<int, 16> tiles;
-	for (size_t i=0; i<16; i++) {
-		tiles[i] = gameState.getTileValue(i);
-	}
-
-	sort(tiles.begin(), tiles.end(), greater<int>());
-
-	for (size_t i=0; i<27; i++) {
-		bool satisfied = true;
-		for (size_t j=0; j<4 && satisfied; j++) {
-			if (tiles[j] < gameStages[i][j]) satisfied = false;
-		}
-		if (satisfied) return i;
-	}
-
-	return 26;
-}
-
-string GameStats::stageToString(size_t stage) {
-	assert(stage < 27);
+string GameStats::stageToString(uint32_t stage) {
+	assert(stage > 0);
 
 	stringstream ss;
 	bool empty = true;
 	
-	for (int i=0; i<4; i++) {
+	int pos = 0;
+	for (int i=15; i>=0; i--) {
+		if (stage & (1<<i)) {
+			if (!empty) ss << "_";
+			if (i >= 10) {
+				ss << (1<<(i-10)) << "k";
+			} else {
+				ss << (1<<i);
+			}
+			empty = false;
+		}
+	}
+	/*for (int i=0; i<4; i++) {
 		if (gameStages[stage][i] == 0) break;
 		if (!empty) ss << "_";
 		if (gameStages[stage][i] >= 10) {
@@ -112,7 +111,7 @@ string GameStats::stageToString(size_t stage) {
 			ss << (1<<gameStages[stage][i]);
 		}
 		empty = false;
-	}
+	}*/
 
 	return ss.str();
 }
