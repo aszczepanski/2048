@@ -67,9 +67,9 @@ GameStats* GameStats::setDuration(DurationType duration) {
 }
 
 GameStats* GameStats::setStage(uint16_t stage) {
-	for (int i=25; i>=0; i--) {
-		if (gameStages[i] > stage) {
-			this->stage = i+1;
+	for (size_t i=0; i<27; i++) {
+		if (gameStages[i] <= stage) {
+			this->stage = i;
 			break;
 		}
 	}
