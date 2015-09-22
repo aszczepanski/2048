@@ -37,6 +37,22 @@ public:
 		stateInternal &= ~(UINT64_C(0xF) << (tile << 2));
 	}
 
+	uint32_t calculateStage();
+
+	int countEmpty() {
+		uint64_t board = stateInternal;
+
+		board |= (board >> 2) & UINT64_C(0x3333333333333333);
+		board |= (board >> 1);
+		board = ~board & UINT64_C(0x1111111111111111);
+
+		board += board >> 32;
+		board += board >> 16;
+		board += board >> 8;
+		board += board >> 4;
+		return board & 0xF;
+	}
+
 	int scoreBoard();
 
 	bool operator==(const GameState& gameState) {

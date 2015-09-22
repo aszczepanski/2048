@@ -153,6 +153,26 @@ size_t GameState::getRandomTilePoint(default_random_engine& randomEngine) {
 	return emptyPoints[dis(randomEngine)];
 }
 
+uint32_t GameState::calculateStage() {
+	uint32_t stage = UINT32_C(0);
+
+	uint64_t board = stateInternal;
+	while (board) {
+		int pos = board & 0xF;
+		while (pos >= 0) {
+			if (stage & (1<<pos)) {
+				pos--;
+			} else {
+				stage |= (1<<pos);
+				pos = -1;
+			}
+		}
+		board >>= 4;
+	}
+
+	return stage;
+}
+
 int GameState::getRandomTileValue(default_random_engine& randomEngine) {
 	uniform_real_distribution<double> dis(0.0, 1.0);
 	if (dis(randomEngine) <= TILE_2_PROBABILITY) {
@@ -173,10 +193,10 @@ void GameState::updateEmptyPoints(vector<size_t>& emptyPoints) {
 }
 
 int GameState::scoreBoard() {
-return scoreTable[(stateInternal >>  0) & UINT64_C(0xFFFF)]
-	+ scoreTable[(stateInternal >> 16) & UINT64_C(0xFFFF)]
-	+ scoreTable[(stateInternal >> 32) & UINT64_C(0xFFFF)]
-	+ scoreTable[(stateInternal >> 48) & UINT64_C(0xFFFF)];
+	return scoreTable[(stateInternal >>  0) & UINT64_C(0xFFFF)]
+		+ scoreTable[(stateInternal >> 16) & UINT64_C(0xFFFF)]
+		+ scoreTable[(stateInternal >> 32) & UINT64_C(0xFFFF)]
+		+ scoreTable[(stateInternal >> 48) & UINT64_C(0xFFFF)];
 }
 
 void GameState::initializeTables() {
