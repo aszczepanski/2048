@@ -6,10 +6,10 @@
 struct ProgramOptions {
 	std::string strategy;
 	unsigned randomSeed;
-	unsigned games;  // TODO: delete it
+	unsigned games;
 	unsigned maxRoundTime;
 	unsigned maxDepth;
-	unsigned threads;
+	bool threads;
 	bool verbose;
 };
 

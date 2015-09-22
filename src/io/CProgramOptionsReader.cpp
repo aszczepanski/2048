@@ -14,9 +14,8 @@ namespace po = boost::program_options;
 
 const string CProgramOptionsReader::DEFAULT_STRATEGY_VALUE = "data/2048_strategies/2048_a_weak_player.bin.txt";
 const unsigned CProgramOptionsReader::DEFAULT_GAMES_VALUE = 1;
-const unsigned CProgramOptionsReader::DEFAULT_TIME_VALUE = 1;
+const unsigned CProgramOptionsReader::DEFAULT_TIME_VALUE = 0;
 const unsigned CProgramOptionsReader::DEFAULT_DEPTH_VALUE = 1;
-const unsigned CProgramOptionsReader::DEFAULT_THREADS_VALUE = 1;
 
 shared_ptr<ProgramOptions> CProgramOptionsReader::read(int argc, char* argv[]) {
 	shared_ptr<ProgramOptions> programOptions = make_shared<ProgramOptions>();
@@ -39,12 +38,11 @@ shared_ptr<ProgramOptions> CProgramOptionsReader::read(int argc, char* argv[]) {
 			"number of games")
 		("time",
 			po::value<unsigned>(&programOptions->maxRoundTime)->default_value(DEFAULT_TIME_VALUE),
-			"maximum time for one round")
+			"maximum time for one round [ms]")
 		("depth",
 			po::value<unsigned>(&programOptions->maxDepth)->default_value(DEFAULT_DEPTH_VALUE),
 			"maximum depth for expectimax")
 		("threads",
-			po::value<unsigned>(&programOptions->threads)->default_value(DEFAULT_THREADS_VALUE),
 			"number of threads")
 		("verbose,v",
 			"show board and score after each round");
@@ -58,6 +56,7 @@ shared_ptr<ProgramOptions> CProgramOptionsReader::read(int argc, char* argv[]) {
 		return nullptr;
 	}
 
+	programOptions->threads = variablesMap.count("threads");
 	programOptions->verbose = variablesMap.count("verbose");
 
 	return programOptions;
