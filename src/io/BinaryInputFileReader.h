@@ -21,6 +21,10 @@ private:
 
 	int32_t convertIntLittleEndian(unsigned char buf[4]);
 	float convertFloatLittleEndian(unsigned char buf[4]);
+
+	int32_t readIntLittleEndian(std::fstream&);
+	float readFloatLittleEndian(std::fstream&);
+
 	bool isNegativeInfinity(unsigned char buf[4]);
 };
 
