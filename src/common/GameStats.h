@@ -16,6 +16,8 @@
 
 #include "common/GameState.h"
 
+class GameStatsContainer;
+
 class GameStats {
 public:
 	typedef std::chrono::duration<int, std::milli> DurationType;
@@ -26,6 +28,7 @@ public:
 	GameStats* setStage(uint16_t stage);
 
 	friend std::ostream& operator<<(std::ostream&, const GameStats&);
+	friend std::ostream& operator<<(std::ostream&, const GameStatsContainer&);
 	friend class GameStatsContainer;
 
 private:

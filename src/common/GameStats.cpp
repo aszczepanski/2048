@@ -132,6 +132,18 @@ float GameStatsContainer::getDurationMean() const {
 }
 
 ostream& operator<<(ostream& out, const GameStatsContainer& gameStatsContainer) {
+	out << "perf";
+	out << ", " << "conf";
+
+	for (size_t i=0; i<16; i++) {
+		out << ", " << GameStats::stageToString(GameStats::gameStages[i]);
+	}
+
+	out << ", " << "time";
+	out << endl;
+
+	///////////////////////
+
 	out << gameStatsContainer.getScoreMean();
 	out	<< ", " << gameStatsContainer.getScore95ConfidenceInterval();
 
