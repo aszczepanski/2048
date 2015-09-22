@@ -38,13 +38,10 @@ int main(int argc, char* argv[]) {
 	Game game(programOptions, tuplesDescriptor);
 
 	GameStatsContainer gameStatsContainer;
-	float avg = 0.0;
 
 	for (unsigned i=0; i<programOptions->games; i++) {
 		unique_ptr<GameStats> gameStats = move(game.play());
-		avg += gameStats->score;
 		cout << *gameStats << endl;
-		// cout << i << ". score: " << gameStats->score << " avg: " << avg / (float)(i+1) << endl;
 		gameStatsContainer.addGameStats(gameStats.get());
 	}
 

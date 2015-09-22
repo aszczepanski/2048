@@ -21,7 +21,7 @@
 using namespace std;
 using namespace boost::accumulators;
 
-const uint16_t GameStats::gameStages[27] {
+const vector<uint16_t> GameStats::gameStages = {
 	1<<15 | 1<<14 | 1<<13 | 1<<12,
 	1<<15 | 1<<14 | 1<<13,
 	1<<15 | 1<<14 | 1<<12,
@@ -67,7 +67,7 @@ GameStats* GameStats::setDuration(DurationType duration) {
 }
 
 GameStats* GameStats::setStage(uint16_t stage) {
-	for (size_t i=0; i<27; i++) {
+	for (size_t i=0; i<gameStages.size(); i++) {
 		if (gameStages[i] <= stage) {
 			this->stage = i;
 			break;
@@ -110,7 +110,7 @@ void GameStatsContainer::addGameStats(const GameStats* gameStatsPtr) {
 	scoreAccumulators(gameStatsPtr->score);
 	durationAccumulators(gameStatsPtr->duration.count());
 
-	for (size_t i=0; i<27; i++) {
+	for (size_t i=0; i<GameStats::gameStages.size(); i++) {
 		stagesAccumulators[i](gameStatsPtr->stage <= i ? 1 : 0);
 	}
 }

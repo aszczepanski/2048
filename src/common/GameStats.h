@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <ostream>
 #include <string>
+#include <vector>
 
 #include <boost/accumulators/accumulators.hpp>
 #include <boost/accumulators/statistics/stats.hpp>
@@ -25,16 +26,16 @@ public:
 	GameStats* setStage(uint16_t stage);
 
 	friend std::ostream& operator<<(std::ostream&, const GameStats&);
-	friend class GameStatsHolder;
+	friend class GameStatsContainer;
 
-// TODO: private:
+private:
 	int score;
 	int moves;
 	DurationType duration;
 	std::size_t stage;
 
 	static std::string stageToString(uint32_t stage);
-	const static uint16_t gameStages[27];
+	const static std::vector<uint16_t> gameStages;
 };
 
 class GameStatsContainer {
