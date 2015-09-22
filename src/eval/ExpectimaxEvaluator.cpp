@@ -41,14 +41,14 @@ GameAction ExpectimaxEvaluator::bestAction(GameState gameState) {
 	transpositionTable.clear();
 
 	GameAction action = bestActionInternal(gameState);
-
+/*
 	// if (programOptions->verbose) {
 		// cout << '\r';
 		copy(depths.begin(), depths.end(), ostream_iterator<unsigned long long>(cout, " "));
 		// cout << flush;
 		cout << endl;
 	// }
-
+*/
 	return action;
 }
 

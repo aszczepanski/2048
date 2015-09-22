@@ -24,7 +24,7 @@ GameAction IterativeExpectimaxEvaluator::bestActionInternal(GameState gameState)
 
 	thread timer_thread([=] { timerFunction(programOptions->maxRoundTime); });
 
-	int depth;
+	unsigned depth;
 	for (depth=1; depth<=programOptions->maxDepth; depth++) {
 		try {
 			maxDepth = depth;

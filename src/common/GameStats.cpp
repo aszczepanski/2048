@@ -90,7 +90,6 @@ string GameStats::stageToString(uint32_t stage) {
 	stringstream ss;
 	bool empty = true;
 	
-	int pos = 0;
 	for (int i=15; i>=0; i--) {
 		if (stage & (1<<i)) {
 			if (!empty) ss << "_";
@@ -102,16 +101,6 @@ string GameStats::stageToString(uint32_t stage) {
 			empty = false;
 		}
 	}
-	/*for (int i=0; i<4; i++) {
-		if (gameStages[stage][i] == 0) break;
-		if (!empty) ss << "_";
-		if (gameStages[stage][i] >= 10) {
-			ss << (1<<(gameStages[stage][i]-10)) << "k";
-		} else {
-			ss << (1<<gameStages[stage][i]);
-		}
-		empty = false;
-	}*/
 
 	return ss.str();
 }
