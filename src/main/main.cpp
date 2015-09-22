@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <memory>
+#include <string>
 
 #include "main/Game.h"
 
@@ -12,7 +13,8 @@
 
 #include "common/TuplesDescriptor.h"
 #include "io/IInputFileReader.h"
-#include "io/BasicInputFileReader.h"
+#include "io/BinaryInputFileReader.h"
+#include "io/TextInputFileReader.h"
 
 using namespace std;
 
@@ -21,8 +23,15 @@ int main(int argc, char* argv[]) {
 	shared_ptr<ProgramOptions> programOptions = programOptionsReader.read(argc, argv);
 	if (programOptions == nullptr) return EXIT_SUCCESS;
 
-	BasicInputFileReader inputFileReader;
-	shared_ptr<TuplesDescriptor> tuplesDescriptor = inputFileReader.read(programOptions->strategy);
+	shared_ptr<IInputFileReader> inputFileReader;
+	string fn = programOptions->strategy;
+  if(fn.substr(fn.find_last_of(".") + 1) == "txt") {
+    inputFileReader = make_shared<TextInputFileReader>();
+  } else {
+		inputFileReader = make_shared<BinaryInputFileReader>();
+  }
+
+	shared_ptr<TuplesDescriptor> tuplesDescriptor = inputFileReader->read(programOptions->strategy);
 
 	GameState::initializeTables();
 

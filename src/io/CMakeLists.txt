@@ -1,8 +1,8 @@
 project(2048)
 
 set(SRCS_IO
-	BasicInputFileReader.cpp
-	BasicInputFileReader.h
+	BinaryInputFileReader.cpp
+	BinaryInputFileReader.h
 	CProgramOptionsReader.cpp
 	CProgramOptionsReader.h
 	ConsoleBoardDrawer.cpp
@@ -10,6 +10,8 @@ set(SRCS_IO
 	IBoardDrawer.h
 	IInputFileReader.h
 	IProgramOptionsReader.h
+	TextInputFileReader.cpp
+	TextInputFileReader.h
 )
 
 add_library(io ${SRCS_IO})
