@@ -24,22 +24,22 @@ public:
 	std::size_t getRandomTilePoint(std::default_random_engine&);
 	int getRandomTileValue(std::default_random_engine&);
 
-	int getTileValue(int tile) {
+	uint8_t getTileValue(uint8_t tile) {
 		return (stateInternal >> (tile << 2)) & UINT64_C(0xF);
 	}
 
-	void setTileValue(int tile, int value) {
+	void setTileValue(uint8_t tile, uint8_t value) {
 		clearTileValue(tile);
 		stateInternal |= (static_cast<uint64_t>(value) << (tile << 2));
 	}
 
-	void clearTileValue(int tile) {
+	void clearTileValue(uint8_t tile) {
 		stateInternal &= ~(UINT64_C(0xF) << (tile << 2));
 	}
 
 	uint16_t calculateStage();
 
-	int countEmpty() {
+	uint8_t countEmpty() {
 		uint64_t board = stateInternal;
 
 		board |= (board >> 2) & UINT64_C(0x3333333333333333);

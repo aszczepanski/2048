@@ -27,26 +27,27 @@ protected:
 	virtual GameAction bestActionInternal(GameState);
 
 	GameAction visitTopLevelActionNode(GameState);
-	TupleValueType visitActionNode(int depth, TupleValueType probability, GameState);
-	TupleValueType visitRandomNode(int depth, TupleValueType probability, GameState);
+	TupleValueType visitActionNode(uint8_t depth, TupleValueType probability, GameState);
+	TupleValueType visitRandomNode(uint8_t depth, TupleValueType probability, GameState);
 
 	virtual bool isTimeLimitExceeded() {
 		return false;
 	}
 
-	int maxDepth;
+	uint8_t maxDepth;
 
-	std::unordered_map<uint64_t, std::pair<int, TupleValueType> > transpositionTable;
+	std::unordered_map<uint64_t, std::pair<uint8_t, TupleValueType> > transpositionTable;
 	std::mutex transpositionTableMutex;
 
 	std::shared_ptr<ProgramOptions> programOptions;
 	std::shared_ptr<TuplesDescriptor> tuplesDescriptor;
 
 	/* stats */
-	std::array<unsigned long long, 20> depths;
-	unsigned long long cacheHits;
+	std::array<uint64_t, 20> depths;
+	uint64_t cacheHits;
 
 	static const TupleValueType MIN_PROBABILITY_THRESHOLD;
+	static const TupleValueType EPS;
 };
 
 #endif  // SRC_EVAL_EXPECTIMAX_EVALUATOR_H_

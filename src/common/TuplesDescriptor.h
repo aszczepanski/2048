@@ -38,7 +38,6 @@ struct TuplesDescriptor {
 		return stageEntry;
 	}
 
-	// std::vector<uint8_t> T;  // of size stages
 	uint8_t stageBits;
 };
 

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cstdint>
 #include <iostream>
 #include <memory>
 #include <unordered_map>
@@ -23,6 +24,7 @@
 using namespace std;
 
 const TupleValueType ExpectimaxEvaluator::MIN_PROBABILITY_THRESHOLD = 0.0001;
+const TupleValueType ExpectimaxEvaluator::EPS = 1e-5;
 
 ExpectimaxEvaluator::ExpectimaxEvaluator(shared_ptr<ProgramOptions> programOptions,
 			shared_ptr<TuplesDescriptor> tuplesDescriptor)
@@ -32,8 +34,8 @@ ExpectimaxEvaluator::ExpectimaxEvaluator(shared_ptr<ProgramOptions> programOptio
 void ExpectimaxEvaluator::reset() {
 	transpositionTable.clear();
 
-	depths.fill(0ULL);
-	cacheHits = 0ULL;
+	depths.fill(UINT64_C(0));
+	cacheHits = UINT64_C(0);
 }
 
 GameAction ExpectimaxEvaluator::bestAction(GameState gameState) {
@@ -76,7 +78,9 @@ GameAction ExpectimaxEvaluator::visitTopLevelActionNode(GameState gameState) {
 
 			if (gameState == newState) continue;
 
-			futures.push_back(make_pair(async(launch::async, [=]()->TupleValueType { return visitRandomNode(maxDepth, 1.0, newState); }), action));
+			futures.push_back(make_pair(async(launch::async, [=]()->TupleValueType {
+				return visitRandomNode(maxDepth, 1.0, newState) + EPS;
+			}), action));
 		}
 		for (auto& pr : futures) {
 			TupleValueType stateValue = pr.first.get();
@@ -94,7 +98,7 @@ GameAction ExpectimaxEvaluator::visitTopLevelActionNode(GameState gameState) {
 
 			if (gameState == newState) continue;
 
-			TupleValueType stateValue = visitRandomNode(maxDepth, 1.0 /* 1/4 */, newState);
+			TupleValueType stateValue = visitRandomNode(maxDepth, 1.0 /* 1/4 */, newState) + EPS;
 
 			// cout << action << " " << stateValue << endl;
 
@@ -110,7 +114,7 @@ GameAction ExpectimaxEvaluator::visitTopLevelActionNode(GameState gameState) {
 	return maxAction;
 }
 
-TupleValueType ExpectimaxEvaluator::visitActionNode(int depth, TupleValueType probability, GameState gameState) {
+TupleValueType ExpectimaxEvaluator::visitActionNode(uint8_t depth, TupleValueType probability, GameState gameState) {
 	TupleValueType maxValue = -100000.0;
 
 	for (GameAction action : gameActions) {
@@ -129,7 +133,7 @@ TupleValueType ExpectimaxEvaluator::visitActionNode(int depth, TupleValueType pr
 	return maxValue;
 }
 
-TupleValueType ExpectimaxEvaluator::visitRandomNode(int depth, TupleValueType probability, GameState gameState) {
+TupleValueType ExpectimaxEvaluator::visitRandomNode(uint8_t depth, TupleValueType probability, GameState gameState) {
 	if (isTimeLimitExceeded()) {
 		throw runtime_error("timeout");
 	}
@@ -140,9 +144,9 @@ TupleValueType ExpectimaxEvaluator::visitRandomNode(int depth, TupleValueType pr
 
 	{
 		lock_guard<mutex> lock(transpositionTableMutex);
-		const unordered_map<uint64_t, pair<int, TupleValueType> >::iterator& it = transpositionTable.find(gameState);
+		const unordered_map<uint64_t, pair<uint8_t, TupleValueType> >::iterator& it = transpositionTable.find(gameState);
 		if (it != transpositionTable.end()) {
-			pair<int, TupleValueType> entry = it->second;
+			pair<uint8_t, TupleValueType> entry = it->second;
 			if (entry.first >= depth) {
 				cacheHits++;
 				return entry.second;
@@ -150,19 +154,19 @@ TupleValueType ExpectimaxEvaluator::visitRandomNode(int depth, TupleValueType pr
 		}
 	}
 
-	int numOpen = gameState.countEmpty();
+	TupleValueType numOpen = gameState.countEmpty();
 
 	probability /= numOpen;  // numOpen is always greater than 0
 	TupleValueType tile2probability = probability*GameState::TILE_2_PROBABILITY;
 	TupleValueType tile4probability = probability*GameState::TILE_4_PROBABILITY;
 
 	TupleValueType alpha = 0.0;
-	for (int i=0; i<16; i++) {
-		if (gameState.getTileValue(i) == 0) {
+	for (uint8_t i=UINT8_C(0); i<UINT8_C(16); i++) {
+		if (gameState.getTileValue(i) == UINT8_C(0)) {
 			// cout << "visiting " << i << endl;
-			gameState.setTileValue(i, 1);
+			gameState.setTileValue(i, UINT8_C(1));
 			alpha += GameState::TILE_2_PROBABILITY*visitActionNode(depth, tile2probability, gameState);
-			gameState.setTileValue(i, 2);
+			gameState.setTileValue(i, UINT8_C(2));
 			probability = tile4probability;
 			alpha += GameState::TILE_4_PROBABILITY*visitActionNode(depth, tile4probability, gameState);
 			gameState.clearTileValue(i);
@@ -173,14 +177,14 @@ TupleValueType ExpectimaxEvaluator::visitRandomNode(int depth, TupleValueType pr
 
 	{
 		lock_guard<mutex> lock(transpositionTableMutex);
-		const unordered_map<uint64_t, pair<int, TupleValueType> >::iterator& it = transpositionTable.find(gameState);
+		const unordered_map<uint64_t, pair<uint8_t, TupleValueType> >::iterator& it = transpositionTable.find(gameState);
 		if (it != transpositionTable.end()) {
-			pair<int, TupleValueType> entry = it->second;
+			pair<uint8_t, TupleValueType> entry = it->second;
 			if (entry.first < depth) {
 				it->second = make_pair(depth, res);
 			}
 		} else {
-			pair<int, TupleValueType> entry = make_pair(depth, res);
+			pair<uint8_t, TupleValueType> entry = make_pair(depth, res);
 			transpositionTable[gameState] = entry;
 		}
 	}
