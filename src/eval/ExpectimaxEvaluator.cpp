@@ -69,8 +69,12 @@ GameAction ExpectimaxEvaluator::visitTopLevelActionNode(GameState gameState) {
 	TupleValueType maxValue = -100000.0;
 	GameAction maxAction = NO_ACTION;
 
-	if (programOptions->threads && maxDepth >= 3) {
-		list< pair<future<TupleValueType>, GameAction> > futures;
+	if (programOptions->threads) {
+		static array<thread, 4> threads;
+		static array<TupleValueType, 4> stateValues;
+		static array<GameAction, 4> allowedActions;
+
+		size_t pos = 0;
 
 		for (GameAction action : gameActions) {
 			GameState newState = gameState;
@@ -78,18 +82,18 @@ GameAction ExpectimaxEvaluator::visitTopLevelActionNode(GameState gameState) {
 
 			if (gameState == newState) continue;
 
-			futures.push_back(make_pair(async(launch::async, [=]()->TupleValueType {
-				return visitRandomNode(maxDepth, 1.0, newState) + EPS;
-			}), action));
+			auto fun = [=] (TupleValueType& stateValue) {
+				stateValue = visitRandomNode(maxDepth, 1.0, newState) + EPS;
+			};
+			threads[pos] = thread(fun, ref(stateValues[pos]));
+			allowedActions[pos++] = action;
 		}
-		for (auto& pr : futures) {
-			TupleValueType stateValue = pr.first.get();
-			if (stateValue >= maxValue) {
-				maxValue = stateValue;
-				maxAction = pr.second;
+		for (size_t i=0; i<pos; i++) {
+			threads[i].join();
+			if (stateValues[i] >= maxValue) {
+				maxValue = stateValues[i];
+				maxAction = allowedActions[i];
 			}
-
-			// cout << stateValue << " " << pr.second << endl;
 		}
 	} else {
 		for (GameAction action : gameActions) {
