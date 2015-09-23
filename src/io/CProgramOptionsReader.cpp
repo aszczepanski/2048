@@ -43,7 +43,7 @@ shared_ptr<ProgramOptions> CProgramOptionsReader::read(int argc, char* argv[]) {
 			po::value<unsigned>(&programOptions->maxDepth)->default_value(DEFAULT_DEPTH_VALUE),
 			"maximum depth for expectimax")
 		("threads",
-			"number of threads")
+			"enable multithreading")
 		("verbose,v",
 			"show board and score after each round");
 
