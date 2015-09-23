@@ -43,7 +43,9 @@ shared_ptr<TuplesDescriptor> TextInputFileReader::read(const std::string& strate
 					assert(c == '{');
 					t->pts[j].resize(n);
 					for (int k=0; k<n; k++) {
-						file >> t->pts[j][k];
+						int point;
+						file >> point;
+						t->pts[j][k] = point;
 					}
 					file >> c;
 					assert(c == '}');
