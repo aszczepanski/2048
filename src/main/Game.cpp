@@ -49,9 +49,7 @@ unique_ptr<GameStats> Game::play() {
 	}
 
 	while (!isTerminalState()) {
-		// getchar();
 		GameAction action = bestAction();
-		// cout << action << endl;
 		makeMove(action);
 		if (programOptions->verbose) {
 			drawer.draw(gameState);
@@ -78,7 +76,6 @@ bool Game::isTerminalState() {
 }
 
 GameAction Game::bestAction() {
-	// TODO
 	GameAction action = evaluator->bestAction(gameState);
 	return action;
 }

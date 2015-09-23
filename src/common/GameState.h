@@ -37,7 +37,7 @@ public:
 		stateInternal &= ~(UINT64_C(0xF) << (tile << 2));
 	}
 
-	uint32_t calculateStage();
+	uint16_t calculateStage();
 
 	int countEmpty() {
 		uint64_t board = stateInternal;

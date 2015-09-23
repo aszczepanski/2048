@@ -55,26 +55,25 @@ shared_ptr<ExpandedTuplesDescriptor> BinaryInputFileReader::readExpandedFile(fst
 
 	tuplesDescriptor->stageBits = readIntLittleEndian(file);
 	tuplesDescriptor->tuples.resize(1<<tuplesDescriptor->stageBits);
-	tuplesDescriptor->T.resize(1<<tuplesDescriptor->stageBits);
 
 	for (int s=0; s<(1<<tuplesDescriptor->stageBits); s++) {
-		tuplesDescriptor->T[s] = readIntLittleEndian(file);
-		tuplesDescriptor->tuples[s].resize(tuplesDescriptor->T[s]);
-		for (int i=0; i<tuplesDescriptor->T[s]; i++) {
+		int T = readIntLittleEndian(file);
+		tuplesDescriptor->tuples[s].resize(T);
+		for (int i=0; i<T; i++) {
 			ExpandedTuple* t = &tuplesDescriptor->tuples[s][i];
-			t->n = readIntLittleEndian(file);
-			t->m = readIntLittleEndian(file);
-			t->pts.resize(t->m);
+			int n = readIntLittleEndian(file);
+			int m = readIntLittleEndian(file);
+			t->pts.resize(m);
 
-			for (int j=0; j<t->m; j++) {
-				t->pts[j].resize(t->n);
-				for (int k=0; k<t->n; k++) {
+			for (int j=0; j<m; j++) {
+				t->pts[j].resize(n);
+				for (int k=0; k<n; k++) {
 					t->pts[j][k] = readIntLittleEndian(file);
 				}
 			}
 
-			t->lut.resize(1 << 4*t->n);
-			for (int j=0; j<(1 << 4*t->n); j++) {
+			t->lut.resize(1 << 4*n);
+			for (int j=0; j<(1 << 4*n); j++) {
 				t->lut[j] = readFloatLittleEndian(file);
 			}
 		}
@@ -93,26 +92,25 @@ shared_ptr<CompressedTuplesDescriptor> BinaryInputFileReader::readCompressedFile
 
 	tuplesDescriptor->stageBits = readIntLittleEndian(file);
 	tuplesDescriptor->tuples.resize(1<<tuplesDescriptor->stageBits);
-	tuplesDescriptor->T.resize(1<<tuplesDescriptor->stageBits);
 
 	for (int s=0; s<(1<<tuplesDescriptor->stageBits); s++) {
-		tuplesDescriptor->T[s] = readIntLittleEndian(file);
-		tuplesDescriptor->tuples[s].resize(tuplesDescriptor->T[s]);
-		for (int i=0; i<tuplesDescriptor->T[s]; i++) {
+		int T = readIntLittleEndian(file);
+		tuplesDescriptor->tuples[s].resize(T);
+		for (int i=0; i<T; i++) {
 			CompressedTuple* t = &tuplesDescriptor->tuples[s][i];
-			t->n = readIntLittleEndian(file);
-			t->m = readIntLittleEndian(file);
-			t->pts.resize(t->m);
+			int n = readIntLittleEndian(file);
+			int m = readIntLittleEndian(file);
+			t->pts.resize(m);
 
-			for (int j=0; j<t->m; j++) {
-				t->pts[j].resize(t->n);
-				for (int k=0; k<t->n; k++) {
+			for (int j=0; j<m; j++) {
+				t->pts[j].resize(n);
+				for (int k=0; k<n; k++) {
 					t->pts[j][k] = readIntLittleEndian(file);
 				}
 			}
 
-			t->lutPtrs.resize(1 << 4*(t->n-1));
-			for (int j=0; j<(1 << 4*(t->n-1)); j++) {
+			t->lutPtrs.resize(1 << 4*(n-1));
+			for (int j=0; j<(1 << 4*(n-1)); j++) {
 				file.read((char*)buf, 4);
 				if (isNegativeInfinity(buf)) {
 					t->lutPtrs[j] = nullArray;

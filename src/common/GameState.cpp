@@ -153,8 +153,8 @@ size_t GameState::getRandomTilePoint(default_random_engine& randomEngine) {
 	return emptyPoints[dis(randomEngine)];
 }
 
-uint32_t GameState::calculateStage() {
-	uint32_t stage = UINT32_C(0);
+uint16_t GameState::calculateStage() {
+	uint16_t stage = UINT16_C(0);
 
 	uint64_t board = stateInternal;
 	while (board) {

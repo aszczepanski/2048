@@ -16,7 +16,6 @@ shared_ptr<TuplesDescriptor> TextInputFileReader::read(const std::string& strate
 
 	tuplesDescriptor->stageBits = 0;
 	tuplesDescriptor->tuples.resize(1<<0);
-	tuplesDescriptor->T.resize(1<<0);
 
 	fstream file;
 	file.open(strategy, ios::in);
@@ -28,20 +27,22 @@ shared_ptr<TuplesDescriptor> TextInputFileReader::read(const std::string& strate
 		assert(c == '{');
 
 		for (int s=0; s<(1<<tuplesDescriptor->stageBits); s++) {
-			file >> tuplesDescriptor->T[s];
-			tuplesDescriptor->tuples[s].resize(tuplesDescriptor->T[s]);
-			for (int i=0; i<tuplesDescriptor->T[s]; i++) {
+			int T;
+			file >> T;
+			tuplesDescriptor->tuples[s].resize(T);
+			for (int i=0; i<T; i++) {
 				file >> c;
 				assert(c == '{');
 				ExpandedTuple* t = &tuplesDescriptor->tuples[s][i];
-				file >> t->n >> t->m;
-				t->pts.resize(t->m);
+				int m, n;
+				file >> n >> m;
+				t->pts.resize(m);
 
-				for (int j=0; j<t->m; j++) {
+				for (int j=0; j<m; j++) {
 					file >> c;
 					assert(c == '{');
-					t->pts[j].resize(t->n);
-					for (int k=0; k<t->n; k++) {
+					t->pts[j].resize(n);
+					for (int k=0; k<n; k++) {
 						file >> t->pts[j][k];
 					}
 					file >> c;
@@ -50,8 +51,8 @@ shared_ptr<TuplesDescriptor> TextInputFileReader::read(const std::string& strate
 
 				file >> c;
 				assert(c == '{');
-				t->lut.resize(1 << 4*t->n);
-				for (int j=0; j<(1 << 4*t->n); j++) {
+				t->lut.resize(1 << 4*n);
+				for (int j=0; j<(1 << 4*n); j++) {
 					file >> t->lut[j];
 				}
 				file >> c;

@@ -32,6 +32,7 @@ int main(int argc, char* argv[]) {
   }
 
 	shared_ptr<TuplesDescriptor> tuplesDescriptor = inputFileReader->read(programOptions->strategy);
+	if (tuplesDescriptor == nullptr) return EXIT_SUCCESS;
 
 	GameState::initializeTables();
 
