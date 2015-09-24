@@ -48,6 +48,7 @@ protected:
 
 	static const TupleValueType MIN_PROBABILITY_THRESHOLD;
 	static const TupleValueType EPS;
+	static const TupleValueType MIN_TUPLE_VALUE;
 };
 
 #endif  // SRC_EVAL_EXPECTIMAX_EVALUATOR_H_

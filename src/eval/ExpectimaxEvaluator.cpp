@@ -25,6 +25,7 @@ using namespace std;
 
 const TupleValueType ExpectimaxEvaluator::MIN_PROBABILITY_THRESHOLD = 0.0001;
 const TupleValueType ExpectimaxEvaluator::EPS = 1e-5;
+const TupleValueType ExpectimaxEvaluator::MIN_TUPLE_VALUE = -100000.0;
 
 ExpectimaxEvaluator::ExpectimaxEvaluator(shared_ptr<ProgramOptions> programOptions,
 			shared_ptr<TuplesDescriptor> tuplesDescriptor)
@@ -66,7 +67,7 @@ GameAction ExpectimaxEvaluator::bestActionInternal(GameState gameState) {
 }
 
 GameAction ExpectimaxEvaluator::visitTopLevelActionNode(GameState gameState) {
-	TupleValueType maxValue = -100000.0;
+	TupleValueType maxValue = MIN_TUPLE_VALUE;
 	GameAction maxAction = NO_ACTION;
 
 	if (programOptions->threads) {
@@ -119,7 +120,7 @@ GameAction ExpectimaxEvaluator::visitTopLevelActionNode(GameState gameState) {
 }
 
 TupleValueType ExpectimaxEvaluator::visitActionNode(uint8_t depth, TupleValueType probability, GameState gameState) {
-	TupleValueType maxValue = -100000.0;
+	TupleValueType maxValue = MIN_TUPLE_VALUE;
 
 	for (GameAction action : gameActions) {
 		GameState newState = gameState;
