@@ -20,7 +20,7 @@ shared_ptr<TuplesDescriptor> TextInputFileReader::read(const std::string& strate
 	fstream file;
 	file.open(strategy, ios::in);
 	if (file.good()) {
-		cout << "Strategy file was successfully opened." << endl;
+		cout << "Text input file was successfully opened." << endl;
 
 		char c;
 		file >> c;

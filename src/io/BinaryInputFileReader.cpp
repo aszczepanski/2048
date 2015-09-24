@@ -21,7 +21,7 @@ shared_ptr<TuplesDescriptor> BinaryInputFileReader::read(const string& strategy)
 	file.open(strategy, ios::in | ios::binary);
 
 	if (file.good()) {
-		cout << "Strategy file was successfully opened." << endl;
+		cout << "Binary input file was successfully opened." << endl;
 
 		unsigned char buf[4];
 
@@ -86,7 +86,7 @@ shared_ptr<CompressedTuplesDescriptor> BinaryInputFileReader::readCompressedFile
 	shared_ptr<CompressedTuplesDescriptor> tuplesDescriptor = make_shared<CompressedTuplesDescriptor>();
 
 	shared_ptr< array<TupleValueType, 16> > nullArray = make_shared< array<TupleValueType, 16> >();
-	nullArray->fill(0);
+	nullArray->fill(0.0);
 
 	unsigned char buf[4];
 
