@@ -19,6 +19,7 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
+
 	CProgramOptionsReader programOptionsReader;
 	shared_ptr<ProgramOptions> programOptions = programOptionsReader.read(argc, argv);
 	if (programOptions == nullptr) return EXIT_SUCCESS;
