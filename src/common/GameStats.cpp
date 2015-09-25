@@ -6,6 +6,7 @@
 #include <cmath>
 #include <cstdint>
 #include <memory>
+#include <iomanip>
 #include <iostream>
 #include <ostream>
 #include <sstream>
@@ -143,6 +144,8 @@ ostream& operator<<(ostream& out, const GameStatsContainer& gameStatsContainer) 
 	out << endl;
 
 	///////////////////////
+
+	out << fixed << setprecision(2);
 
 	out << gameStatsContainer.getScoreMean();
 	out	<< ", " << gameStatsContainer.getScore95ConfidenceInterval();
