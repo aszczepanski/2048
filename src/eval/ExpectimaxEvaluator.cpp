@@ -61,56 +61,67 @@ GameAction ExpectimaxEvaluator::bestActionInternal(GameState gameState) {
 	maxDepth = programOptions->maxDepth;
 	depths[maxDepth]++;
 
-	action = visitTopLevelActionNode(gameState);
+	if (programOptions->threads) {
+		action = visitTopLevelActionNodeMultiThreading(gameState);
+	} else {
+		action = visitTopLevelActionNodeSingleThreading(gameState);
+	}
 
 	return action;
 }
 
-GameAction ExpectimaxEvaluator::visitTopLevelActionNode(GameState gameState) {
+GameAction ExpectimaxEvaluator::visitTopLevelActionNodeSingleThreading(GameState gameState) {
 	TupleValueType maxValue = MIN_TUPLE_VALUE;
 	GameAction maxAction = NO_ACTION;
 
-	if (programOptions->threads) {
-		static array<thread, 4> threads;
-		static array<TupleValueType, 4> stateValues;
-		static array<GameAction, 4> allowedActions;
+	for (GameAction action : gameActions) {
+		GameState newState = gameState;
+		newState.computeAfterstate(action);
 
-		size_t pos = 0;
+		if (gameState == newState) continue;
 
-		for (GameAction action : gameActions) {
-			GameState newState = gameState;
-			newState.computeAfterstate(action);
+		TupleValueType stateValue = visitRandomNode(maxDepth, 1.0 /* 1/4 */, newState) + EPS;
 
-			if (gameState == newState) continue;
+		// cout << action << " " << stateValue << endl;
 
-			auto fun = [=] (TupleValueType& stateValue) {
-				stateValue = visitRandomNode(maxDepth, 1.0, newState) + EPS;
-			};
-			threads[pos] = thread(fun, ref(stateValues[pos]));
-			allowedActions[pos++] = action;
+		if (stateValue >= maxValue) {
+			maxValue = stateValue;
+			maxAction = action;
 		}
-		for (size_t i=0; i<pos; i++) {
-			threads[i].join();
-			if (stateValues[i] >= maxValue) {
-				maxValue = stateValues[i];
-				maxAction = allowedActions[i];
-			}
-		}
-	} else {
-		for (GameAction action : gameActions) {
-			GameState newState = gameState;
-			newState.computeAfterstate(action);
+	}
 
-			if (gameState == newState) continue;
+	assert(maxAction != NO_ACTION);
 
-			TupleValueType stateValue = visitRandomNode(maxDepth, 1.0 /* 1/4 */, newState) + EPS;
+	return maxAction;
+}
 
-			// cout << action << " " << stateValue << endl;
+GameAction ExpectimaxEvaluator::visitTopLevelActionNodeMultiThreading(GameState gameState) {
+	TupleValueType maxValue = MIN_TUPLE_VALUE;
+	GameAction maxAction = NO_ACTION;
 
-			if (stateValue >= maxValue) {
-				maxValue = stateValue;
-				maxAction = action;
-			}
+	static array<thread, 4> threads;
+	static array<TupleValueType, 4> stateValues;
+	static array<GameAction, 4> allowedActions;
+
+	size_t pos = 0;
+
+	for (GameAction action : gameActions) {
+		GameState newState = gameState;
+		newState.computeAfterstate(action);
+
+		if (gameState == newState) continue;
+
+		auto fun = [=] (TupleValueType& stateValue) {
+			stateValue = visitRandomNode(maxDepth, 1.0, newState) + EPS;
+		};
+		threads[pos] = thread(fun, ref(stateValues[pos]));
+		allowedActions[pos++] = action;
+	}
+	for (size_t i=0; i<pos; i++) {
+		threads[i].join();
+		if (stateValues[i] >= maxValue) {
+			maxValue = stateValues[i];
+			maxAction = allowedActions[i];
 		}
 	}
 

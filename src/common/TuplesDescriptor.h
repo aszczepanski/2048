@@ -4,8 +4,11 @@
 #include <array>
 #include <cassert>
 #include <cstdint>
+#include <cstdio>
 #include <memory>
 #include <vector>
+
+#include <iostream>
 
 #include <common/GameState.h>
 
@@ -27,18 +30,23 @@ struct TuplesDescriptor {
 	virtual TupleValueType evaluateState(GameState) = 0;
 
 	uint8_t getStageEntry(GameState gameState) {
-		uint16_t stage = gameState.calculateStage();
+		// return 0;
+		return gameState.calculateStage(stageBitsOffset);
+		/*uint16_t stage = gameState.calculateStage();
 
-		uint8_t stageEntry = 0;
+		return (stage >> stageBitsOffset);*/
+		// return (stage >> (16-stageBits));
+		/*uint8_t stageEntry = 0;
 		for (uint8_t i=0; i<stageBits; i++) {
 			stageEntry <<= 1;
 			stageEntry |= (stage & (1<<(15-i))) ? 1 : 0;
 		}
-
-		return stageEntry;
+	
+		return stageEntry;*/
 	}
 
 	uint8_t stageBits;
+	uint8_t stageBitsOffset;
 };
 
 struct ExpandedTuplesDescriptor : public TuplesDescriptor {

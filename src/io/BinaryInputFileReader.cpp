@@ -2,10 +2,10 @@
 
 #include <array>
 #include <cassert>
-#include <cfloat>
-#include <climits>
+#include <chrono>
 #include <cstdio>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -16,6 +16,8 @@ using namespace std;
 
 shared_ptr<TuplesDescriptor> BinaryInputFileReader::read(const string& strategy) {
 	shared_ptr<TuplesDescriptor> tuplesDescriptor;
+
+	auto startTimePoint = chrono::system_clock::now();
 
 	fstream file;
 	file.open(strategy, ios::in | ios::binary);
@@ -40,9 +42,15 @@ shared_ptr<TuplesDescriptor> BinaryInputFileReader::read(const string& strategy)
 			tuplesDescriptor = readExpandedFile(file);
 		}
 
-		cout << "Strategy file was successfully read." << endl;
+		auto endTimePoint = chrono::system_clock::now();
+		auto duration = chrono::duration_cast< chrono::duration<float> >
+			(endTimePoint - startTimePoint);
+
+		cout << "Strategy file was successfully read in "
+			<< fixed << setprecision(2) << duration.count()
+			<< " seconds." << endl;
 	} else {
-		cout << "Error while opening an input file." << endl;
+		cerr << "Error while opening an input file." << endl;
 	}
 
 	file.close();
@@ -54,6 +62,7 @@ shared_ptr<ExpandedTuplesDescriptor> BinaryInputFileReader::readExpandedFile(fst
 	shared_ptr<ExpandedTuplesDescriptor> tuplesDescriptor = make_shared<ExpandedTuplesDescriptor>();
 
 	tuplesDescriptor->stageBits = readIntLittleEndian(file);
+	tuplesDescriptor->stageBitsOffset = 16-tuplesDescriptor->stageBits;
 	tuplesDescriptor->tuples.resize(1<<tuplesDescriptor->stageBits);
 
 	for (int s=0; s<(1<<tuplesDescriptor->stageBits); s++) {
@@ -91,6 +100,7 @@ shared_ptr<CompressedTuplesDescriptor> BinaryInputFileReader::readCompressedFile
 	unsigned char buf[4];
 
 	tuplesDescriptor->stageBits = readIntLittleEndian(file);
+	tuplesDescriptor->stageBitsOffset = 16-tuplesDescriptor->stageBits;
 	tuplesDescriptor->tuples.resize(1<<tuplesDescriptor->stageBits);
 
 	for (int s=0; s<(1<<tuplesDescriptor->stageBits); s++) {

@@ -26,7 +26,8 @@ public:
 protected:
 	virtual GameAction bestActionInternal(GameState);
 
-	GameAction visitTopLevelActionNode(GameState);
+	GameAction visitTopLevelActionNodeSingleThreading(GameState);
+	GameAction visitTopLevelActionNodeMultiThreading(GameState);
 	TupleValueType visitActionNode(uint8_t depth, TupleValueType probability, GameState);
 	TupleValueType visitRandomNode(uint8_t depth, TupleValueType probability, GameState);
 

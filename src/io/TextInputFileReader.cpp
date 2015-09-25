@@ -2,7 +2,9 @@
 
 #include <array>
 #include <cassert>
+#include <chrono>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -14,7 +16,10 @@ using namespace std;
 shared_ptr<TuplesDescriptor> TextInputFileReader::read(const std::string& strategy) {
 	shared_ptr<ExpandedTuplesDescriptor> tuplesDescriptor = make_shared<ExpandedTuplesDescriptor>();
 
+	auto startTimePoint = chrono::system_clock::now();
+
 	tuplesDescriptor->stageBits = 0;
+	tuplesDescriptor->stageBitsOffset = 16-0;
 	tuplesDescriptor->tuples.resize(1<<0);
 
 	fstream file;
@@ -63,7 +68,14 @@ shared_ptr<TuplesDescriptor> TextInputFileReader::read(const std::string& strate
 				assert(c == '}');
 			}
 		}
-		cout << "Strategy file was successfully read." << endl;
+
+		auto endTimePoint = chrono::system_clock::now();
+		auto duration = chrono::duration_cast< chrono::duration<float> >
+			(endTimePoint - startTimePoint);
+
+		cout << "Strategy file was successfully read in "
+			<< fixed << setprecision(2) << duration.count()
+			<< " seconds." << endl;
 	} else {
 		cout << "Error while opening an input file." << endl;
 	}
