@@ -20,6 +20,8 @@ uint64_t GameState::colDownTable[65536];
 
 int GameState::scoreTable[65536];
 
+uint16_t GameState::stageTable[65536];
+
 unsigned GameState::initialize(default_random_engine& positionRandomEngine, default_random_engine& valueRandomEngine) {
 	clear();
 
@@ -153,26 +155,6 @@ size_t GameState::getRandomTilePoint(default_random_engine& randomEngine) {
 	return emptyPoints[dis(randomEngine)];
 }
 
-uint16_t GameState::calculateStage() {
-	uint16_t stage = UINT16_C(0);
-
-	uint64_t board = stateInternal;
-	while (board) {
-		int pos = board & 0xF;
-		while (pos >= 0) {
-			if (stage & (1<<pos)) {
-				pos--;
-			} else {
-				stage |= (1<<pos);
-				pos = -1;
-			}
-		}
-		board >>= 4;
-	}
-
-	return stage;
-}
-
 int GameState::getRandomTileValue(default_random_engine& randomEngine) {
 	uniform_real_distribution<double> dis(0.0, 1.0);
 	if (dis(randomEngine) <= TILE_2_PROBABILITY) {
@@ -217,6 +199,30 @@ void GameState::initializeTables() {
 			}
 		}
 		scoreTable[row] = score;
+
+		// stage
+		{
+			stageTable[row] = 1<<line[0];
+			uint16_t tile, tmp;
+			tile = 1<<line[1];
+			while (tile) {
+				tmp = stageTable[row] & tile;
+				stageTable[row] |= tile;
+				tile = tmp >> 1;
+			}
+			tile = 1<<line[2];
+			while (tile) {
+				tmp = stageTable[row] & tile;
+				stageTable[row] |= tile;
+				tile = tmp >> 1;
+			}
+			tile = 1<<line[3];
+			while (tile) {
+				tmp = stageTable[row] & tile;
+				stageTable[row] |= tile;
+				tile = tmp >> 1;
+			}
+		}
 
 		// execute a move to the left
 		for (int i=0; i<3; i++) {

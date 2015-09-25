@@ -37,7 +37,25 @@ public:
 		stateInternal &= ~(UINT64_C(0xF) << (tile << 2));
 	}
 
-	uint16_t calculateStage();
+	uint16_t calculateStage(uint8_t offset = UINT8_C(0)) {
+		uint16_t stage = UINT16_C(0);
+		uint16_t tmp;
+
+		auto calc = [&stage, &tmp] (uint16_t rowStage) {
+			while (rowStage) {
+				tmp = stage & rowStage;
+				stage |= rowStage;
+				rowStage = tmp >> 1;
+			}
+		};
+
+		calc(stageTable[(stateInternal >>  0) & UINT64_C(0xFFFF)] >> offset);
+		calc(stageTable[(stateInternal >> 16) & UINT64_C(0xFFFF)] >> offset);
+		calc(stageTable[(stateInternal >> 32) & UINT64_C(0xFFFF)] >> offset);
+		calc(stageTable[(stateInternal >> 48) & UINT64_C(0xFFFF)] >> offset);
+
+		return stage;
+	}
 
 	uint8_t countEmpty() {
 		uint64_t board = stateInternal;
@@ -93,6 +111,8 @@ private:
 	static uint64_t colDownTable[65536];
 
 	static int scoreTable[65536];
+
+	static uint16_t stageTable[65536];
 };
 
 #endif  // SRC_COMMON_GAME_STATE_H_
