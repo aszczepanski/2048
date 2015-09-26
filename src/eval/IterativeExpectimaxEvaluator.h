@@ -23,7 +23,7 @@ protected:
 	virtual GameAction bestActionInternal(GameState);
 
 	virtual bool isTimeLimitExceeded() {
-		return isTimeout && maxDepth > 1;
+		return isTimeout.load() && maxDepth > 1;
 	}
 
 private:

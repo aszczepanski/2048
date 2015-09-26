@@ -4,6 +4,7 @@
 #include <chrono>
 #include <iostream>
 #include <memory>
+#include <thread>
 
 #include "common/GameAction.h"
 #include "common/GameState.h"
@@ -19,23 +20,29 @@ IterativeExpectimaxEvaluator::IterativeExpectimaxEvaluator(shared_ptr<ProgramOpt
 
 GameAction IterativeExpectimaxEvaluator::bestActionInternal(GameState gameState) {
 	GameAction bestAction = NO_ACTION;
+	GameAction tmpAction;
 
-	isFinished = false;
+	{
+		lock_guard<mutex> lock(m);
+		isFinished = false;
+	}
 	isTimeout = false;
 
-	thread timer_thread([=] { timerFunction(programOptions->maxRoundTime); });
+	thread timer_thread([this] { timerFunction(programOptions->maxRoundTime); });
 
 	unsigned depth;
 	for (depth=1; depth<=programOptions->maxDepth; depth++) {
-		try {
-			maxDepth = depth;
+		maxDepth = depth;
 
-			if (depth >= 3 && programOptions->threads) {
-				bestAction = visitTopLevelActionNodeMultiThreading(gameState);
-			} else {
-				bestAction = visitTopLevelActionNodeSingleThreading(gameState);
-			}
-		} catch (...) {
+		if (depth >= 3 && programOptions->threads) {
+			tmpAction = visitTopLevelActionNodeMultiThreading(gameState);
+		} else {
+			tmpAction = visitTopLevelActionNodeSingleThreading(gameState);
+		}
+
+		if (!isTimeout) {
+			bestAction = tmpAction;
+		} else {
 			depths[maxDepth-1]++;
 			break;
 		}
@@ -45,8 +52,11 @@ GameAction IterativeExpectimaxEvaluator::bestActionInternal(GameState gameState)
 		depths[programOptions->maxDepth]++;
 	}
 
-	isFinished = true;
-	cv.notify_one();
+	{
+		lock_guard<mutex> lock(m);
+		isFinished = true;
+		cv.notify_one();
+	}
 
 	timer_thread.join();
 
@@ -57,6 +67,7 @@ void IterativeExpectimaxEvaluator::timerFunction(int millis) {
 	unique_lock<mutex> lk(m);
 
 	cv.wait_for(lk, chrono::milliseconds(millis), [=] { return isFinished.load(); });
+	// this_thread::sleep_for(chrono::milliseconds(millis));
 
 	isTimeout = true;
 

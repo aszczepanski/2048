@@ -3,11 +3,9 @@
 #include <algorithm>
 #include <cassert>
 #include <cstdint>
-#include <exception>
 #include <iostream>
 #include <memory>
 #include <unordered_map>
-#include <stdexcept>
 #include <utility>
 #include <vector>
 
@@ -41,7 +39,6 @@ void ExpectimaxEvaluator::reset() {
 }
 
 GameAction ExpectimaxEvaluator::bestAction(GameState gameState) {
-
 	transpositionTable.clear();
 
 	GameAction action = bestActionInternal(gameState);
@@ -110,15 +107,8 @@ GameAction ExpectimaxEvaluator::visitTopLevelActionNodeMultiThreading(GameState 
 
 		if (gameState == newState) continue;
 
-		teptr = nullptr;
-
 		auto fun = [=] (TupleValueType& stateValue) {
-			try {
-				stateValue = visitRandomNode(maxDepth, 1.0, newState) + EPS;
-			} catch (...) {
-				lock_guard<mutex> lock(teptrMutex);
-				teptr = current_exception();
-			}
+			stateValue = visitRandomNode(maxDepth, 1.0, newState) + EPS;
 		};
 		threads[pos] = thread(fun, ref(stateValues[pos]));
 		allowedActions[pos++] = action;
@@ -129,10 +119,6 @@ GameAction ExpectimaxEvaluator::visitTopLevelActionNodeMultiThreading(GameState 
 			maxValue = stateValues[i];
 			maxAction = allowedActions[i];
 		}
-	}
-
-	if (teptr) {
-		rethrow_exception(teptr);
 	}
 
 	assert(maxAction != NO_ACTION);
@@ -159,7 +145,7 @@ TupleValueType ExpectimaxEvaluator::visitActionNode(uint8_t depth, TupleValueTyp
 
 TupleValueType ExpectimaxEvaluator::visitRandomNode(uint8_t depth, TupleValueType probability, GameState gameState) {
 	if (isTimeLimitExceeded()) {
-		throw runtime_error("timeout");
+		return MIN_TUPLE_VALUE;
 	}
 
 	if (depth <= 1 || probability < MIN_PROBABILITY_THRESHOLD) {
@@ -168,7 +154,7 @@ TupleValueType ExpectimaxEvaluator::visitRandomNode(uint8_t depth, TupleValueTyp
 
 	{
 		lock_guard<mutex> lock(transpositionTableMutex);
-		const unordered_map<uint64_t, pair<uint8_t, TupleValueType> >::iterator& it = transpositionTable.find(gameState);
+		const unordered_map<uint64_t, pair<uint8_t, TupleValueType> >::iterator it = transpositionTable.find(gameState);
 		if (it != transpositionTable.end()) {
 			pair<uint8_t, TupleValueType> entry = it->second;
 			if (entry.first >= depth) {
@@ -201,7 +187,7 @@ TupleValueType ExpectimaxEvaluator::visitRandomNode(uint8_t depth, TupleValueTyp
 
 	{
 		lock_guard<mutex> lock(transpositionTableMutex);
-		const unordered_map<uint64_t, pair<uint8_t, TupleValueType> >::iterator& it = transpositionTable.find(gameState);
+		const unordered_map<uint64_t, pair<uint8_t, TupleValueType> >::iterator it = transpositionTable.find(gameState);
 		if (it != transpositionTable.end()) {
 			pair<uint8_t, TupleValueType> entry = it->second;
 			if (entry.first < depth) {
