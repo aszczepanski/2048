@@ -3,6 +3,7 @@
 
 #include "eval/ExpectimaxEvaluator.h"
 
+#include <atomic>
 #include <chrono>
 #include <condition_variable>
 #include <memory>
@@ -22,7 +23,7 @@ protected:
 	virtual GameAction bestActionInternal(GameState);
 
 	virtual bool isTimeLimitExceeded() {
-		return isTimeout;
+		return isTimeout && maxDepth > 1;
 	}
 
 private:
@@ -32,8 +33,8 @@ private:
 	std::mutex m;
 	std::condition_variable cv;
 
-	bool isFinished;
-	bool isTimeout;
+	std::atomic_bool isFinished;
+	std::atomic_bool isTimeout;
 
 };
 

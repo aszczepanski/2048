@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cstdint>
+#include <exception>
 #include <iostream>
 #include <memory>
 #include <unordered_map>
@@ -24,7 +25,7 @@
 using namespace std;
 
 const TupleValueType ExpectimaxEvaluator::MIN_PROBABILITY_THRESHOLD = 0.0001;
-const TupleValueType ExpectimaxEvaluator::EPS = 1e-5;
+const TupleValueType ExpectimaxEvaluator::EPS = 1e-2;
 const TupleValueType ExpectimaxEvaluator::MIN_TUPLE_VALUE = -100000.0;
 
 ExpectimaxEvaluator::ExpectimaxEvaluator(shared_ptr<ProgramOptions> programOptions,
@@ -44,14 +45,12 @@ GameAction ExpectimaxEvaluator::bestAction(GameState gameState) {
 	transpositionTable.clear();
 
 	GameAction action = bestActionInternal(gameState);
-/*
-	// if (programOptions->verbose) {
-		// cout << '\r';
+#if 0
+	if (programOptions->verbose) {
 		copy(depths.begin(), depths.end(), ostream_iterator<unsigned long long>(cout, " "));
-		// cout << flush;
 		cout << endl;
-	// }
-*/
+	}
+#endif
 	return action;
 }
 
@@ -111,8 +110,15 @@ GameAction ExpectimaxEvaluator::visitTopLevelActionNodeMultiThreading(GameState 
 
 		if (gameState == newState) continue;
 
+		teptr = nullptr;
+
 		auto fun = [=] (TupleValueType& stateValue) {
-			stateValue = visitRandomNode(maxDepth, 1.0, newState) + EPS;
+			try {
+				stateValue = visitRandomNode(maxDepth, 1.0, newState) + EPS;
+			} catch (...) {
+				lock_guard<mutex> lock(teptrMutex);
+				teptr = current_exception();
+			}
 		};
 		threads[pos] = thread(fun, ref(stateValues[pos]));
 		allowedActions[pos++] = action;
@@ -123,6 +129,10 @@ GameAction ExpectimaxEvaluator::visitTopLevelActionNodeMultiThreading(GameState 
 			maxValue = stateValues[i];
 			maxAction = allowedActions[i];
 		}
+	}
+
+	if (teptr) {
+		rethrow_exception(teptr);
 	}
 
 	assert(maxAction != NO_ACTION);
@@ -140,9 +150,7 @@ TupleValueType ExpectimaxEvaluator::visitActionNode(uint8_t depth, TupleValueTyp
 		if (gameState == newState) continue;
 
 		TupleValueType stateValue = visitRandomNode(depth-1, probability /* *1/4 */, newState);
-
 		// cout << action << " " << stateValue << endl;
-
 		maxValue = max(maxValue, stateValue);
 	}
 
@@ -177,13 +185,13 @@ TupleValueType ExpectimaxEvaluator::visitRandomNode(uint8_t depth, TupleValueTyp
 	TupleValueType tile4probability = probability*GameState::TILE_4_PROBABILITY;
 
 	TupleValueType alpha = 0.0;
+
 	for (uint8_t i=UINT8_C(0); i<UINT8_C(16); i++) {
 		if (gameState.getTileValue(i) == UINT8_C(0)) {
 			// cout << "visiting " << i << endl;
 			gameState.setTileValue(i, UINT8_C(1));
 			alpha += GameState::TILE_2_PROBABILITY*visitActionNode(depth, tile2probability, gameState);
 			gameState.setTileValue(i, UINT8_C(2));
-			probability = tile4probability;
 			alpha += GameState::TILE_4_PROBABILITY*visitActionNode(depth, tile4probability, gameState);
 			gameState.clearTileValue(i);
 		}

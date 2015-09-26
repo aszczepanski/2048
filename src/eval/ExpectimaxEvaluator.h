@@ -4,7 +4,9 @@
 #include "eval/IEvaluator.h"
 
 #include <array>
+#include <exception>
 #include <memory>
+#include <stdexcept>
 #include <unordered_map>
 #include <utility>
 
@@ -42,6 +44,9 @@ protected:
 
 	std::shared_ptr<ProgramOptions> programOptions;
 	std::shared_ptr<TuplesDescriptor> tuplesDescriptor;
+
+	std::exception_ptr teptr;
+	std::mutex teptrMutex;
 
 	/* stats */
 	std::array<uint64_t, 20> depths;

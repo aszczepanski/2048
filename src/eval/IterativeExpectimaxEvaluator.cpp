@@ -1,5 +1,6 @@
 #include "eval/IterativeExpectimaxEvaluator.h"
 
+#include <atomic>
 #include <chrono>
 #include <iostream>
 #include <memory>
@@ -55,7 +56,7 @@ GameAction IterativeExpectimaxEvaluator::bestActionInternal(GameState gameState)
 void IterativeExpectimaxEvaluator::timerFunction(int millis) {
 	unique_lock<mutex> lk(m);
 
-	cv.wait_for(lk, chrono::milliseconds(millis), [=] { return isFinished; });
+	cv.wait_for(lk, chrono::milliseconds(millis), [=] { return isFinished.load(); });
 
 	isTimeout = true;
 
