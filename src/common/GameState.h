@@ -9,6 +9,10 @@
 
 class GameState {
 public:
+	GameState(uint64_t board = UINT64_C(0)) : stateInternal(board) {}
+	GameState(const GameState&) = default;
+	GameState& operator=(const GameState&) = default;
+
 	unsigned initialize(std::default_random_engine& positionRandomEngine,
 		std::default_random_engine& valueRandomEngine);  // returns a number of fours
 	bool isTerminalState();
