@@ -106,6 +106,10 @@ string GameStats::stageToString(uint32_t stage) {
 	return ss.str();
 }
 
+GameStatsContainer::GameStatsContainer() {
+	stagesAccumulators.resize(GameStats::gameStages.size());
+}
+
 void GameStatsContainer::addGameStats(const GameStats* gameStatsPtr) {
 	// TODO
 	scoreAccumulators(gameStatsPtr->score);

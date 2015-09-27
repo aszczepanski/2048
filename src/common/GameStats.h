@@ -43,6 +43,8 @@ private:
 
 class GameStatsContainer {
 public:
+	GameStatsContainer();
+
 	void addGameStats(const GameStats*);
 
 	float getScoreMean() const;
@@ -53,9 +55,9 @@ public:
 	friend std::ostream& operator<<(std::ostream&, const GameStatsContainer&);
 
 private:
-	boost::accumulators::accumulator_set<int, boost::accumulators::stats<boost::accumulators::tag::count, boost::accumulators::tag::mean, boost::accumulators::tag::variance> > scoreAccumulators;
-	boost::accumulators::accumulator_set<int, boost::accumulators::stats<boost::accumulators::tag::mean> > durationAccumulators;
-	boost::accumulators::accumulator_set<int, boost::accumulators::stats<boost::accumulators::tag::mean> > stagesAccumulators[27];
+	boost::accumulators::accumulator_set<uint64_t, boost::accumulators::stats<boost::accumulators::tag::count, boost::accumulators::tag::mean, boost::accumulators::tag::variance> > scoreAccumulators;
+	boost::accumulators::accumulator_set<uint64_t, boost::accumulators::stats<boost::accumulators::tag::mean> > durationAccumulators;
+	std::vector<boost::accumulators::accumulator_set<uint64_t, boost::accumulators::stats<boost::accumulators::tag::mean> > > stagesAccumulators;
 };
 
 #endif  // SRC_COMMON_GAME_STATS_H_
