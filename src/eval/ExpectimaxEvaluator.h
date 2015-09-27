@@ -43,9 +43,10 @@ protected:
 	std::shared_ptr<ProgramOptions> programOptions;
 	std::shared_ptr<TuplesDescriptor> tuplesDescriptor;
 
-	/* stats */
+#ifdef EVALUATOR_GATHER_STATS
 	std::array<uint64_t, 20> depths;
 	uint64_t cacheHits;
+#endif
 
 	static const TupleValueType MIN_PROBABILITY_THRESHOLD;
 	static const TupleValueType EPS;

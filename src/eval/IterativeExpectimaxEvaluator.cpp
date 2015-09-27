@@ -43,14 +43,18 @@ GameAction IterativeExpectimaxEvaluator::bestActionInternal(GameState gameState)
 		if (!isTimeout) {
 			bestAction = tmpAction;
 		} else {
+#ifdef EVALUATOR_GATHER_STATS
 			depths[maxDepth-1]++;
+#endif
 			break;
 		}
 	}
 
+#ifdef EVALUATOR_GATHER_STATS
 	if (depth > programOptions->maxDepth) {
 		depths[programOptions->maxDepth]++;
 	}
+#endif
 
 	{
 		lock_guard<mutex> lock(m);

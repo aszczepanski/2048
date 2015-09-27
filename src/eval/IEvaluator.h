@@ -1,6 +1,8 @@
 #ifndef SRC_EVAL_IEVALUATOR_H_
 #define SRC_EVAL_IEVALUATOR_H_
 
+// #define EVALUATOR_GATHER_STATS
+
 #include "common/GameAction.h"
 #include "common/GameState.h"
 
