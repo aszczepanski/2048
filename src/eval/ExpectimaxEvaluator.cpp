@@ -154,7 +154,7 @@ TupleValueType ExpectimaxEvaluator::visitRandomNode(uint8_t depth, TupleValueTyp
 
 	{
 		lock_guard<mutex> lock(transpositionTableMutex);
-		const unordered_map<uint64_t, pair<uint8_t, TupleValueType> >::iterator it = transpositionTable.find(gameState);
+		unordered_map<uint64_t, pair<uint8_t, TupleValueType> >::const_iterator it = transpositionTable.find(gameState);
 		if (it != transpositionTable.end()) {
 			pair<uint8_t, TupleValueType> entry = it->second;
 			if (entry.first >= depth) {
@@ -172,7 +172,7 @@ TupleValueType ExpectimaxEvaluator::visitRandomNode(uint8_t depth, TupleValueTyp
 
 	TupleValueType alpha = 0.0;
 
-	for (uint8_t i=UINT8_C(0); i<UINT8_C(16); i++) {
+	for (uint8_t i=UINT8_C(0); i<UINT8_C(16); ++i) {
 		if (gameState.getTileValue(i) == UINT8_C(0)) {
 			// cout << "visiting " << i << endl;
 			gameState.setTileValue(i, UINT8_C(1));
@@ -187,7 +187,7 @@ TupleValueType ExpectimaxEvaluator::visitRandomNode(uint8_t depth, TupleValueTyp
 
 	{
 		lock_guard<mutex> lock(transpositionTableMutex);
-		const unordered_map<uint64_t, pair<uint8_t, TupleValueType> >::iterator it = transpositionTable.find(gameState);
+		unordered_map<uint64_t, pair<uint8_t, TupleValueType> >::iterator it = transpositionTable.find(gameState);
 		if (it != transpositionTable.end()) {
 			pair<uint8_t, TupleValueType> entry = it->second;
 			if (entry.first < depth) {

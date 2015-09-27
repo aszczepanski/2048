@@ -30,19 +30,7 @@ struct TuplesDescriptor {
 	virtual TupleValueType evaluateState(GameState) = 0;
 
 	uint8_t getStageEntry(GameState gameState) {
-		// return 0;
 		return gameState.calculateStage(stageBitsOffset);
-		/*uint16_t stage = gameState.calculateStage();
-
-		return (stage >> stageBitsOffset);*/
-		// return (stage >> (16-stageBits));
-		/*uint8_t stageEntry = 0;
-		for (uint8_t i=0; i<stageBits; i++) {
-			stageEntry <<= 1;
-			stageEntry |= (stage & (1<<(15-i))) ? 1 : 0;
-		}
-	
-		return stageEntry;*/
 	}
 
 	uint8_t stageBits;
@@ -55,12 +43,13 @@ struct ExpandedTuplesDescriptor : public TuplesDescriptor {
 
 		uint8_t stageEntry = getStageEntry(gameState);
 
+		size_t lup;
 		for (const ExpandedTuple& tuple : tuples[stageEntry]) {
 			for (const std::vector<uint8_t>& lup_mm : tuple.pts) {
-				size_t lup = 0;
-				for (size_t i=0; i<lup_mm.size(); i++) {
+				lup = 0;
+				for (auto it = lup_mm.begin(); it != lup_mm.end(); ++it) {
 					lup <<= 4;
-					lup |= gameState.getTileValue(lup_mm[i]);
+					lup |= gameState.getTileValue(*it);
 				}
 				stateValue += tuple.lut[lup];
 			}
@@ -78,10 +67,11 @@ struct CompressedTuplesDescriptor : public TuplesDescriptor {
 
 		uint8_t stageEntry = getStageEntry(gameState);
 
+		size_t lup;
 		for (const CompressedTuple& tuple : tuples[stageEntry]) {
 			for (const std::vector<uint8_t>& lup_mm : tuple.pts) {
-				size_t lup = 0;
-				for (size_t i=0; i<lup_mm.size()-1; i++) {
+				lup = 0;
+				for (size_t i=0; i<lup_mm.size()-1; ++i) {
 					lup <<= 4;
 					lup |= gameState.getTileValue(lup_mm[i]);
 				}
