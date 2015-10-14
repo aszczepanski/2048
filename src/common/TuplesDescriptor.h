@@ -12,7 +12,7 @@
 
 #include <common/GameState.h>
 
-typedef double TupleValueType;
+typedef float TupleValueType;
 
 struct Tuple {
 	std::vector< std::vector<uint8_t> > pts;  // of size m*n
