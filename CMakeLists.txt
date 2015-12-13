@@ -9,6 +9,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(EnableCXX11)
 include(BuildConfig)
 
+add_definitions(-DBOOST_ALL_NO_LIB)
+set(Boost_USE_STATIC_LIBS ON)
 find_package(Boost 1.49.0 REQUIRED COMPONENTS program_options)
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
