@@ -26,11 +26,11 @@ int main(int argc, char* argv[]) {
 
 	shared_ptr<IInputFileReader> inputFileReader;
 	string fn = programOptions->strategy;
-  if(fn.substr(fn.find_last_of(".") + 1) == "txt") {
-    inputFileReader = make_shared<TextInputFileReader>();
-  } else {
+	if(fn.substr(fn.find_last_of(".") + 1) == "txt") {
+		inputFileReader = make_shared<TextInputFileReader>();
+	} else {
 		inputFileReader = make_shared<BinaryInputFileReader>();
-  }
+	}
 
 	shared_ptr<TuplesDescriptor> tuplesDescriptor = inputFileReader->read(programOptions->strategy);
 	if (tuplesDescriptor == nullptr) return EXIT_SUCCESS;
