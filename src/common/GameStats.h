@@ -51,12 +51,14 @@ public:
 	float getScore95ConfidenceInterval() const;
 	float getStageCumulativeDistribution(std::size_t stage) const;
 	float getDurationMean() const;
+	float getMovesPerSecMean() const;
 
 	friend std::ostream& operator<<(std::ostream&, const GameStatsContainer&);
 
 private:
 	boost::accumulators::accumulator_set<uint64_t, boost::accumulators::stats<boost::accumulators::tag::count, boost::accumulators::tag::mean, boost::accumulators::tag::variance> > scoreAccumulators;
-	boost::accumulators::accumulator_set<uint64_t, boost::accumulators::stats<boost::accumulators::tag::mean> > durationAccumulators;
+	boost::accumulators::accumulator_set<uint64_t, boost::accumulators::stats<boost::accumulators::tag::mean, boost::accumulators::tag::sum> > durationAccumulators;
+	boost::accumulators::accumulator_set<double, boost::accumulators::stats<boost::accumulators::tag::mean, boost::accumulators::tag::sum> > movesAccumulators;
 	std::vector<boost::accumulators::accumulator_set<uint64_t, boost::accumulators::stats<boost::accumulators::tag::mean> > > stagesAccumulators;
 };
 

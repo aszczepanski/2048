@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <array>
 #include <cassert>
+#include <chrono>
 #include <cmath>
 #include <cstdint>
 #include <memory>
@@ -82,7 +83,8 @@ ostream& operator<<(ostream& out, const GameStats& gameStats) {
 		<< gameStats.score
 		// << ", " << gameStats.moves
 		<< ", " << GameStats::stageToString(GameStats::gameStages[gameStats.stage])
-		<< ", " << gameStats.duration.count();
+		<< ", " << gameStats.duration.count()
+		<< ", " << (double)gameStats.moves/chrono::duration_cast<chrono::duration<double>>(gameStats.duration).count();
 }
 
 string GameStats::stageToString(uint32_t stage) {
@@ -114,6 +116,7 @@ void GameStatsContainer::addGameStats(const GameStats* gameStatsPtr) {
 	// TODO
 	scoreAccumulators(gameStatsPtr->score);
 	durationAccumulators(gameStatsPtr->duration.count());
+	movesAccumulators(gameStatsPtr->moves);
 
 	for (size_t i=0; i<GameStats::gameStages.size(); i++) {
 		stagesAccumulators[i](gameStatsPtr->stage <= i ? 1 : 0);
@@ -136,6 +139,11 @@ float GameStatsContainer::getDurationMean() const {
 	return mean(durationAccumulators);
 }
 
+float GameStatsContainer::getMovesPerSecMean() const {
+	return static_cast<double>(sum(movesAccumulators))
+		/ (static_cast<double>(sum(durationAccumulators))/1000.0);
+}
+
 ostream& operator<<(ostream& out, const GameStatsContainer& gameStatsContainer) {
 	out << "perf";
 	out << ", " << "conf";
@@ -145,6 +153,7 @@ ostream& operator<<(ostream& out, const GameStatsContainer& gameStatsContainer) 
 	}
 
 	out << ", " << "time";
+	out << ", " << "moves/sec";
 	out << endl;
 
 	///////////////////////
@@ -159,6 +168,7 @@ ostream& operator<<(ostream& out, const GameStatsContainer& gameStatsContainer) 
 	}
 
 	out	<< ", " << gameStatsContainer.getDurationMean();
+	out	<< ", " << gameStatsContainer.getMovesPerSecMean();
 
 	return out;
 }
