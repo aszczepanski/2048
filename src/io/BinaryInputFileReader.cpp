@@ -14,7 +14,7 @@
 
 using namespace std;
 
-shared_ptr<TuplesDescriptor> BinaryInputFileReader::read(const string& strategy) {
+shared_ptr<TuplesDescriptor> BinaryInputFileReader::read(const string& strategy, bool unzip) {
 	shared_ptr<TuplesDescriptor> tuplesDescriptor;
 
 	auto startTimePoint = chrono::system_clock::now();
@@ -36,10 +36,12 @@ shared_ptr<TuplesDescriptor> BinaryInputFileReader::read(const string& strategy)
 		values = convertIntLittleEndian(buf);
 		assert(values == 16);
 
-		if (fileType == 1) {
-			tuplesDescriptor = readCompressedFile(file);
-		} else {
+		if (fileType == 2) {
 			tuplesDescriptor = readExpandedFile(file);
+		} else if (unzip) {
+			tuplesDescriptor = readAndExpandCompressedFile(file);
+		} else {
+			tuplesDescriptor = readCompressedFile(file);
 		}
 
 		auto endTimePoint = chrono::system_clock::now();
@@ -84,6 +86,52 @@ shared_ptr<ExpandedTuplesDescriptor> BinaryInputFileReader::readExpandedFile(fst
 			t->lut.resize(1 << 4*n);
 			for (int j=0; j<(1 << 4*n); j++) {
 				t->lut[j] = readFloatLittleEndian(file);
+			}
+		}
+	}
+
+	return tuplesDescriptor;
+}
+
+shared_ptr<ExpandedTuplesDescriptor> BinaryInputFileReader::readAndExpandCompressedFile(fstream& file) {
+	shared_ptr<ExpandedTuplesDescriptor> tuplesDescriptor = make_shared<ExpandedTuplesDescriptor>();
+
+	unsigned char buf[4];
+
+	tuplesDescriptor->stageBits = readIntLittleEndian(file);
+	tuplesDescriptor->stageBitsOffset = 16-tuplesDescriptor->stageBits;
+	tuplesDescriptor->tuples.resize(1<<tuplesDescriptor->stageBits);
+
+	for (int s=0; s<(1<<tuplesDescriptor->stageBits); s++) {
+		int T = readIntLittleEndian(file);
+		tuplesDescriptor->tuples[s].resize(T);
+		for (int i=0; i<T; i++) {
+			ExpandedTuple* t = &tuplesDescriptor->tuples[s][i];
+			int n = readIntLittleEndian(file);
+			int m = readIntLittleEndian(file);
+			t->pts.resize(m);
+
+			for (int j=0; j<m; j++) {
+				t->pts[j].resize(n);
+				for (int k=0; k<n; k++) {
+					t->pts[j][k] = readIntLittleEndian(file);
+				}
+			}
+
+			t->lut.resize(1 << 4*n);
+			for (int j=0; j<(1 << 4*(n-1)); j++) {
+				file.read((char*)buf, 4);
+				if (isNegativeInfinity(buf)) {
+					for (int k=0; k<16; k++) {
+						t->lut[(j<<4)+k] = 0;
+					}
+				} else {
+					float firstVal = convertFloatLittleEndian(buf);
+					t->lut[j<<4] = firstVal;
+					for (int k=1; k<16; k++) {
+						t->lut[(j<<4)+k] = readFloatLittleEndian(file);
+					}
+				}
 			}
 		}
 	}

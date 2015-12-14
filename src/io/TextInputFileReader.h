@@ -10,7 +10,7 @@
 
 class TextInputFileReader : public IInputFileReader {
 public:
-	virtual std::shared_ptr<TuplesDescriptor> read(const std::string& strategy);
+	virtual std::shared_ptr<TuplesDescriptor> read(const std::string& strategy, bool unzip);
 
 };
 

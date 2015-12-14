@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
 		inputFileReader = make_shared<BinaryInputFileReader>();
 	}
 
-	shared_ptr<TuplesDescriptor> tuplesDescriptor = inputFileReader->read(programOptions->strategy);
+	shared_ptr<TuplesDescriptor> tuplesDescriptor = inputFileReader->read(programOptions->strategy, programOptions->unzip);
 	if (tuplesDescriptor == nullptr) return EXIT_SUCCESS;
 
 	GameState::initializeTables();

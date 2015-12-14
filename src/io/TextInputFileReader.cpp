@@ -13,7 +13,7 @@
 
 using namespace std;
 
-shared_ptr<TuplesDescriptor> TextInputFileReader::read(const std::string& strategy) {
+shared_ptr<TuplesDescriptor> TextInputFileReader::read(const std::string& strategy, bool) {
 	shared_ptr<ExpandedTuplesDescriptor> tuplesDescriptor = make_shared<ExpandedTuplesDescriptor>();
 
 	auto startTimePoint = chrono::system_clock::now();

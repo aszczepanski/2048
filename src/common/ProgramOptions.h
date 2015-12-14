@@ -5,6 +5,7 @@
 
 struct ProgramOptions {
 	std::string strategy;
+	bool unzip;
 	unsigned randomSeed;
 	unsigned games;
 	unsigned maxRoundTime;
