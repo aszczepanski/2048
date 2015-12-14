@@ -1,11 +1,12 @@
 project(2048)
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.0)
 
 option(SET_WARNINGS "Compiler warning flags" ON)
 option(SET_DEBUG "Compiler debugging flags" ON)
 option(USE_STATIC_LIBS "Link with static libraries" OFF)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+set(CMAKE_POLICY NEW)
 include(EnableCXX11)
 include(BuildConfig)
 
