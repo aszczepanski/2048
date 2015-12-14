@@ -8,23 +8,32 @@ import ctypes
 import time
 import os
 
-for suffix in ['so', 'dll', 'dylib']:
-    dllfn = 'lib/libWebApi.' + suffix
-    if not os.path.isfile(dllfn):
-        continue
-    ailib = ctypes.CDLL(dllfn)
-    break
-else:
-    print("Couldn't find 2048 library bin/main.{so,dll,dylib}! Make sure to build it first.")
-    exit()
+def initialize_ailib(args):
+	if not args.lib:
+		for suffix in ['so', 'dll', 'dylib']:
+				dllfn = 'lib/libWebApi.' + suffix
+				if not os.path.isfile(dllfn):
+						continue
+				ailib = ctypes.CDLL(dllfn)
+				break
+		else:
+				print("Couldn't find 2048 library lib/libWebApi.{so,dll,dylib}! Make sure to build it first.")
+				exit()
+	else:
+		ailib = ctypes.CDLL(args.lib)
 
-ailib.initializeProgramOptions("data/2048_strategies/tiles-test2-v2.bin.special")
+	ailib.setStrategy(args.strategy)
+	ailib.setMaxTime(args.time)
+	ailib.setMaxDepth(args.depth)
+	ailib.setThreads(args.threads)
 
-ailib.loadTuplesDescriptor()
-ailib.initializeTables()
-ailib.initializeEvaluator();
+	ailib.loadTuplesDescriptor()
+	ailib.initializeTables()
+	ailib.initializeEvaluator();
 
-ailib.bestAction.argtypes = [ctypes.c_uint64]
+	ailib.bestAction.argtypes = [ctypes.c_uint64]
+
+	return ailib
 
 def to_c_board(m):
     board = 0
@@ -56,14 +65,14 @@ def _to_score(c):
 def to_score(m):
     return [[_to_score(c) for c in row] for row in m]
 
-def find_best_move(m):
+def find_best_move(ailib, m):
     board = to_c_board(m)
     return ailib.bestAction(board)
 
 def movename(move):
     return ['up', 'down', 'left', 'right'][move]
 
-def play_game(gamectrl):
+def play_game(ailib, gamectrl):
     moveno = 0
     start = time.time()
     while 1:
@@ -76,7 +85,7 @@ def play_game(gamectrl):
 
         moveno += 1
         board = gamectrl.get_board()
-        move = find_best_move(board)
+        move = find_best_move(ailib, board)
         if move < 0:
             break
         print("%010.6f: Score %d, Move %d: %s" % (time.time() - start, gamectrl.get_score(), moveno, movename(move)))
@@ -95,10 +104,19 @@ def parse_args(argv):
     parser.add_argument('-b', '--browser', help="Browser you're using. Only Firefox with the Remote Control extension, and Chrome with remote debugging, are supported right now.", default='firefox', choices=('firefox', 'chrome'))
     parser.add_argument('-k', '--ctrlmode', help="Control mode to use. If the browser control doesn't seem to work, try changing this.", default='hybrid', choices=('keyboard', 'fast', 'hybrid'))
 
+    parser.add_argument('--threads', help="Enable multithreading.", default=True, type=bool)
+    parser.add_argument('--depth', help="Maximum depth.", default=1, type=int)
+    parser.add_argument('--time', help="Time limit [ms].", default=0, type=int)
+    parser.add_argument('--strategy', help="Strategy input file.", default="data/2048_strategies/tiles-test-v1.bin.special", type=str)
+
+    parser.add_argument('--lib', help="WebApi library.", default="", type=str)
+
     return parser.parse_args(argv)
 
 def main(argv):
     args = parse_args(argv)
+
+    ailib = initialize_ailib(args)
 
     if args.browser == 'firefox':
         from ffctrl import FirefoxRemoteControl
@@ -124,7 +142,7 @@ def main(argv):
     if gamectrl.get_status() == 'ended':
         gamectrl.restart_game()
 
-    play_game(gamectrl)
+    play_game(ailib, gamectrl)
 
 if __name__ == '__main__':
     import sys

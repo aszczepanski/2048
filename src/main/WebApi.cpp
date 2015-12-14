@@ -24,16 +24,32 @@ shared_ptr<ProgramOptions> programOptions;
 shared_ptr<TuplesDescriptor> tuplesDescriptor;
 shared_ptr<IEvaluator> evaluator;
 
-void initializeProgramOptions(const char* strategy) {
-	programOptions = make_shared<ProgramOptions>();
-
+void setStrategy(const char* strategy) {
+	if (!programOptions) {
+		programOptions = make_shared<ProgramOptions>();
+	}
 	programOptions->strategy = string(strategy);
-	// programOptions->randomSeed = 123;
-	// programOptions->games = 1;
-	programOptions->maxRoundTime = 0;
-	programOptions->maxDepth = 3;
-	programOptions->threads = true;
-	// programOptions->verbose = false;
+}
+
+void setMaxTime(int time) {
+	if (!programOptions) {
+		programOptions = make_shared<ProgramOptions>();
+	}
+	programOptions->maxRoundTime = time;
+}
+
+void setMaxDepth(int depth) {
+	if (!programOptions) {
+		programOptions = make_shared<ProgramOptions>();
+	}
+	programOptions->maxDepth = depth;
+}
+
+void setThreads(bool threads) {
+	if (!programOptions) {
+		programOptions = make_shared<ProgramOptions>();
+	}
+	programOptions->threads = threads;
 }
 
 void loadTuplesDescriptor() {

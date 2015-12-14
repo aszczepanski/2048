@@ -33,7 +33,10 @@
 extern "C" {
 #endif
 
-DLL_PUBLIC void initializeProgramOptions(const char* strategy);
+DLL_PUBLIC void setThreads(bool threads);
+DLL_PUBLIC void setMaxDepth(int depth);
+DLL_PUBLIC void setMaxTime(int time);
+DLL_PUBLIC void setStrategy(const char* strategy);
 DLL_PUBLIC void loadTuplesDescriptor();
 DLL_PUBLIC void initializeTables();
 DLL_PUBLIC void initializeEvaluator();
