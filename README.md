@@ -16,6 +16,12 @@ In order to use the AI you will need to build main application. The requirements
 * Cmake min 3.0
 * Boost min 1.49.0 (program_options, accumulators)
 
+Tested on:
+
+* Max OS X 10.11.1, Apple LLVM version 7.0.2
+* Linux ..., g++ ...
+* Windows 7 64 bit, Visual Studio 14 2015
+
 #### Program parameters ####
 
 ##### Console application #####
@@ -38,15 +44,20 @@ In order to use the AI you will need to build main application. The requirements
 + **--depth arg** - maximum depth for expectimax (by default 1)
 + **--threads arg** - enable multithreading (true/false, by default true)
 
-#### Building on Linux/Mac OS X ####
+#### Building ####
+
+##### Linux/OS X #####
 
 1. Go to the project root directory
-2. Run ```cmake .```.
+2. Run ```cmake .```
 3. Run ```make```. The ```lib/``` and ```bin/``` directories will be created.
 
-#### Building on Windows ####
+##### Windows #####
 
-TODO
+1. Go to the project root directory
+2. Create and go to ```_build``` directory
+3. Run ```cmake .. -G "Visual Studio 14 2015 Win64"```
+4. Open the solution and build it
 
 #### Running console application examples ####
 
@@ -88,14 +99,21 @@ TODO: examples
 
 ##### Running python script examples #####
 
-* max depth 1, single thread, no time limit
+* chrome, max depth 1, single thread, no time limit
 ```
-python 2048.py
+python 2048.py -b chrome
 ```
 
-* max depth 4, multiple threads, no time limit
+* chrome, max depth 4, multiple threads, max time 100 ms per move
 ```
-python 2048.py --depth 4 --threads true
+python 2048.py -b chrome --depth 4 --threads true --time 100
+```
+
+* chrome, max depth 4, multiple threads, 100
+
+On Windows you will need to specify WebApi library file:
+```
+python 2048.py -b chrome --lib path_to_lib
 ```
 
 ### Contribution guidelines ###
