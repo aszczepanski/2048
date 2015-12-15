@@ -19,8 +19,8 @@ In order to use the AI you will need to build main application. The requirements
 Tested on:
 
 * Max OS X 10.11.1, Apple LLVM version 7.0.2
-* Linux ..., g++ ...
-* Windows 7 64 bit, Visual Studio 14 2015
+* Ubuntu 15.04 64-bit, g++ 4.9.2
+* Windows 7 64-bit, Visual Studio 14 2015
 
 #### Program parameters ####
 
