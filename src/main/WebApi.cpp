@@ -13,7 +13,7 @@
 #include "io/BinaryInputFileReader.h"
 #include "io/TextInputFileReader.h"
 
-#include "Eval/IEvaluator.h"
+#include "eval/IEvaluator.h"
 #include "eval/ExpectimaxEvaluator.h"
 #include "eval/IterativeExpectimaxEvaluator.h"
 #include "eval/RandomEvaluator.h"
