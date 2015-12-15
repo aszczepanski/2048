@@ -80,6 +80,11 @@ Tested on:
 
 #### Running web application ####
 
+You may need to install websocket-client first:
+```
+pip install websocket-client
+```
+
 ##### Chrome #####
 
 1. Run the browser with remote-debugging enabled:
