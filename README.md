@@ -3,6 +3,8 @@
 
 AI for 2048 game. We created 2 apps - console application used for running multiple games and web application for observing how the AI works.
 
+##### Requirements #####
+
 In order to use the AI you will need to build main application. The requirements are listed below:
 
 * C++11 compiler
@@ -20,11 +22,11 @@ Tested on:
 * Ubuntu 15.04 64-bit, g++ 4.9.2
 * Windows 7 64-bit, Visual Studio 14 2015
 
-#### Program parameters ####
+## Program parameters ##
 
 TODO: unzip
 
-##### Console application #####
+#### Console application ####
 
 + **--strategy arg** - strategy input file (by default data/2048_strategies/2048_a_weak_player.bin.txt)
 + **--seed arg** - random seed (by default based on time elapsed since epoch)
@@ -35,7 +37,7 @@ TODO: unzip
 + **-h [ --help ]** - produce help message
 + **-v [ --verbose ]** - show board and score after each round
 
-##### Web Application #####
+#### Web Application ####
 
 + **-b [ --browser ]** - choose browser (Chrome or Firefox, by default Firefox)
 + **-p [ --port PORT ]** - port number to control on (default: 32000 for Firefox, 9222 for Chrome)
@@ -45,6 +47,8 @@ TODO: unzip
 + **--threads arg** - enable multithreading (true/false, by default true)
 
 ## Building ##
+
+#### Running console application ####
 
 ##### Linux/OS X #####
 
@@ -59,7 +63,7 @@ TODO: unzip
 3. Run ```cmake .. -G "Visual Studio 14 2015 Win64"```
 4. Open the solution and build it
 
-#### Running console application examples ####
+##### Running console application examples #####
 
 * 1 game, max depth 1, single thread, no time limit:
 ```bash
