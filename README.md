@@ -71,8 +71,8 @@ You can specify the strategy file and unzip option using command line arguments 
 
 1. Go to the project root directory
 2. Create and go to ```_build/``` directory
-3. Run ```cmake .. -G "Visual Studio 14 2015 Win64"```. You may have to set boost directories: ```set BOOST_ROOT=your_boost_root_directory``` and ```set BOOST_LIBRARYDIR=your_boost_library_directory```
-4. Open the solution and build it
+3. Run ```cmake .. -G "Visual Studio 14 2015 Win64"```. You may have to set boost directories: ```set BOOST_ROOT=your_boost_root_directory``` and ```set BOOST_LIBRARYDIR=your_boost_library_directory``` first
+4. Open the solution and build the release version of it
 
 ##### Examples #####
 
@@ -108,13 +108,13 @@ pip install websocket-client
     chrome --remote-debugging-port=9222
     ```
 3. Go to [2048 game site](http://gabrielecirulli.github.io/2048/)
-4. Run python script
+4. Run python script (see examples)
 
 ##### Firefox #####
 
 1. First you need to install [Remote Control](https://addons.mozilla.org/pl/firefox/addon/remote-control/) plugin
 2. Go to [2048 game site](http://gabrielecirulli.github.io/2048/)
-3. Run python script
+3. Run python script (see examples)
 
 Note that web api is strongly based on https://github.com/nneonneo/2048-ai.
 
@@ -132,5 +132,5 @@ python 2048.py -b chrome --depth 4 --threads true --time 100
 
 On Windows you will need to specify WebApi library file:
 ```
-python 2048.py -b chrome --lib path_to_lib
+python 2048.py -b chrome --lib _build/lib/Release/WebApi.dll
 ```
