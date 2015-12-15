@@ -1,5 +1,5 @@
 # 2048 #
-==================
+-----------------------
 
 AI for 2048 game. We created 2 apps - console application used for running multiple games and web application for observing how the AI works.
 
