@@ -1,20 +1,18 @@
 # 2048 #
+==================
 
 AI for 2048 game. We created 2 apps - console application used for running multiple games and web application for observing how the AI works.
-
-### What is this repository for? ###
-
-* Console application
-* Web API
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
 
 In order to use the AI you will need to build main application. The requirements are listed below:
 
 * C++11 compiler
-* Cmake min 3.0
-* Boost min 1.49.0 (program_options, accumulators)
+* CMake 3.0+
+* Boost 1.49.0+ (program_options, accumulators)
+
+If you want to use the web application you will need:
+
+* Python 2
+* Chrome or Firefox
 
 Tested on:
 
@@ -23,6 +21,8 @@ Tested on:
 * Windows 7 64-bit, Visual Studio 14 2015
 
 #### Program parameters ####
+
+TODO: unzip
 
 ##### Console application #####
 
@@ -44,7 +44,7 @@ Tested on:
 + **--depth arg** - maximum depth for expectimax (by default 1)
 + **--threads arg** - enable multithreading (true/false, by default true)
 
-#### Building ####
+## Building ##
 
 ##### Linux/OS X #####
 
@@ -87,20 +87,21 @@ pip install websocket-client
 
 ##### Chrome #####
 
-1. Run the browser with remote-debugging enabled:
+1. Close all instances of Chrome (including hangouts, etc...)
+2. Run the browser with remote-debugging enabled:
 ```
 chrome --remote-debugging-port=9222
 ```
-2. Go to [2048 game site](http://gabrielecirulli.github.io/2048/)
-3. Run python script
-
-TODO: examples
+3. Go to [2048 game site](http://gabrielecirulli.github.io/2048/)
+4. Run python script
 
 ##### Firefox #####
 
 1. First you need to install remote-debugging plugin (i.e. ...TODO)
 2. Go to [2048 game site](http://gabrielecirulli.github.io/2048/)
 3. Run python script
+
+Note that web api is strongly based on https://github.com/nneonneo/2048-ai.
 
 ##### Running python script examples #####
 
@@ -120,14 +121,3 @@ On Windows you will need to specify WebApi library file:
 ```
 python 2048.py -b chrome --lib path_to_lib
 ```
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
