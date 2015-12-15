@@ -35,11 +35,10 @@ You can specify the strategy file and unzip option using command line arguments 
 
 ## Program parameters ##
 
-TODO: unzip
-
 #### Console application ####
 
 + **--strategy arg** - strategy input file (by default data/2048_strategies/2048_a_weak_player.bin.txt)
++ **--unzip** - unzip compressed strategy file
 + **--seed arg** - random seed (by default based on time elapsed since epoch)
 + **--games arg** - number of games (by default 1)
 + **--time arg** - maximum time for one round [ms], 0 means no time limit (by default 0)
@@ -53,6 +52,7 @@ TODO: unzip
 + **-b [ --browser ]** - choose browser (Chrome or Firefox, by default Firefox)
 + **-p [ --port PORT ]** - port number to control on (default: 32000 for Firefox, 9222 for Chrome)
 + **--strategy arg** - strategy input file (by default data/2048_strategies/2048_a_weak_player.bin.txt)
++ **--unzip arg** - unzip strategy input file (true/false, by default false)
 + **--time arg** - maximum time for one round [ms], 0 means no time limit (by default 0)
 + **--depth arg** - maximum depth for expectimax (by default 1)
 + **--threads arg** - enable multithreading (true/false, by default true)
