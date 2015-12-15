@@ -3,7 +3,7 @@
 
 AI for 2048 game. We created 2 apps - console application used for running multiple games and web application for observing how the AI works.
 
-##### Requirements #####
+## Requirements ##
 
 In order to use the AI you will need to build main application. The requirements are listed below:
 
@@ -21,6 +21,10 @@ Tested on:
 * Max OS X 10.11.1, Apple LLVM version 7.0.2
 * Ubuntu 15.04 64-bit, g++ 4.9.2
 * Windows 7 64-bit, Visual Studio 14 2015
+
+## Strategy files ##
+
+TODO
 
 ## Program parameters ##
 
