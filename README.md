@@ -24,7 +24,11 @@ Tested on:
 
 ## Strategy files ##
 
-TODO
+In order to run the application you need to have a strategy file. Some basic (small, but no very good) strategies are already in ```data/2048_strategies/``` directory. We highly encourage you to download an [advanced strategy](http://www.cs.put.poznan.pl/wjaskowski/tmp/tiles-test2-v1.bin.special).
+
+Some strategy files are compressed - that's our way to save some memory. You can either use compressed version or decompress them and speed up calculations.
+
+You can specify the strategy file and unzip option using command line arguments (see Program parameters section).
 
 ## Program parameters ##
 
@@ -50,7 +54,7 @@ TODO: unzip
 + **--depth arg** - maximum depth for expectimax (by default 1)
 + **--threads arg** - enable multithreading (true/false, by default true)
 
-## Building ##
+## Building and running ##
 
 #### Running console application ####
 
@@ -67,7 +71,7 @@ TODO: unzip
 3. Run ```cmake .. -G "Visual Studio 14 2015 Win64"```
 4. Open the solution and build it
 
-##### Running console application examples #####
+##### Examples #####
 
 * 1 game, max depth 1, single thread, no time limit:
 ```bash
@@ -88,7 +92,7 @@ TODO: unzip
 
 #### Running web application ####
 
-You may need to install websocket-client first:
+You may need to install the *websocket-client* first:
 ```
 pip install websocket-client
 ```
@@ -111,7 +115,7 @@ pip install websocket-client
 
 Note that web api is strongly based on https://github.com/nneonneo/2048-ai.
 
-##### Running python script examples #####
+##### Examples #####
 
 * chrome, max depth 1, single thread, no time limit
 ```
