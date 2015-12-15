@@ -28,7 +28,9 @@ def initialize_ailib(args):
 	ailib.setMaxDepth(args.depth)
 	ailib.setThreads(args.threads)
 
-	ailib.loadTuplesDescriptor()
+	ailib.loadTuplesDescriptor.restype = ctypes.c_bool
+	if not ailib.loadTuplesDescriptor():
+		exit()
 	ailib.initializeTables()
 	ailib.initializeEvaluator();
 

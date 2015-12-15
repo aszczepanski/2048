@@ -59,18 +59,19 @@ void setThreads(bool threads) {
 	programOptions->threads = threads;
 }
 
-void loadTuplesDescriptor() {
+bool loadTuplesDescriptor() {
 	shared_ptr<IInputFileReader> inputFileReader;
 	string fn = programOptions->strategy;
-	cout << "loading tuples from file " << fn << endl;
-  if (fn.substr(fn.find_last_of(".") + 1) == "txt") {
-    inputFileReader = make_shared<TextInputFileReader>();
-  } else {
+	if (fn.substr(fn.find_last_of(".") + 1) == "txt") {
+		inputFileReader = make_shared<TextInputFileReader>();
+	} else {
 		inputFileReader = make_shared<BinaryInputFileReader>();
-  }
+	}
 
 	tuplesDescriptor = inputFileReader->read(
 		programOptions->strategy, programOptions->unzip);
+
+	return tuplesDescriptor != nullptr;
 }
 
 void initializeTables() {

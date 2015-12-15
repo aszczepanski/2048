@@ -38,7 +38,7 @@ DLL_PUBLIC void setMaxDepth(int depth);
 DLL_PUBLIC void setMaxTime(int time);
 DLL_PUBLIC void setStrategy(const char* strategy);
 DLL_PUBLIC void setUnzip(bool unzip);
-DLL_PUBLIC void loadTuplesDescriptor();
+DLL_PUBLIC bool loadTuplesDescriptor();
 DLL_PUBLIC void initializeTables();
 DLL_PUBLIC void initializeEvaluator();
 DLL_PUBLIC int bestAction(GameState gameState);
