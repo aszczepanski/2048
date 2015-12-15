@@ -89,15 +89,15 @@ pip install websocket-client
 
 1. Close all instances of Chrome (including hangouts, etc...)
 2. Run the browser with remote-debugging enabled:
-```
-chrome --remote-debugging-port=9222
-```
+    ```
+    chrome --remote-debugging-port=9222
+    ```
 3. Go to [2048 game site](http://gabrielecirulli.github.io/2048/)
 4. Run python script
 
 ##### Firefox #####
 
-1. First you need to install remote-debugging plugin (i.e. ...TODO)
+1. First you need to install [Remote Control](https://addons.mozilla.org/pl/firefox/addon/remote-control/) plugin
 2. Go to [2048 game site](http://gabrielecirulli.github.io/2048/)
 3. Run python script
 
