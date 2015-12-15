@@ -1,7 +1,10 @@
-# 2048 #
+# 2048 AI #
 -----------------------
 
-AI for 2048 game. We created 2 apps - console application used for running multiple games and web application for observing how the AI works.
+Artificial Intelligence for 2048 game. There are 2 applications:
+
+* **console application** - for running multiple games
+* **web application** - for observing how the AI works on the [2048 game site](http://gabrielecirulli.github.io/2048/)
 
 ## Requirements ##
 
@@ -24,7 +27,7 @@ Tested on:
 
 ## Strategy files ##
 
-In order to run the application you need to have a strategy file. Some basic (small, but no very good) strategies are already in ```data/2048_strategies/``` directory. We highly encourage you to download an [advanced strategy](http://www.cs.put.poznan.pl/wjaskowski/tmp/tiles-test2-v1.bin.special).
+In order to run the application you need to have a strategy file. Some basic (not very good, but small) strategies are already in ```data/2048_strategies/``` directory. We highly encourage you to download an [advanced strategy](http://www.cs.put.poznan.pl/wjaskowski/tmp/tiles-test2-v1.bin.special).
 
 Some strategy files are compressed - that's our way to save some memory. You can either use compressed version or decompress them and speed up calculations.
 
@@ -126,8 +129,6 @@ python 2048.py -b chrome
 ```
 python 2048.py -b chrome --depth 4 --threads true --time 100
 ```
-
-* chrome, max depth 4, multiple threads, 100
 
 On Windows you will need to specify WebApi library file:
 ```
