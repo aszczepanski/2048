@@ -70,8 +70,8 @@ You can specify the strategy file and unzip option using command line arguments 
 ##### Windows #####
 
 1. Go to the project root directory
-2. Create and go to ```_build``` directory
-3. Run ```cmake .. -G "Visual Studio 14 2015 Win64"```
+2. Create and go to ```_build/``` directory
+3. Run ```cmake .. -G "Visual Studio 14 2015 Win64"```. You may have to set boost directories: ```set BOOST_ROOT=your_boost_root_directory``` and ```set BOOST_LIBRARYDIR=your_boost_library_directory```
 4. Open the solution and build it
 
 ##### Examples #####
