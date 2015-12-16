@@ -86,11 +86,11 @@ You can specify the strategy file and unzip option using command line arguments 
 ```
 * 100 games, max depth 3, multiple threads, no time limit:
 ```bash
-./bin/main --strategy data/2048_strategies/tiles-test2-v1.bin.special --games 100 --depth 3 --threads
+./bin/main --strategy data/2048_strategies/tiles-test2-v1.bin.special --games 100 --depth 3 --threads --unzip
 ```
 * 10 games, min depth 1, max depth 8, multiple threads, max time 10 ms per round:
 ```bash
-./bin/main --strategy data/2048_strategies/tiles-test2-v1.bin.special --games 8 --depth 8 --time 10 --threads
+./bin/main --strategy data/2048_strategies/tiles-test2-v1.bin.special --games 8 --depth 8 --time 10 --threads --unzip
 ```
 
 #### Running web application ####
@@ -112,7 +112,7 @@ pip install websocket-client
 
 ##### Firefox #####
 
-1. First you need to install [Remote Control](https://addons.mozilla.org/pl/firefox/addon/remote-control/) plugin
+1. First you need to install [Remote Control](https://addons.mozilla.org/pl/firefox/addon/remote-control/) plugin and start remote debugging (click on plugin's icon)
 2. Go to [2048 game site](http://gabrielecirulli.github.io/2048/)
 3. Run python script (see examples)
 
@@ -127,7 +127,7 @@ python 2048.py -b chrome
 
 * chrome, max depth 4, multiple threads, max time 100 ms per move
 ```
-python 2048.py -b chrome --depth 4 --threads true --time 100
+python 2048.py -b chrome --depth 4 --threads true --time 100 --unzip true
 ```
 
 On Windows you will need to specify WebApi library file:
