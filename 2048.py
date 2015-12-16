@@ -22,7 +22,7 @@ def initialize_ailib(args):
 	else:
 		ailib = ctypes.CDLL(args.lib)
 
-	ailib.setStrategy(args.strategy)
+	ailib.setStrategy(args.strategy.encode('UTF-8'))
 	ailib.setUnzip(args.unzip)
 	ailib.setMaxTime(args.time)
 	ailib.setMaxDepth(args.depth)
