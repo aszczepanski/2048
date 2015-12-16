@@ -1,10 +1,11 @@
 # 2048 AI #
------------------------
 
 Artificial Intelligence for 2048 game. There are 2 applications:
 
 * **console application** - for running multiple games
 * **web application** - for observing how the AI works on the [2048 game site](http://gabrielecirulli.github.io/2048/)
+
+-----------------------
 
 ## Requirements ##
 
