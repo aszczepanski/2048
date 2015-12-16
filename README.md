@@ -28,7 +28,7 @@ Tested on:
 
 ## Strategy files ##
 
-In order to run the application you need to have a strategy file. Some basic (not very good, but small) strategies are already in ```data/2048_strategies/``` directory. We highly encourage you to download an [advanced strategy](http://www.cs.put.poznan.pl/wjaskowski/tmp/tiles-test2-v1.bin.special).
+In order to run the application you need to have a strategy file. Some basic (not very good, but small) strategies are already in ```data/2048_strategies/``` directory. We highly encourage you to download and unzip an [advanced strategy](http://www.cs.put.poznan.pl/wjaskowski/pub/2048/eval-function.bin.special.zip).
 
 Some strategy files are compressed - that's our way to save some memory. You can either use compressed version or decompress them and speed up calculations.
 
