@@ -57,6 +57,8 @@ void MainApplication::initializeInputFileReader() {
 }
 
 void MainApplication::playGamesAndPrintStats() {
+	cout << GameStats::header() << endl;
+
 	atomic_int gamesCounter(programOptions->games);
 	vector<thread> gameWorkers(programOptions->gameThreads);
 	for (size_t i=0; i<gameWorkers.size(); i++) {

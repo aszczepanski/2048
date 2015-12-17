@@ -27,6 +27,8 @@ public:
 	GameStats* setDuration(DurationType duration);
 	GameStats* setStage(uint16_t stage);
 
+	static std::string header();
+
 	friend std::ostream& operator<<(std::ostream&, const GameStats&);
 	friend std::ostream& operator<<(std::ostream&, const GameStatsContainer&);
 	friend class GameStatsContainer;

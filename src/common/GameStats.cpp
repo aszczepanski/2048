@@ -78,6 +78,10 @@ GameStats* GameStats::setStage(uint16_t stage) {
 	return this;
 }
 
+string GameStats::header() {
+	return "perf, stage, time[ms], moves/sec";
+}
+
 ostream& operator<<(ostream& out, const GameStats& gameStats) {
 	return out
 		<< gameStats.score
@@ -152,7 +156,7 @@ ostream& operator<<(ostream& out, const GameStatsContainer& gameStatsContainer) 
 		out << ", " << GameStats::stageToString(GameStats::gameStages[i]);
 	}
 
-	out << ", " << "time";
+	out << ", " << "time[ms]";
 	out << ", " << "moves/sec";
 	out << endl;
 
