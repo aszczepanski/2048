@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+# Script based on: https://github.com/nneonneo/2048-ai
+
 import math
 import re
 import time

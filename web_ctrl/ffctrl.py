@@ -1,3 +1,5 @@
+# Script based on: https://github.com/nneonneo/2048-ai
+
 import json
 import socket
 

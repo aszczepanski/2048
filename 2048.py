@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# Script based on: https://github.com/nneonneo/2048-ai
+
 ''' Help the user achieve a high score in a real game of 2048 by using a move searcher. '''
 
 from __future__ import print_function
