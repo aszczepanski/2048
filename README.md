@@ -2,10 +2,8 @@
 
 Artificial Intelligence for 2048 game. There are 2 applications:
 
-* **console application** - for running multiple games
+* **console application** - for running multiple games and testing the AI's capabilities
 * **web application** - for observing how the AI works on the [2048 game site](http://gabrielecirulli.github.io/2048/)
-
------------------------
 
 ## Requirements ##
 
@@ -82,17 +80,17 @@ You can specify the strategy file and unzip option using command line arguments 
 ```bash
 ./bin/main
 ```
-* 1000 games, max depth 1, 1 game thread, no time limit:
+* 1000 games, max depth 1, 1 game thread, no time limit, compressed model:
 ```bash
-./bin/main --strategy data/2048_strategies/tiles-test2-v1.bin.special --games 1000 --depth 1
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 1000 --depth 1
 ```
-* 100 games, max depth 3, 4 game threads, no time limit:
+* 100 games, max depth 3, 4 game threads, no time limit, decompressed model:
 ```bash
-./bin/main --strategy data/2048_strategies/tiles-test2-v1.bin.special --games 100 --depth 3 --unzip --threads 4
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 100 --depth 3 --unzip --threads 4
 ```
-* 10 games, min depth 1, max depth 8, multithreading in expectimax evaluation, max time 10 ms per round:
+* 10 games, min depth 1, max depth 8, 1 game thread, multithreading in expectimax evaluation, max time 50 ms per round, decompressed model:
 ```bash
-./bin/main --strategy data/2048_strategies/tiles-test2-v1.bin.special --games 8 --depth 8 --time 10 --eval_multithreading --unzip
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 8 --depth 8 --time 50 --eval_multithreading --unzip
 ```
 
 #### Running web application ####
@@ -122,14 +120,14 @@ Note that web api is strongly based on https://github.com/nneonneo/2048-ai.
 
 ##### Examples #####
 
-* chrome, max depth 1, single thread, no time limit
+* chrome, max depth 1, single threading, no time limit, compressed model:
 ```
 python 2048.py -b chrome
 ```
 
-* chrome, max depth 4, multiple threads, max time 100 ms per move
+* chrome, max depth 4, multithreading, no time limit, decompressed model:
 ```
-python 2048.py -b chrome --depth 4 --multithreading true --time 100 --unzip true
+python 2048.py -b chrome --strategy data/2048_strategies/eval-function.bin.special --unzip true --depth 4 --multithreading true
 ```
 
 On Windows you will need to specify WebApi library file:
