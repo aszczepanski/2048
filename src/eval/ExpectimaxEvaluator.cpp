@@ -1,7 +1,6 @@
 #include "eval/ExpectimaxEvaluator.h"
 
 #include <algorithm>
-#include <cassert>
 #include <cstdint>
 #include <iostream>
 #include <memory>
@@ -93,8 +92,6 @@ GameAction ExpectimaxEvaluator::visitTopLevelActionNodeSingleThreading(GameState
 		}
 	}
 
-	assert(maxAction != NO_ACTION);
-
 	return maxAction;
 }
 
@@ -129,8 +126,6 @@ GameAction ExpectimaxEvaluator::visitTopLevelActionNodeMultiThreading(GameState 
 			maxAction = allowedActions[i];
 		}
 	}
-
-	assert(maxAction != NO_ACTION);
 
 	return maxAction;
 }

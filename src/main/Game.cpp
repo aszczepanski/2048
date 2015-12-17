@@ -1,5 +1,6 @@
 #include "main/Game.h"
 
+#include <cassert>
 #include <chrono>
 #include <cstdio>
 #include <memory>
@@ -77,6 +78,8 @@ bool Game::isTerminalState() {
 
 GameAction Game::bestAction() {
 	GameAction action = evaluator->bestAction(gameState);
+
+	assert(action != NO_ACTION);
 	return action;
 }
 
