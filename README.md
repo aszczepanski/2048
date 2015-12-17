@@ -88,9 +88,9 @@ You can specify the strategy file and unzip option using command line arguments 
 ```bash
 ./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 100 --depth 3 --unzip --threads 4
 ```
-* 10 games, min depth 1, max depth 8, 1 game thread, multithreading in expectimax evaluation, max time 50 ms per round, decompressed model:
+* 10 games, min depth 1, max depth 8, 1 game thread, multithreading in expectimax evaluation, max time 50 ms per round, decompressed model, prints boards' states to the console:
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 8 --depth 8 --time 50 --eval_multithreading --unzip
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 8 --depth 8 --time 50 --eval_multithreading --unzip -v
 ```
 
 #### Running web application ####
@@ -125,9 +125,9 @@ Note that web api is strongly based on https://github.com/nneonneo/2048-ai.
 python 2048.py -b chrome
 ```
 
-* chrome, max depth 4, multithreading, no time limit, decompressed model, prints boards' states to the console:
+* chrome, max depth 4, multithreading, no time limit, decompressed model:
 ```
-python 2048.py -b chrome --strategy data/2048_strategies/eval-function.bin.special --unzip true --depth 4 --multithreading true -v
+python 2048.py -b chrome --strategy data/2048_strategies/eval-function.bin.special --unzip true --depth 4 --multithreading true
 ```
 
 On Windows you will need to specify WebApi library file:
