@@ -28,7 +28,7 @@ Tested on:
 
 In order to run the application you need to have a strategy file. Some basic (not very good, but small) strategies are already in ```data/2048_strategies/``` directory. We highly encourage you to download and unzip an [advanced strategy](http://www.cs.put.poznan.pl/wjaskowski/pub/2048/eval-function.bin.special.zip).
 
-Some strategy files are compressed - that's our way to save some memory. You can either use compressed version or decompress them and speed up calculations.
+Some strategy files are compressed - that's our way to save some memory. You can either use compressed version or decompress them and speed up calculations. Note that the decompressed version (of the above strategy) requires about 5GB of RAM whereas the compressed version requires about 4GB of RAM.
 
 You can specify the strategy file and unzip option using command line arguments (see Program parameters section).
 
