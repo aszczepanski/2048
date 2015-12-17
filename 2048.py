@@ -123,24 +123,24 @@ def main(argv):
     ailib = initialize_ailib(args)
 
     if args.browser == 'firefox':
-        from ffctrl import FirefoxRemoteControl
+        from web_ctrl.ffctrl import FirefoxRemoteControl
         if args.port is None:
             args.port = 32000
         ctrl = FirefoxRemoteControl(args.port)
     elif args.browser == 'chrome':
-        from chromectrl import ChromeDebuggerControl
+        from web_ctrl.chromectrl import ChromeDebuggerControl
         if args.port is None:
             args.port = 9222
         ctrl = ChromeDebuggerControl(args.port)
 
     if args.ctrlmode == 'keyboard':
-        from gamectrl import Keyboard2048Control
+        from web_ctrl.gamectrl import Keyboard2048Control
         gamectrl = Keyboard2048Control(ctrl)
     elif args.ctrlmode == 'fast':
-        from gamectrl import Fast2048Control
+        from web_ctrl.gamectrl import Fast2048Control
         gamectrl = Fast2048Control(ctrl)
     elif args.ctrlmode == 'hybrid':
-        from gamectrl import Hybrid2048Control
+        from web_ctrl.gamectrl import Hybrid2048Control
         gamectrl = Hybrid2048Control(ctrl)
 
     if gamectrl.get_status() == 'ended':
