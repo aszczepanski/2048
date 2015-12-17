@@ -125,9 +125,9 @@ Note that web api is strongly based on https://github.com/nneonneo/2048-ai.
 python 2048.py -b chrome
 ```
 
-* chrome, max depth 4, multithreading, no time limit, decompressed model:
+* chrome, max depth 4, multithreading, no time limit, decompressed model, prints boards' states to the console:
 ```
-python 2048.py -b chrome --strategy data/2048_strategies/eval-function.bin.special --unzip true --depth 4 --multithreading true
+python 2048.py -b chrome --strategy data/2048_strategies/eval-function.bin.special --unzip true --depth 4 --multithreading true -v
 ```
 
 On Windows you will need to specify WebApi library file:
