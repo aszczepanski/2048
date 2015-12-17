@@ -17,7 +17,7 @@ private:
 	static const unsigned DEFAULT_GAMES_VALUE;
 	static const unsigned DEFAULT_TIME_VALUE;
 	static const unsigned DEFAULT_DEPTH_VALUE;
-	static const unsigned DEFAULT_THREADS_VALUE;
+	static const unsigned DEFAULT_GAME_THREADS_VALUE;
 };
 
 #endif  // SRC_IO_CPROGRAM_OPTIONS_READER_H_

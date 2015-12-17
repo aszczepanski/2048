@@ -20,11 +20,11 @@
 using namespace std;
 
 Game::Game(shared_ptr<ProgramOptions> programOptions,
-		shared_ptr<TuplesDescriptor> tuplesDescriptor)
+		shared_ptr<TuplesDescriptor> tuplesDescriptor, unsigned seed1, unsigned seed2)
 	: programOptions(programOptions),
 		tuplesDescriptor(tuplesDescriptor),
-		positionRandomEngine(programOptions->randomSeed),
-		valueRandomEngine(programOptions->randomSeed)
+		positionRandomEngine(seed1),
+		valueRandomEngine(seed2)
 {
 	// evaluator = make_shared<RandomEvaluator>(programOptions);
 	if (programOptions->maxRoundTime > 0) {

@@ -64,7 +64,7 @@ GameAction ExpectimaxEvaluator::bestActionInternal(GameState gameState) {
 	depths[maxDepth]++;
 #endif
 
-	if (programOptions->threads) {
+	if (programOptions->evalMultithreading) {
 		action = visitTopLevelActionNodeMultiThreading(gameState);
 	} else {
 		action = visitTopLevelActionNodeSingleThreading(gameState);
@@ -102,9 +102,9 @@ GameAction ExpectimaxEvaluator::visitTopLevelActionNodeMultiThreading(GameState 
 	TupleValueType maxValue = MIN_TUPLE_VALUE;
 	GameAction maxAction = NO_ACTION;
 
-	static array<thread, 4> threads;
-	static array<TupleValueType, 4> stateValues;
-	static array<GameAction, 4> allowedActions;
+	array<thread, 4> threads;
+	array<TupleValueType, 4> stateValues;
+	array<GameAction, 4> allowedActions;
 
 	size_t pos = 0;
 

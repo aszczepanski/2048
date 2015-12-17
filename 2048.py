@@ -26,7 +26,7 @@ def initialize_ailib(args):
 	ailib.setUnzip(args.unzip)
 	ailib.setMaxTime(args.time)
 	ailib.setMaxDepth(args.depth)
-	ailib.setThreads(args.threads)
+	ailib.setEvalMultithreading(args.multithreading)
 
 	ailib.loadTuplesDescriptor.restype = ctypes.c_bool
 	if not ailib.loadTuplesDescriptor():
@@ -107,7 +107,7 @@ def parse_args(argv):
     parser.add_argument('-b', '--browser', help="Browser you're using. Only Firefox with the Remote Control extension, and Chrome with remote debugging, are supported right now.", default='firefox', choices=('firefox', 'chrome'))
     parser.add_argument('-k', '--ctrlmode', help="Control mode to use. If the browser control doesn't seem to work, try changing this.", default='hybrid', choices=('keyboard', 'fast', 'hybrid'))
 
-    parser.add_argument('--threads', help="Enable multithreading.", default=True, type=bool)
+    parser.add_argument('--multithreading', help="Enable multithreading.", default=True, type=bool)
     parser.add_argument('--depth', help="Maximum depth.", default=1, type=int)
     parser.add_argument('--time', help="Time limit [ms].", default=0, type=int)
     parser.add_argument('--strategy', help="Strategy input file.", default="data/2048_strategies/tiles-test-v1.bin.special", type=str)

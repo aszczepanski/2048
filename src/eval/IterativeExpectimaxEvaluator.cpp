@@ -34,7 +34,7 @@ GameAction IterativeExpectimaxEvaluator::bestActionInternal(GameState gameState)
 	for (depth=1; depth<=programOptions->maxDepth; depth++) {
 		maxDepth = depth;
 
-		if (depth >= 3 && programOptions->threads) {
+		if (depth >= 3 && programOptions->evalMultithreading) {
 			tmpAction = visitTopLevelActionNodeMultiThreading(gameState);
 		} else {
 			tmpAction = visitTopLevelActionNodeSingleThreading(gameState);

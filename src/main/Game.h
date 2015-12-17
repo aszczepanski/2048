@@ -14,7 +14,9 @@
 
 class Game {
 public:
-	explicit Game(std::shared_ptr<ProgramOptions>, std::shared_ptr<TuplesDescriptor>);
+	explicit Game(std::shared_ptr<ProgramOptions>,
+		std::shared_ptr<TuplesDescriptor>,
+		unsigned seed1, unsigned seed2);
 	std::unique_ptr<GameStats> play();
 
 private:

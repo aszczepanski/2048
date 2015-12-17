@@ -9,6 +9,8 @@ set(SRCS_MAIN
 	Game.cpp
 	Game.h
 	main.cpp
+	MainApplication.cpp
+	MainApplication.h
 )
 
 set(LIBS_MAIN

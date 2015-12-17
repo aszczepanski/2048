@@ -16,6 +16,7 @@ const string CProgramOptionsReader::DEFAULT_STRATEGY_VALUE = "data/2048_strategi
 const unsigned CProgramOptionsReader::DEFAULT_GAMES_VALUE = 1;
 const unsigned CProgramOptionsReader::DEFAULT_TIME_VALUE = 0;
 const unsigned CProgramOptionsReader::DEFAULT_DEPTH_VALUE = 1;
+const unsigned CProgramOptionsReader::DEFAULT_GAME_THREADS_VALUE = 1;
 
 shared_ptr<ProgramOptions> CProgramOptionsReader::read(int argc, char* argv[]) {
 	shared_ptr<ProgramOptions> programOptions = make_shared<ProgramOptions>();
@@ -44,7 +45,10 @@ shared_ptr<ProgramOptions> CProgramOptionsReader::read(int argc, char* argv[]) {
 				po::value<unsigned>(&programOptions->maxDepth)->default_value(DEFAULT_DEPTH_VALUE),
 				"maximum depth for expectimax")
 			("threads",
-				"enable multithreading")
+				po::value<unsigned>(&programOptions->gameThreads)->default_value(DEFAULT_GAME_THREADS_VALUE),
+				"number of threads (each thread plays different game)")
+			("eval_multithreading",
+				"enable multithreading in expectimax algorithm")
 			("verbose,v",
 				"show board and score after each round");
 
@@ -57,7 +61,7 @@ shared_ptr<ProgramOptions> CProgramOptionsReader::read(int argc, char* argv[]) {
 			return nullptr;
 		}
 
-		programOptions->threads = variablesMap.count("threads");
+		programOptions->evalMultithreading = variablesMap.count("eval_multithreading");
 		programOptions->verbose = variablesMap.count("verbose");
 		programOptions->unzip = variablesMap.count("unzip");
 

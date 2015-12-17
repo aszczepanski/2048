@@ -52,11 +52,11 @@ void setMaxDepth(int depth) {
 	programOptions->maxDepth = depth;
 }
 
-void setThreads(bool threads) {
+void setEvalMultithreading(bool multithreading) {
 	if (!programOptions) {
 		programOptions = make_shared<ProgramOptions>();
 	}
-	programOptions->threads = threads;
+	programOptions->evalMultithreading = multithreading;
 }
 
 bool loadTuplesDescriptor() {

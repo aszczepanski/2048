@@ -10,7 +10,8 @@ struct ProgramOptions {
 	unsigned games;
 	unsigned maxRoundTime;
 	unsigned maxDepth;
-	bool threads;
+	bool evalMultithreading;
+	unsigned gameThreads;
 	bool verbose;
 };
 
