@@ -29,8 +29,9 @@ shared_ptr<ProgramOptions> CProgramOptionsReader::read(int argc, char* argv[]) {
 			("strategy",
 				po::value<string>(&programOptions->strategy)->default_value(DEFAULT_STRATEGY_VALUE),
 				"strategy input file")
-			("unzip",
-				"unzip compressed strategy file")
+			("uncompress",
+				po::value<bool>(&programOptions->unzip)->default_value(true),
+				"uncompress compressed strategy file")
 			("seed",
 				po::value<unsigned>(&programOptions->randomSeed)
 					->default_value(chrono::system_clock::now().time_since_epoch().count()),
@@ -63,7 +64,6 @@ shared_ptr<ProgramOptions> CProgramOptionsReader::read(int argc, char* argv[]) {
 
 		programOptions->evalMultithreading = variablesMap.count("eval_multithreading");
 		programOptions->verbose = variablesMap.count("verbose");
-		programOptions->unzip = variablesMap.count("unzip");
 
 	} catch (po::error& e) {
 		cerr << e.what() << endl;

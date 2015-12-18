@@ -25,7 +25,7 @@ def initialize_ailib(args):
 		ailib = ctypes.CDLL(args.lib)
 
 	ailib.setStrategy(args.strategy.encode('UTF-8'))
-	ailib.setUnzip(args.unzip)
+	ailib.setUnzip(args.uncompress)
 	ailib.setMaxTime(args.time)
 	ailib.setMaxDepth(args.depth)
 	ailib.setEvalMultithreading(args.multithreading)
@@ -113,7 +113,7 @@ def parse_args(argv):
     parser.add_argument('--depth', help="Maximum depth.", default=1, type=int)
     parser.add_argument('--time', help="Time limit [ms].", default=0, type=int)
     parser.add_argument('--strategy', help="Strategy input file.", default="data/2048_strategies/tiles-test-v1.bin.special", type=str)
-    parser.add_argument('--unzip', help="Unzip strategy input file.", default=False, type=bool)
+    parser.add_argument('--uncompress', help="Uncompress strategy input file.", default=True, type=bool)
 
     parser.add_argument('--lib', help="WebApi library.", default="", type=str)
 
