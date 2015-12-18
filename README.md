@@ -143,5 +143,5 @@ python 2048.py -b chrome --lib _build/lib/Release/WebApi.dll
 ```
 
 # Authors #
-* [Wojciech Jaśkowski](www.cs.put.poznan.pl/wjaskowski) (learning the evaluation function)
+* [Wojciech Jaśkowski](http://www.cs.put.poznan.pl/wjaskowski) (learning the evaluation function)
 * Adam Szczepański (this code)
