@@ -38,7 +38,7 @@ You can specify the strategy file and unzip option using command line arguments 
 For running multiple games and testing the AI's capabilities
 
 + **--strategy arg** - strategy input file (by default data/2048_strategies/2048_a_weak_player.bin.txt)
-+ **--unzip** - unzip compressed strategy file
++ **--unzip** - uncompress strategy (true/false, by default false). Faster but requires more RAM.
 + **--seed arg** - random seed (by default based on time elapsed since epoch)
 + **--games arg** - number of games (by default 1)
 + **--time arg** - maximum time for one round [ms], 0 means no time limit (by default 0)
@@ -55,7 +55,7 @@ For observing how the AI works on the [2048 game site](http://gabrielecirulli.gi
 + **-b [ --browser ]** - choose browser (Chrome or Firefox, by default Firefox)
 + **-p [ --port PORT ]** - port number to control on (default: 32000 for Firefox, 9222 for Chrome)
 + **--strategy arg** - strategy input file (by default data/2048_strategies/2048_a_weak_player.bin.txt)
-+ **--unzip arg** - unzip strategy input file (true/false, by default false)
++ **--unzip arg** - uncompress strategy (true/false, by default false). Faster but requires more RAM.
 + **--time arg** - maximum time for one round [ms], 0 means no time limit (by default 0)
 + **--depth arg** - maximum depth for expectimax (by default 1)
 + **--multithreading arg** - enable multithreading (true/false, by default true)
@@ -83,9 +83,9 @@ For observing how the AI works on the [2048 game site](http://gabrielecirulli.gi
 ```bash
 ./bin/main --strategy data/2048_strategies/eval-function.bin.special
 ```
-* 10 games, max depth 5, decompressed model (requires more RAM):
+* 10 games, max depth 3, decompressed model (faster, but requires more RAM):
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 5 --unzip
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 3 --unzip
 ```
 * 10 games, max depth 5, decompressed model, multithreating in expectimax (*best reasonable settings*):
 ```bash
