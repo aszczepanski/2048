@@ -1,6 +1,6 @@
 # 2048 AI #
 
-AI Controller for the game 2048. As far as we are aware, it is the best 2048 strategy known do date (December 2015). It scores on average 530000 at depth 3, and ca. 560000 at depth 5. At depth 5 it achieves the tile 32k in 60% of games. 
+AI Controller for the game 2048. As far as we are aware, it is the best 2048 strategy known do date (December 2015). It scores on average 532636±11444 at depth 3 (1000 games), and ca. 566561±27164 at depth 5 (300 games). At depth 5 it achieves the tile 8k in 100%, 16k in 97%, and 32k in 60% of games. 
 
 The program uses classical expectimax with an evaluation function, which has been learned using a variant of temporal difference learning. This work extends our earlier one published as:
 
