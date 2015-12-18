@@ -25,7 +25,7 @@ Tested on:
 
 ## Strategy files ##
 
-In order to run the application you need to have a file with an evaluation function. Some basic (not very good, but small) evaluation functions are already in ```data/2048_strategies/``` directory. For best results download and unzip our [best evaluation function](http://www.cs.put.poznan.pl/wjaskowski/pub/2048/eval-function.bin.special.zip).
+In order to run the application you need to have a file with an evaluation function. Some basic (not very good, but small) evaluation functions are already in ```data/2048_strategies/``` directory. For best results download and unzip our [best evaluation function](https://dl.dropboxusercontent.com/u/66539680/eval-function2.bin.special.zip).
 
 Some strategy files are compressed - that's our way to save some memory. You can either use compressed version or decompress them and speed up calculations. Note that the decompressed version (of the above strategy) requires about 5GB of RAM whereas the compressed version requires about 4GB of RAM.
 
@@ -81,23 +81,23 @@ For observing how the AI works on the [2048 game site](http://gabrielecirulli.gi
 
 * 1 game, max depth 1, single thread:
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --uncompress false
+./bin/main --strategy data/2048_strategies/eval-function2.bin.special --uncompress false
 ```
 * 10 games, max depth 3, uncompressed model (faster, but requires more RAM):
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 3
+./bin/main --strategy data/2048_strategies/eval-function2.bin.special --games 10 --depth 3
 ```
 * 10 games, max depth 5, uncompressed model, multithreating in expectimax (*best reasonable settings*):
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 5 --eval_multithreading
+./bin/main --strategy data/2048_strategies/eval-function2.bin.special --games 10 --depth 5 --eval_multithreading
 ```
 * 100 games, max depth 5, uncompressed model, playing 4 games in pararell:
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 100 --depth 5 --threads 4
+./bin/main --strategy data/2048_strategies/eval-function2.bin.special --games 100 --depth 5 --threads 4
 ```
 * 10 games, min depth 1, max depth 8, 1 game thread, multithreading in expectimax evaluation, max time 50 ms per round, uncompressed model, prints boards' states to the console:
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 8 --time 50 --eval_multithreading  -v
+./bin/main --strategy data/2048_strategies/eval-function2.bin.special --games 10 --depth 8 --time 50 --eval_multithreading  -v
 ```
 
 #### Running web application ####
@@ -129,12 +129,12 @@ Web api is strongly based on the code from https://github.com/nneonneo/2048-ai.
 
 * chrome, max depth 1, single threading, no time limit, uncompressed model:
 ```
-python 2048.py -b chrome
+python 2048.py -b chrome --multithreading false
 ```
 
 * chrome, max depth 4, multithreading, no time limit, uncompressed model:
 ```
-python 2048.py -b chrome --strategy data/2048_strategies/eval-function.bin.special --depth 4 --multithreading true
+python 2048.py -b chrome --strategy data/2048_strategies/eval-function2.bin.special --depth 4 --multithreading true
 ```
 
 * On Windows you will need to specify WebApi library file:
@@ -143,5 +143,5 @@ python 2048.py -b chrome --lib _build/lib/Release/WebApi.dll
 ```
 
 # Authors #
-* [Wojciech Jaśkowski](www.cs.put.poznan.pl/wjaskowski) (learning the evaluation function)
+* [Wojciech Jaśkowski](http://www.cs.put.poznan.pl/wjaskowski) (learning the evaluation function)
 * Adam Szczepański (this code)
