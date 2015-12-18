@@ -7,7 +7,7 @@ option(USE_STATIC_LIBS "Link with static libraries" OFF)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 #set(CMAKE_POLICY NEW)
-cmake_policy(SET CMP0063 OLD)
+#cmake_policy(SET CMP0063 OLD)
 include(EnableCXX11)
 include(BuildConfig)
 
