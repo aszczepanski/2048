@@ -119,9 +119,10 @@ pip install websocket-client
 
 ##### Firefox #####
 
-1. First you need to install [Remote Control](https://addons.mozilla.org/pl/firefox/addon/remote-control/) plugin and start remote debugging (click on plugin's icon)
+1. First you need to install [Remote Control](https://addons.mozilla.org/pl/firefox/addon/remote-control/) plugin
 2. Go to [2048 game site](http://gabrielecirulli.github.io/2048/)
-3. Run python script (see examples)
+3. Start remote debugging (click on plugin's icon)
+4. Run python script (see examples)
 
 Web api is strongly based on the code from https://github.com/nneonneo/2048-ai.
 
