@@ -81,7 +81,7 @@ For observing how the AI works on the [2048 game site](http://gabrielecirulli.gi
 
 * 1 game, max depth 1, single thread:
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --uncompress false
 ```
 * 10 games, max depth 3, uncompressed model (faster, but requires more RAM):
 ```bash
