@@ -3,6 +3,8 @@ project(2048)
 set(SRCS_IO
 	BinaryInputFileReader.cpp
 	BinaryInputFileReader.h
+	BinaryInputFileWriter.cpp
+	BinaryInputFileWriter.h
 	CProgramOptionsReader.cpp
 	CProgramOptionsReader.h
 	ConsoleBoardDrawer.cpp
