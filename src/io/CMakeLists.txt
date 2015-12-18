@@ -16,4 +16,10 @@ set(SRCS_IO
 	TextInputFileReader.h
 )
 
+set(LIBS_IO
+	common
+	${Boost_PROGRAM_OPTIONS_LIBRARY}
+)
+
 add_library(io ${SRCS_IO})
+target_link_libraries(io ${LIBS_IO})

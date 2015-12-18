@@ -10,4 +10,9 @@ set(SRCS_EVAL
 	RandomEvaluator.h
 )
 
+set(LIBS_EVAL
+	common
+)
+
 add_library(eval ${SRCS_EVAL})
+target_link_libraries(eval ${LIBS_EVAL})
