@@ -38,7 +38,7 @@ You can specify the strategy file and uncompress option using command line argum
 For running multiple games and testing the AI's capabilities
 
 + **--strategy arg** - strategy input file (by default data/2048_strategies/2048_a_weak_player.bin.txt)
-+ **--uncompress** - uncompress strategy (true/false, by default false). Faster but requires more RAM.
++ **--uncompress arg** - uncompress strategy (true/false, by default true). Faster but requires more RAM.
 + **--seed arg** - random seed (by default based on time elapsed since epoch)
 + **--games arg** - number of games (by default 1)
 + **--time arg** - maximum time for one round [ms], 0 means no time limit (by default 0)
@@ -55,10 +55,10 @@ For observing how the AI works on the [2048 game site](http://gabrielecirulli.gi
 + **-b [ --browser ]** - choose browser (Chrome or Firefox, by default Firefox)
 + **-p [ --port PORT ]** - port number to control on (default: 32000 for Firefox, 9222 for Chrome)
 + **--strategy arg** - strategy input file (by default data/2048_strategies/2048_a_weak_player.bin.txt)
-+ **--uncompress arg** - uncompress strategy (true/false, by default false). Faster but requires more RAM.
++ **--uncompress arg** - uncompress strategy (true/false, by default true). Faster but requires more RAM.
 + **--time arg** - maximum time for one round [ms], 0 means no time limit (by default 0)
 + **--depth arg** - maximum depth for expectimax (by default 1)
-+ **--multithreading arg** - enable multithreading (true/false, by default true)
++ **--multithreading arg** - enable multithreading in expectimax algorithm (true/false, by default true)
 
 ## Building and running ##
 
@@ -85,19 +85,19 @@ For observing how the AI works on the [2048 game site](http://gabrielecirulli.gi
 ```
 * 10 games, max depth 3, uncompressed model (faster, but requires more RAM):
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 3 --uncompress
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 3
 ```
 * 10 games, max depth 5, uncompressed model, multithreating in expectimax (*best reasonable settings*):
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 5 --uncompress --eval_multithreading
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 5 --eval_multithreading
 ```
 * 100 games, max depth 5, uncompressed model, playing 4 games in pararell:
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 100 --depth 5 --uncompress --threads 4
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 100 --depth 5 --threads 4
 ```
 * 10 games, min depth 1, max depth 8, 1 game thread, multithreading in expectimax evaluation, max time 50 ms per round, uncompressed model, prints boards' states to the console:
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 8 --time 50 --eval_multithreading --uncompress -v
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 8 --time 50 --eval_multithreading  -v
 ```
 
 #### Running web application ####
@@ -127,14 +127,14 @@ Web api is strongly based on the code from https://github.com/nneonneo/2048-ai.
 
 ##### Examples #####
 
-* chrome, max depth 1, single threading, no time limit, compressed model:
+* chrome, max depth 1, single threading, no time limit, uncompressed model:
 ```
 python 2048.py -b chrome
 ```
 
 * chrome, max depth 4, multithreading, no time limit, uncompressed model:
 ```
-python 2048.py -b chrome --strategy data/2048_strategies/eval-function.bin.special --uncompress true --depth 4 --multithreading true
+python 2048.py -b chrome --strategy data/2048_strategies/eval-function.bin.special --depth 4 --multithreading true
 ```
 
 * On Windows you will need to specify WebApi library file:
