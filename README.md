@@ -1,19 +1,18 @@
 # 2048 AI #
 
-Artificial Intelligence for the game 2048. There are 2 applications:
+AI Controller for the game 2048. As far as we are aware, it is the best 2048 strategy known do date (December 2015). It scores on average 530000 at depth 3, and ca. 560000 at depth 5. At depth 5 it achieves the tile 32k in 60% of games. 
 
-* **console application** - for running multiple games and testing the AI's capabilities
-* **web application** - for observing how the AI works on the [2048 game site](http://gabrielecirulli.github.io/2048/)
+The program uses classical expectimax with an evaluation function, which has been learned using a variant of temporal difference learning. This work extends our earlier one published as:
+
+> Temporal Difference Learning of N-Tuple Networks for the Game 2048, Marcin Szubert and Wojciech Jaśkowski, Proceedings of IEEE Conference on Computational Intelligence and Games, pp. 1-8, August 2014, Dortmund, Germany, ([preprint](http://www.cs.put.poznan.pl/mszubert/pub/szubert2014cig.pdf "preprint"))
 
 ## Requirements ##
-
-In order to use the AI you will need to build main application. The requirements are listed below:
 
 * C++11 compiler
 * CMake 3.0+
 * Boost 1.49.0+ (program_options, accumulators)
 
-If you want to use the web application you will need:
+If you want to use the web application you will also need:
 
 * Python 2
 * Chrome or Firefox
@@ -26,7 +25,7 @@ Tested on:
 
 ## Strategy files ##
 
-In order to run the application you need to have a strategy file. Some basic (not very good, but small) strategies are already in ```data/2048_strategies/``` directory. We highly encourage you to download and unzip an [advanced strategy](http://www.cs.put.poznan.pl/wjaskowski/pub/2048/eval-function.bin.special.zip).
+In order to run the application you need to have a file with an evaluation function. Some basic (not very good, but small) evaluation functions are already in ```data/2048_strategies/``` directory. For best results download and unzip our [best evaluation function](http://www.cs.put.poznan.pl/wjaskowski/pub/2048/eval-function.bin.special.zip).
 
 Some strategy files are compressed - that's our way to save some memory. You can either use compressed version or decompress them and speed up calculations. Note that the decompressed version (of the above strategy) requires about 5GB of RAM whereas the compressed version requires about 4GB of RAM.
 
@@ -35,6 +34,8 @@ You can specify the strategy file and unzip option using command line arguments 
 ## Program parameters ##
 
 #### Console application ####
+
+For running multiple games and testing the AI's capabilities
 
 + **--strategy arg** - strategy input file (by default data/2048_strategies/2048_a_weak_player.bin.txt)
 + **--unzip** - unzip compressed strategy file
@@ -48,6 +49,8 @@ You can specify the strategy file and unzip option using command line arguments 
 + **-v [ --verbose ]** - show board and score after each round
 
 #### Web Application ####
+
+For observing how the AI works on the [2048 game site](http://gabrielecirulli.github.io/2048/)
 
 + **-b [ --browser ]** - choose browser (Chrome or Firefox, by default Firefox)
 + **-p [ --port PORT ]** - port number to control on (default: 32000 for Firefox, 9222 for Chrome)
@@ -76,21 +79,25 @@ You can specify the strategy file and unzip option using command line arguments 
 
 ##### Examples #####
 
-* 1 game, max depth 1, single thread, no time limit:
+* 1 game, max depth 1, single thread:
 ```bash
-./bin/main
+./bin/main --strategy data/2048_strategies/eval-function.bin.special
 ```
-* 1000 games, max depth 1, 1 game thread, no time limit, compressed model:
+* 10 games, max depth 5, decompressed model (requires more RAM):
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 1000 --depth 1
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 5 --unzip
 ```
-* 100 games, max depth 3, 4 game threads, no time limit, decompressed model:
+* 10 games, max depth 5, decompressed model, multithreating in expectimax (*best reasonable settings*):
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 100 --depth 3 --unzip --threads 4
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 5 --unzip --eval_multithreading
+```
+* 100 games, max depth 5, decompressed model, playing 4 games in pararell:
+```bash
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 100 --depth 5 --unzip --threads 4
 ```
 * 10 games, min depth 1, max depth 8, 1 game thread, multithreading in expectimax evaluation, max time 50 ms per round, decompressed model, prints boards' states to the console:
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 8 --depth 8 --time 50 --eval_multithreading --unzip -v
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 8 --time 50 --eval_multithreading --unzip -v
 ```
 
 #### Running web application ####
@@ -116,7 +123,7 @@ pip install websocket-client
 2. Go to [2048 game site](http://gabrielecirulli.github.io/2048/)
 3. Run python script (see examples)
 
-Note that web api is strongly based on https://github.com/nneonneo/2048-ai.
+Web api is strongly based on the code from https://github.com/nneonneo/2048-ai.
 
 ##### Examples #####
 
@@ -130,7 +137,7 @@ python 2048.py -b chrome
 python 2048.py -b chrome --strategy data/2048_strategies/eval-function.bin.special --unzip true --depth 4 --multithreading true
 ```
 
-On Windows you will need to specify WebApi library file:
+* On Windows you will need to specify WebApi library file:
 ```
 python 2048.py -b chrome --lib _build/lib/Release/WebApi.dll
 ```
