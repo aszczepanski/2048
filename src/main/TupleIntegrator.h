@@ -2,6 +2,7 @@
 #define SRC_MAIN_TUPLE_INTEGRATOR_H_
 
 #include <memory>
+#include <string>
 
 #include "common/TuplesDescriptor.h"
 #include "io/IInputFileReader.h"
@@ -15,11 +16,20 @@ public:
 
 private:
 	void initializeInputFileReader(const std::string& fn);
+	bool processArguments(int argc, char** argv);
 
 	void integrateTuples();
 
+	std::string inputFilename;
+	std::string outputFilename;
+	bool compress;
+
 	std::shared_ptr<IInputFileReader> inputFileReader;
 	std::shared_ptr<ExpandedTuplesDescriptor> tuplesDescriptor;
+
+	const static std::string DEFAULT_INPUT_FILENAME_VALUE;
+	const static std::string DEFAULT_OUTPUT_FILENAME_VALUE;
+	const static bool DEFAULT_COMPRESS_VALUE;
 };
 
 #endif  // SRC_MAIN_TUPLE_INTEGRATOR_H_

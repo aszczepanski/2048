@@ -3,6 +3,8 @@
 #include <iostream>
 #include <memory>
 
+#include <boost/program_options.hpp>
+
 #include "common/TuplesDescriptor.h"
 
 #include "io/BinaryInputFileReader.h"
@@ -10,24 +12,28 @@
 #include "io/TextInputFileReader.h"
 
 using namespace std;
+namespace po = boost::program_options;
+
+const string TupleIntegrator::DEFAULT_INPUT_FILENAME_VALUE = "data/2048_strategies/eval-function.bin.special";
+const string TupleIntegrator::DEFAULT_OUTPUT_FILENAME_VALUE = "tmp_strategy.bin.special";
+const bool TupleIntegrator::DEFAULT_COMPRESS_VALUE = true;
 
 TupleIntegrator::TupleIntegrator() {
 }
 
 int TupleIntegrator::run(int argc, char** argv) {
-	cout << "TupleIntegrator::run" << endl;
+	if (!processArguments(argc, argv)) {
+		return EXIT_SUCCESS;
+	}
 
-	const string readStrategy = "data/2048_strategies/eval-function.bin.special";
-	const string writeStrategy = "tmpStrategy";
-
-	initializeInputFileReader(readStrategy);
+	initializeInputFileReader(inputFilename);
 	tuplesDescriptor = dynamic_pointer_cast<ExpandedTuplesDescriptor>(
-		inputFileReader->read(readStrategy, true));
+		inputFileReader->read(inputFilename, true));
 
 	integrateTuples();
 
 	BinaryInputFileWriter fileWriter;
-	fileWriter.write(writeStrategy, tuplesDescriptor);
+	fileWriter.write(outputFilename, tuplesDescriptor, compress);
 
 	return EXIT_SUCCESS;
 }
@@ -38,6 +44,39 @@ void TupleIntegrator::initializeInputFileReader(const string& fn) {
 	} else {
 		inputFileReader = make_shared<BinaryInputFileReader>();
 	}
+}
+
+bool TupleIntegrator::processArguments(int argc, char** argv) {
+	try {
+		po::options_description optionsDescription("Allowed options");
+		optionsDescription.add_options()
+			("help,h",
+				"produce help message")
+			("input",
+				po::value<string>(&inputFilename)->default_value(DEFAULT_INPUT_FILENAME_VALUE),
+				"input file")
+			("output",
+				po::value<string>(&outputFilename)->default_value(DEFAULT_OUTPUT_FILENAME_VALUE),
+				"input file")
+			("compress",
+				po::value<bool>(&compress)->default_value(DEFAULT_COMPRESS_VALUE),
+				"input file");
+
+		po::variables_map variablesMap;
+		po::store(po::parse_command_line(argc, argv, optionsDescription), variablesMap);
+		po::notify(variablesMap);
+
+		if (variablesMap.count("help")) {
+			cout << optionsDescription << endl;
+			return false;
+		}
+
+	} catch (po::error& e) {
+		cerr << e.what() << endl;
+		return false;
+	}
+
+	return true;
 }
 
 void TupleIntegrator::integrateTuples() {
