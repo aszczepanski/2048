@@ -29,7 +29,7 @@ In order to run the application you need to have a file with an evaluation funct
 
 Some strategy files are compressed - that's our way to save some memory. You can either use compressed version or decompress them and speed up calculations. Note that the decompressed version (of the above strategy) requires about 5GB of RAM whereas the compressed version requires about 4GB of RAM.
 
-You can specify the strategy file and unzip option using command line arguments (see Program parameters section).
+You can specify the strategy file and unzip option using command line arguments (see [Program parameters](#program-parameters) section).
 
 ## Program parameters ##
 
@@ -85,19 +85,19 @@ For observing how the AI works on the [2048 game site](http://gabrielecirulli.gi
 ```
 * 10 games, max depth 3, decompressed model (faster, but requires more RAM):
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 3 --unzip
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 3 --decompress
 ```
 * 10 games, max depth 5, decompressed model, multithreating in expectimax (*best reasonable settings*):
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 5 --unzip --eval_multithreading
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 5 --decompress --eval_multithreading
 ```
 * 100 games, max depth 5, decompressed model, playing 4 games in pararell:
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 100 --depth 5 --unzip --threads 4
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 100 --depth 5 --decompress --threads 4
 ```
 * 10 games, min depth 1, max depth 8, 1 game thread, multithreading in expectimax evaluation, max time 50 ms per round, decompressed model, prints boards' states to the console:
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 8 --time 50 --eval_multithreading --unzip -v
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 8 --time 50 --eval_multithreading --decompress -v
 ```
 
 #### Running web application ####
@@ -134,7 +134,7 @@ python 2048.py -b chrome
 
 * chrome, max depth 4, multithreading, no time limit, decompressed model:
 ```
-python 2048.py -b chrome --strategy data/2048_strategies/eval-function.bin.special --unzip true --depth 4 --multithreading true
+python 2048.py -b chrome --strategy data/2048_strategies/eval-function.bin.special --decompress true --depth 4 --multithreading true
 ```
 
 * On Windows you will need to specify WebApi library file:
