@@ -1,6 +1,9 @@
 #ifndef SRC_COMMON_GAME_STATE_H_
 #define SRC_COMMON_GAME_STATE_H_
 
+// Some of the ideas connected with the board's representation
+// are based on https://github.com/nneonneo/2048-ai
+
 #include <cstddef>
 #include <cstdint>
 #include <random>
