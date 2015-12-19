@@ -128,11 +128,6 @@ Web api is strongly based on the code from https://github.com/nneonneo/2048-ai.
 
 ##### Examples #####
 
-* chrome, max depth 1, single threading, no time limit, uncompressed model:
-```
-python 2048.py -b chrome --multithreading false
-```
-
 * chrome, max depth 4, multithreading, no time limit, uncompressed model:
 ```
 python 2048.py -b chrome --strategy data/2048_strategies/eval-function2.bin.special --depth 4 --multithreading true
