@@ -16,6 +16,8 @@ public:
 	virtual std::shared_ptr<TuplesDescriptor> read(const std::string& strategy, bool unzip);
 
 private:
+	std::shared_ptr<TuplesDescriptor> readOpenedBinaryFile(std::fstream&, bool unzip);
+
 	std::shared_ptr<ExpandedTuplesDescriptor> readExpandedFile(std::fstream&);
 	std::shared_ptr<CompressedTuplesDescriptor> readCompressedFile(std::fstream&);
 	std::shared_ptr<ExpandedTuplesDescriptor> readAndExpandCompressedFile(std::fstream&);

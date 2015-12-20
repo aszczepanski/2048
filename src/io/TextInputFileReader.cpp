@@ -29,6 +29,7 @@ shared_ptr<TuplesDescriptor> TextInputFileReader::read(const string& strategy, b
 
 		if (!readOpenedTextFile(file, tuplesDescriptor)) {
 			cerr << "Error while reading and input file." << endl;
+			file.close();
 			return nullptr;
 		}
 
@@ -44,7 +45,6 @@ shared_ptr<TuplesDescriptor> TextInputFileReader::read(const string& strategy, b
 	}
 
 	file.close();
-
 
 	return tuplesDescriptor;
 }
