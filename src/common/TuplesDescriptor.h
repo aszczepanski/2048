@@ -2,7 +2,6 @@
 #define SRC_COMMON_TUPLES_DESCRIPTOR_H_
 
 #include <array>
-#include <cassert>
 #include <cstdint>
 #include <cstdio>
 #include <memory>
