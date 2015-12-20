@@ -29,7 +29,7 @@ In order to run the application you need to have a file with an evaluation funct
 
 Some strategy files are compressed - that's our way to save some memory. You can either use compressed version or decompress them and speed up calculations. Note that the decompressed version (of the above strategy) requires about 5GB of RAM whereas the compressed version requires about 4GB of RAM.
 
-You can specify the strategy file and uncompress option using command line arguments (see [Program parameters](#program-parameters) section).
+You can specify the strategy file and uncompress option using command line arguments (see [program parameters](#program-parameters)).
 
 ## Program parameters ##
 
