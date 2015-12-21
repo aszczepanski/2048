@@ -60,7 +60,7 @@ For running multiple games and testing the AI's capabilities
 ```bash
 ./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 3
 ```
-* 10 games, max depth 5, uncompressed model, multithreating in expectimax (*best reasonable settings*):
+* 10 games, max depth 5, uncompressed model, multithreating in expectimax (**best reasonable settings**):
 ```bash
 ./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 5 --eval_multithreading
 ```
