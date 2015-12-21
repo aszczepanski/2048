@@ -1,11 +1,14 @@
 # 2048 AI #
 
-AI Controller for the puzzle [game 2048](https://gabrielecirulli.github.io/2048/). As far as we are aware, it is the best 2048 player known do date (December 2015). It scores on average *532636±11444* (average over 1000 games) at depth 3, and *566561±27164* (300 games) at depth 5. At depth 5 it achieves the tile 8k in 100%, 16k in 97%, and 32k in 60% of games. 
+The best AI Controller for the puzzle [game 2048](https://gabrielecirulli.github.io/2048/) as of December 2015. It scores on average **532636±11444** (1000 games average) at depth 3, and **566561±27164** (300 games average) at depth 5. At depth 5 it achieves the tile 8k in 100%, 16k in 97%, and **32k in 60%** of games. 
 
-The program uses classical expectimax with a state evaluation function, which has been learned from scratch using a variant of temporal difference learning. The learning algorithm will be disclosed later, but this work extends our earlier one published as:
+The program uses expectimax with a state evaluation function, which has been learned from scratch using a variant of temporal difference learning. The learning algorithm will be disclosed later, but this work extends our earlier one published as:
 
 > Temporal Difference Learning of N-Tuple Networks for the Game 2048, Marcin Szubert and Wojciech Jaśkowski, Proceedings of IEEE Conference on Computational Intelligence and Games, pp. 1-8, August 2014, Dortmund, Germany, ([preprint](http://www.cs.put.poznan.pl/mszubert/pub/szubert2014cig.pdf "preprint"))
 
+## Authors ##
+* [Wojciech Jaśkowski](http://www.cs.put.poznan.pl/wjaskowski) (learning the evaluation function)
+* Adam Szczepański (this code)
 
 ## Requirements ##
 
@@ -26,59 +29,28 @@ Tested on:
 
 ## Strategy files ##
 
-In order to run the application you need to have a file with an evaluation function. Some basic (not very good, but small) evaluation functions are already in ```data/2048_strategies/``` directory. For best results download and unzip our [best evaluation function](https://dl.dropboxusercontent.com/u/66539680/eval-function2.bin.special.zip).
+The program requires a file with an evaluation function. Some basic (very poor, but small) evaluation functions are already in ```data/2048_strategies/``` directory. However, for the state-of-the-art results download and unzip our [best evaluation function](https://dl.dropboxusercontent.com/u/66539680/eval-function2.bin.special.zip).
 
-Some strategy files are compressed - that's our way to save some memory. You can either use compressed version or decompress them and speed up calculations. Note that the decompressed version (of the above strategy) requires about 5GB of RAM whereas the compressed version requires about 4GB of RAM.
+## Building ##
 
-You can specify the strategy file and uncompress option using command line arguments (see [program parameters](#program-parameters)).
+### Console application ###
 
-## Program parameters ##
-
-#### Console application ####
-
-For running multiple games and testing the AI's capabilities
-
-+ **--strategy arg** - strategy input file (by default data/2048_strategies/2048_a_weak_player.bin.txt)
-+ **--uncompress arg** - uncompress strategy (true/false, by default true). Faster but requires more RAM.
-+ **--seed arg** - random seed (by default based on time elapsed since epoch)
-+ **--games arg** - number of games (by default 1)
-+ **--time arg** - maximum time for one round [ms], 0 means no time limit (by default 0)
-+ **--depth arg** - maximum depth for expectimax (by default 1)
-+ **--threads arg** - number of threads (each thread plays different game, by default 1)
-+ **--eval_multithreading** - enable multithreading in expectimax algorithm
-+ **-h [ --help ]** - produce help message
-+ **-v [ --verbose ]** - show board and score after each round
-
-#### Web Application ####
-
-For observing how the AI works on the [2048 game site](http://gabrielecirulli.github.io/2048/)
-
-+ **-b [ --browser ]** - choose browser (Chrome or Firefox, by default Firefox)
-+ **-p [ --port PORT ]** - port number to control on (default: 32000 for Firefox, 9222 for Chrome)
-+ **--strategy arg** - strategy input file (by default data/2048_strategies/2048_a_weak_player.bin.txt)
-+ **--uncompress arg** - uncompress strategy (true/false, by default true). Faster but requires more RAM.
-+ **--time arg** - maximum time for one round [ms], 0 means no time limit (by default 0)
-+ **--depth arg** - maximum depth for expectimax (by default 1)
-+ **--multithreading arg** - enable multithreading in expectimax algorithm (true/false, by default true)
-
-## Building and running ##
-
-#### Running console application ####
-
-##### Linux/OS X #####
+#### Linux/OS X ####
 
 1. Go to the project root directory
 2. Run ```cmake .```
 3. Run ```make```. The ```lib/``` and ```bin/``` directories will be created.
 
-##### Windows #####
+#### Windows ####
 
 1. Go to the project root directory
 2. Create and go to ```_build/``` directory
 3. Run ```cmake .. -G "Visual Studio 14 2015 Win64"```. You may have to set boost directories: ```set BOOST_ROOT=your_boost_root_directory``` and ```set BOOST_LIBRARYDIR=your_boost_library_directory``` first
 4. Open the solution and build the release version of it
 
-##### Examples #####
+### Examples ###
+
+For running multiple games and testing the AI's capabilities
 
 * 1 game, max depth 1, single thread:
 ```bash
@@ -101,14 +73,16 @@ For observing how the AI works on the [2048 game site](http://gabrielecirulli.gi
 ./bin/main --strategy data/2048_strategies/eval-function2.bin.special --games 10 --depth 8 --time 50 --eval_multithreading  -v
 ```
 
-#### Running web application ####
+### Web application ###
+
+For observing how the AI works on the [2048 game site](http://gabrielecirulli.github.io/2048/)
 
 You may need to install the *websocket-client* first:
 ```
 pip install websocket-client
 ```
 
-##### Chrome #####
+#### Chrome ####
 
 1. Close all instances of Chrome (including hangouts, etc...)
 2. Run the browser with remote-debugging enabled:
@@ -118,7 +92,7 @@ pip install websocket-client
 3. Go to [2048 game site](http://gabrielecirulli.github.io/2048/)
 4. Run python script (see examples)
 
-##### Firefox #####
+#### Firefox ####
 
 1. First you need to install [Remote Control](https://addons.mozilla.org/pl/firefox/addon/remote-control/) plugin
 2. Go to [2048 game site](http://gabrielecirulli.github.io/2048/)
@@ -127,7 +101,7 @@ pip install websocket-client
 
 Web api is strongly based on the code from https://github.com/nneonneo/2048-ai.
 
-##### Examples #####
+### Examples ###
 
 * chrome, max depth 4, multithreading, no time limit, uncompressed model:
 ```
@@ -138,3 +112,28 @@ python 2048.py -b chrome --strategy data/2048_strategies/eval-function2.bin.spec
 ```
 python 2048.py -b chrome --lib _build/lib/Release/WebApi.dll
 ```
+
+## Usage ##
+
+#### Console application ####
+
++ **--strategy arg** - strategy input file (by default data/2048_strategies/2048_a_weak_player.bin.txt)
++ **--uncompress arg** - uncompress strategy (true/false, by default true). Faster but requires more RAM.
++ **--seed arg** - random seed (by default based on time elapsed since epoch)
++ **--games arg** - number of games (by default 1)
++ **--time arg** - maximum time for one round [ms], 0 means no time limit (by default 0)
++ **--depth arg** - maximum depth for expectimax (by default 1)
++ **--threads arg** - number of threads (each thread plays different game, by default 1)
++ **--eval_multithreading** - enable multithreading in expectimax algorithm
++ **-h [ --help ]** - produce help message
++ **-v [ --verbose ]** - show board and score after each round
+
+#### Web Application ####
+
++ **-b [ --browser ]** - choose browser (Chrome or Firefox, by default Firefox)
++ **-p [ --port PORT ]** - port number to control on (default: 32000 for Firefox, 9222 for Chrome)
++ **--strategy arg** - strategy input file (by default data/2048_strategies/2048_a_weak_player.bin.txt)
++ **--uncompress arg** - uncompress strategy (true/false, by default true). Faster but requires more RAM.
++ **--time arg** - maximum time for one round [ms], 0 means no time limit (by default 0)
++ **--depth arg** - maximum depth for expectimax (by default 1)
++ **--multithreading arg** - enable multithreading in expectimax algorithm (true/false, by default true)
