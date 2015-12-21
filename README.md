@@ -1,6 +1,6 @@
 # 2048 AI #
 
-The best AI Controller for the puzzle [game 2048](https://gabrielecirulli.github.io/2048/) as of December 2015. It scores on average **532636±11444** (1000 games average) at depth 3, and **566561±27164** (300 games average) at depth 5. At depth 5 it achieves the tile 8k in 100%, 16k in 97%, and **32k in 60%** of games. 
+The best AI Controller for the puzzle [game 2048](https://gabrielecirulli.github.io/2048/) (as of December 2015). It scores **532636±11444** (1000 games average) at depth 3, and **566561±27164** (300 games average) at depth 5. At depth 5 it achieves the tile 8k in 100%, 16k in 97%, and **32k in 60%** of games. 
 
 The program uses expectimax with a state evaluation function, which has been learned from scratch using a variant of temporal difference learning. The learning algorithm will be disclosed later, but this work extends our earlier one published as:
 
