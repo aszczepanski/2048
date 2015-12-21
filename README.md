@@ -29,7 +29,7 @@ Tested on:
 
 ### Evaluation function files ###
 
-The program requires a file with an evaluation function. Some basic (very poor, but small) evaluation functions are already in ```data/2048_strategies/``` directory. However, for the state-of-the-art results download and unzip our [best evaluation function](http://http://www.cs.put.poznan.pl/wjaskowski/pub/2048/eval-function.bin.special.zip).
+The program requires a file with an evaluation function. Some basic (very poor, but small) evaluation functions are already in ```data/2048_strategies/``` directory. However, for the state-of-the-art results download and unzip our [best evaluation function](http://www.cs.put.poznan.pl/wjaskowski/pub/2048/eval-function.bin.special.zip).
 
 ## Building and Running ##
 
