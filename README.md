@@ -1,10 +1,11 @@
 # 2048 AI #
 
-AI Controller for the game 2048. As far as we are aware, it is the best 2048 strategy known do date (December 2015). It scores on average 532636±11444 at depth 3 (1000 games), and ca. 566561±27164 at depth 5 (300 games). At depth 5 it achieves the tile 8k in 100%, 16k in 97%, and 32k in 60% of games. 
+AI Controller for the puzzle [game 2048](https://gabrielecirulli.github.io/2048/). As far as we are aware, it is the best 2048 player known do date (December 2015). It scores on average *532636±11444* (average over 1000 games) at depth 3, and *566561±27164* (300 games) at depth 5. At depth 5 it achieves the tile 8k in 100%, 16k in 97%, and 32k in 60% of games. 
 
-The program uses classical expectimax with an evaluation function, which has been learned using a variant of temporal difference learning. This work extends our earlier one published as:
+The program uses classical expectimax with a state evaluation function, which has been learned from scratch using a variant of temporal difference learning. The learning algorithm will be disclosed later, but this work extends our earlier one published as:
 
 > Temporal Difference Learning of N-Tuple Networks for the Game 2048, Marcin Szubert and Wojciech Jaśkowski, Proceedings of IEEE Conference on Computational Intelligence and Games, pp. 1-8, August 2014, Dortmund, Germany, ([preprint](http://www.cs.put.poznan.pl/mszubert/pub/szubert2014cig.pdf "preprint"))
+
 
 ## Requirements ##
 
@@ -137,7 +138,3 @@ python 2048.py -b chrome --strategy data/2048_strategies/eval-function2.bin.spec
 ```
 python 2048.py -b chrome --lib _build/lib/Release/WebApi.dll
 ```
-
-# Authors #
-* [Wojciech Jaśkowski](http://www.cs.put.poznan.pl/wjaskowski) (learning the evaluation function)
-* Adam Szczepański (this code)
