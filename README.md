@@ -1,8 +1,24 @@
 # 2048 AI #
 
-The best AI Controller for the puzzle [game 2048](https://gabrielecirulli.github.io/2048/) (as of December 2015). It scores **532636±11444** (1000 games average) at depth 3, and **566561±27164** (300 games average) at depth 5. At depth 5 it achieves the tile 8k in 100%, 16k in 97%, and **32k in 60%** of games. 
+The best AI Controller for the puzzle [game 2048](https://gabrielecirulli.github.io/2048/) (as of December 2015). It scores **532636±11444** (1000 games average) at depth 3, and **566561±27164** (300 games average) at depth 5. At depth 5 it achieves the tile 8k in 100%, 16k in 97%, and **32k in 60%** of games. Stats for depth 5:
 
-The program uses expectimax with a state evaluation function, which has been learned from scratch using a variant of temporal difference learning. The learning algorithm will be disclosed later, but this work extends our earlier one published as:
+Tile combination | Achieved
+-----------------|------------------
+2048             | 100%
+4096             | 100%
+8192             | 100%
+16384            |  97%
+16384,8192,4096  |  92%
+32768            |  60%
+32768,16384,4096 |  33%
+32768,16384,8192 |  21%
+32768,16384,8192,4096 | 14%
+
+It plays 2000-3000 moves/s for depth 3 and >20 moves/s for depth 5.
+
+## Algorithm ##
+
+The program uses expectimax with a state evaluation function, which has been learned from scratch using a variant of temporal difference learning. The learning algorithm will be disclosed later, but it extends our earlier one published as:
 
 > Temporal Difference Learning of N-Tuple Networks for the Game 2048, Marcin Szubert and Wojciech Jaśkowski, Proceedings of IEEE Conference on Computational Intelligence and Games, pp. 1-8, August 2014, Dortmund, Germany, ([preprint](http://www.cs.put.poznan.pl/mszubert/pub/szubert2014cig.pdf "preprint"))
 
