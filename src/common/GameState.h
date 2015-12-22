@@ -21,6 +21,7 @@ public:
 	bool isTerminalState();
 	bool isActionEnabled(GameAction);
 	void computeAfterstate(GameAction);
+	void computeAfterstateAndUpdateOverflow(GameAction, bool* isStageOverflow);
 	unsigned addRandomTile(std::default_random_engine& positionRandomEngine,
 		std::default_random_engine& valueRandomEngine);  // returns a number of fours
 
@@ -120,6 +121,7 @@ private:
 	static int scoreTable[65536];
 
 	static uint16_t stageTable[65536];
+	static bool stageOverflow[65536];
 };
 
 #endif  // SRC_COMMON_GAME_STATE_H_

@@ -26,6 +26,7 @@ private:
 	void makeMove(GameAction);
 	void computeAfterstate(GameAction);
 	void addRandomTile();
+	int calculateScore();
 
 	std::shared_ptr<ProgramOptions> programOptions;
 	std::shared_ptr<TuplesDescriptor> tuplesDescriptor;
@@ -33,6 +34,7 @@ private:
 	int moveno;
 	int scorePenalty;
 	GameState gameState;
+	bool isStageOverflow;
 
 	std::default_random_engine positionRandomEngine;
 	std::default_random_engine valueRandomEngine;

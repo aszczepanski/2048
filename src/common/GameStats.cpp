@@ -78,6 +78,11 @@ GameStats* GameStats::setStage(uint16_t stage) {
 	return this;
 }
 
+GameStats* GameStats::setStageOverflow(bool stageOverflow) {
+	this->stageOverflow = stageOverflow;
+	return this;
+}
+
 string GameStats::header() {
 	return "perf, stage, time[ms], moves/sec";
 }
@@ -86,7 +91,8 @@ ostream& operator<<(ostream& out, const GameStats& gameStats) {
 	return out
 		<< gameStats.score
 		// << ", " << gameStats.moves
-		<< ", " << GameStats::stageToString(GameStats::gameStages[gameStats.stage])
+		<< ", " << (gameStats.stageOverflow ? "64k"
+			: GameStats::stageToString(GameStats::gameStages[gameStats.stage]))
 		<< ", " << gameStats.duration.count()
 		<< ", " << (double)gameStats.moves/chrono::duration_cast<chrono::duration<double>>(gameStats.duration).count();
 }
@@ -113,7 +119,8 @@ string GameStats::stageToString(uint32_t stage) {
 }
 
 GameStatsContainer::GameStatsContainer() {
-	stagesAccumulators.resize(GameStats::gameStages.size());
+	// bigger size due to 64k hack
+	stagesAccumulators.resize(GameStats::gameStages.size()+1);
 }
 
 void GameStatsContainer::addGameStats(const GameStats* gameStatsPtr) {
@@ -122,8 +129,15 @@ void GameStatsContainer::addGameStats(const GameStats* gameStatsPtr) {
 	durationAccumulators(gameStatsPtr->duration.count());
 	movesAccumulators(gameStatsPtr->moves);
 
-	for (size_t i=0; i<GameStats::gameStages.size(); i++) {
-		stagesAccumulators[i](gameStatsPtr->stage <= i ? 1 : 0);
+	if (gameStatsPtr->stageOverflow) {
+		for (size_t i=0; i<GameStats::gameStages.size()+1; i++) {
+			stagesAccumulators[i](1);
+		}
+	} else {
+		stagesAccumulators[0](0);  // 64k hack
+		for (size_t i=0; i<GameStats::gameStages.size(); i++) {
+			stagesAccumulators[i+1](gameStatsPtr->stage <= i ? 1 : 0);
+		}
 	}
 }
 
@@ -152,6 +166,7 @@ ostream& operator<<(ostream& out, const GameStatsContainer& gameStatsContainer) 
 	out << "perf";
 	out << ", " << "conf";
 
+	out << ", " << "64k";
 	for (size_t i=0; i<16; i++) {
 		out << ", " << GameStats::stageToString(GameStats::gameStages[i]);
 	}
@@ -167,10 +182,12 @@ ostream& operator<<(ostream& out, const GameStatsContainer& gameStatsContainer) 
 	out << gameStatsContainer.getScoreMean();
 	out	<< ", " << gameStatsContainer.getScore95ConfidenceInterval();
 
-	for (size_t i=0; i<16; i++) {
+	out << fixed << setprecision(3);
+	for (size_t i=0; i<17; i++) {
 		out << ", " << gameStatsContainer.getStageCumulativeDistribution(i);
 	}
 
+	out << fixed << setprecision(2);
 	out	<< ", " << gameStatsContainer.getDurationMean();
 	out	<< ", " << gameStatsContainer.getMovesPerSecMean();
 

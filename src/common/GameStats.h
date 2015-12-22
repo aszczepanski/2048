@@ -26,6 +26,7 @@ public:
 	GameStats* setMoves(int moves);
 	GameStats* setDuration(DurationType duration);
 	GameStats* setStage(uint16_t stage);
+	GameStats* setStageOverflow(bool stageOverflow);
 
 	static std::string header();
 
@@ -38,6 +39,7 @@ private:
 	int moves;
 	DurationType duration;
 	std::size_t stage;
+	bool stageOverflow;
 
 	static std::string stageToString(uint32_t stage);
 	const static std::vector<uint16_t> gameStages;

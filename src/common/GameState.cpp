@@ -21,6 +21,7 @@ uint64_t GameState::colDownTable[65536];
 int GameState::scoreTable[65536];
 
 uint16_t GameState::stageTable[65536];
+bool GameState::stageOverflow[65536];
 
 unsigned GameState::initialize(default_random_engine& positionRandomEngine, default_random_engine& valueRandomEngine) {
 	clear();
@@ -135,6 +136,49 @@ void GameState::computeAfterstate(GameAction action) {
 	}
 }
 
+void GameState::computeAfterstateAndUpdateOverflow(
+		GameAction action, bool* isStateOverflow) {
+	if (action == LEFT) {
+		*isStateOverflow |= (stageOverflow[(stateInternal >> 0) & UINT64_C(0xFFFF)]
+			|| stageOverflow[(stateInternal >> 16) & UINT64_C(0xFFFF)]
+			|| stageOverflow[(stateInternal >> 32) & UINT64_C(0xFFFF)]
+			|| stageOverflow[(stateInternal >> 48) & UINT64_C(0xFFFF)]);
+		stateInternal ^= uint64_t(rowLeftTable[(stateInternal >>  0) & UINT64_C(0xFFFF)]) <<  0;
+		stateInternal ^= uint64_t(rowLeftTable[(stateInternal >> 16) & UINT64_C(0xFFFF)]) << 16;
+		stateInternal ^= uint64_t(rowLeftTable[(stateInternal >> 32) & UINT64_C(0xFFFF)]) << 32;
+		stateInternal ^= uint64_t(rowLeftTable[(stateInternal >> 48) & UINT64_C(0xFFFF)]) << 48;
+	} else if (action == RIGHT) {
+		*isStateOverflow |= (stageOverflow[(stateInternal >> 0) & UINT64_C(0xFFFF)]
+			|| stageOverflow[(stateInternal >> 16) & UINT64_C(0xFFFF)]
+			|| stageOverflow[(stateInternal >> 32) & UINT64_C(0xFFFF)]
+			|| stageOverflow[(stateInternal >> 48) & UINT64_C(0xFFFF)]);
+		stateInternal ^= uint64_t(rowRightTable[(stateInternal >>  0) & UINT64_C(0xFFFF)]) <<  0;
+		stateInternal ^= uint64_t(rowRightTable[(stateInternal >> 16) & UINT64_C(0xFFFF)]) << 16;
+		stateInternal ^= uint64_t(rowRightTable[(stateInternal >> 32) & UINT64_C(0xFFFF)]) << 32;
+		stateInternal ^= uint64_t(rowRightTable[(stateInternal >> 48) & UINT64_C(0xFFFF)]) << 48;
+	} else if (action == UP) {
+		uint64_t t = transpose(stateInternal);
+		*isStateOverflow |= (stageOverflow[(t >> 0) & UINT64_C(0xFFFF)]
+			|| stageOverflow[(t >> 16) & UINT64_C(0xFFFF)]
+			|| stageOverflow[(t >> 32) & UINT64_C(0xFFFF)]
+			|| stageOverflow[(t >> 48) & UINT64_C(0xFFFF)]);
+		stateInternal ^= colUpTable[(t >>  0) & UINT64_C(0xFFFF)] <<  0;
+		stateInternal ^= colUpTable[(t >> 16) & UINT64_C(0xFFFF)] <<  4;
+		stateInternal ^= colUpTable[(t >> 32) & UINT64_C(0xFFFF)] <<  8;
+		stateInternal ^= colUpTable[(t >> 48) & UINT64_C(0xFFFF)] << 12;
+	} else {
+		uint64_t t = transpose(stateInternal);
+		*isStateOverflow |= (stageOverflow[(t >> 0) & UINT64_C(0xFFFF)]
+			|| stageOverflow[(t >> 16) & UINT64_C(0xFFFF)]
+			|| stageOverflow[(t >> 32) & UINT64_C(0xFFFF)]
+			|| stageOverflow[(t >> 48) & UINT64_C(0xFFFF)]);
+		stateInternal ^= colDownTable[(t >>  0) & UINT64_C(0xFFFF)] <<  0;
+		stateInternal ^= colDownTable[(t >> 16) & UINT64_C(0xFFFF)] <<  4;
+		stateInternal ^= colDownTable[(t >> 32) & UINT64_C(0xFFFF)] <<  8;
+		stateInternal ^= colDownTable[(t >> 48) & UINT64_C(0xFFFF)] << 12;
+	}
+}
+
 unsigned GameState::addRandomTile(default_random_engine& positionRandomEngine, default_random_engine& valueRandomEngine) {
 	size_t randomTilePoint = getRandomTilePoint(positionRandomEngine);
 	int randomTileValue = getRandomTileValue(valueRandomEngine);
@@ -224,6 +268,7 @@ void GameState::initializeTables() {
 			}
 		}
 
+		bool isStageOverflow = false;
 		// execute a move to the left
 		for (int i=0; i<3; i++) {
 			int j;
@@ -237,8 +282,11 @@ void GameState::initializeTables() {
 				line[j] = 0;
 				i--;
 			} else if (line[i] == line[j]) {
-				if(line[i] != 0xf) {
+				if(line[i] != 0xF) {
 					line[i]++;  // 32768 + 32768 = 32768
+				} else {
+					// overflow
+					isStageOverflow = true;
 				}
 				line[j] = 0;
 			}
@@ -252,6 +300,8 @@ void GameState::initializeTables() {
 		rowRightTable[revRow] = revRow^revResult;
 		colUpTable[row] = unpackCol(row)^unpackCol(result);
 		colDownTable[revRow] = unpackCol(revRow)^unpackCol(revResult);
+
+		stageOverflow[row] = isStageOverflow;
 	}
 }
 

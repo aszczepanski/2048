@@ -43,10 +43,12 @@ unique_ptr<GameStats> Game::play() {
 	chrono::time_point<chrono::system_clock> startTimePoint = chrono::system_clock::now();
 
 	moveno = scorePenalty = 0;
+	isStageOverflow = false;
 	scorePenalty += 2*gameState.initialize(positionRandomEngine, valueRandomEngine);
 
 	if (programOptions->verbose) {
 		drawer.draw(gameState);
+		cout << "move: " << moveno << " score: " << calculateScore() << endl;
 	}
 
 	while (!isTerminalState()) {
@@ -54,7 +56,7 @@ unique_ptr<GameStats> Game::play() {
 		makeMove(action);
 		if (programOptions->verbose) {
 			drawer.draw(gameState);
-			cout << "move: " << moveno << " score: " << gameState.scoreBoard() - scorePenalty << endl;
+			cout << "move: " << moveno << " score: " << calculateScore() << endl;
 		}
 	}
 
@@ -62,12 +64,13 @@ unique_ptr<GameStats> Game::play() {
 	chrono::duration<int, std::milli> gameDuration
 		= chrono::duration_cast<chrono::duration<int, std::milli>>(endTimePoint - startTimePoint);
 
-	int score = gameState.scoreBoard() - scorePenalty;
+	int score = calculateScore();
 	return unique_ptr<GameStats>(
 		(new GameStats)
 			->setScore(score)
 			->setMoves(moveno)
 			->setDuration(gameDuration)
+			->setStageOverflow(isStageOverflow)
 			->setStage(gameState.calculateStage())
 	);
 }
@@ -90,9 +93,17 @@ void Game::makeMove(GameAction action) {
 }
 
 void Game::computeAfterstate(GameAction action) {
-	gameState.computeAfterstate(action);
+	gameState.computeAfterstateAndUpdateOverflow(action, &isStageOverflow);
 }
 
 void Game::addRandomTile() {
 	scorePenalty += 2*gameState.addRandomTile(positionRandomEngine, valueRandomEngine);
+}
+
+int Game::calculateScore() {
+	// score difference between single tiles 64k and 32k
+	const int overflowPenalty = 524288;  // = (16-1)*(1<<16)-(15-1)*(1<<15)
+	return gameState.scoreBoard()
+		- scorePenalty
+		+ (isStageOverflow ? overflowPenalty : 0);
 }
