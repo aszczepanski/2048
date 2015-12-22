@@ -44,8 +44,9 @@ def to_c_board(m):
     board = 0
     i = 0
     for row in m:
-        for c in row:            
-            board |= c << (4*i)
+        for c in row:
+            c_val = min(15, c)  # 64k hack
+            board |= c_val << (4*i)
             i += 1
     return board
 
