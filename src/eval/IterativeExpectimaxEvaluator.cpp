@@ -40,7 +40,7 @@ GameAction IterativeExpectimaxEvaluator::bestActionInternal(GameState gameState)
 			tmpAction = visitTopLevelActionNodeSingleThreading(gameState);
 		}
 
-		if (!isTimeout) {
+		if (!isTimeLimitExceeded()) {
 			bestAction = tmpAction;
 		} else {
 #ifdef EVALUATOR_GATHER_STATS
