@@ -20,6 +20,11 @@ private:
 
 	void integrateTuples();
 
+	std::unique_ptr<std::vector<int>> findMatch(ExpandedTuple* ti, ExpandedTuple* tj);
+	bool isMatchInternal(ExpandedTuple* ti, ExpandedTuple* tj, int ipts, std::vector<int>* matching);
+
+	void printTuplePoints();
+
 	std::string inputFilename;
 	std::string outputFilename;
 	bool compress;
