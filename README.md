@@ -1,6 +1,6 @@
 # 2048 AI #
 
-The best AI Controller for the puzzle [game 2048](https://gabrielecirulli.github.io/2048/) (as of December 2015). It scores **532636±11444** (1000 games average) at depth 3, and **566561±27164** (300 games average) at depth 5. At depth 5 it achieves the tile 8k in 100%, 16k in 97%, and **32k in 60%** of games. Stats for depth 5:
+The best AI Controller for the puzzle [game 2048](https://gabrielecirulli.github.io/2048/) (as of December 2015). It scores **532636±11444** (1000 games average) at depth 3 (ca. 2500 moves/s), and **589355±22042** (300 games average) when given 100ms per move. Stats:
 
 Tile combination | Achieved
 -----------------|------------------
@@ -8,13 +8,11 @@ Tile combination | Achieved
 4096             | 100%
 8192             | 100%
 16384            |  97%
-16384,8192,4096  |  92%
-32768            |  60%
-32768,16384,4096 |  33%
-32768,16384,8192 |  21%
-32768,16384,8192,4096 | 14%
-
-It plays 2000-3000 moves/s for depth 3 and >20 moves/s for depth 5.
+16384,8192,4096  |  93%
+32768            |  64%
+32768,16384,4096 |  39%
+32768,16384,8192 |  24%
+32768,16384,8192,4096 | 10%
 
 ## Algorithm ##
 
@@ -76,9 +74,9 @@ For running multiple games and testing the AI's capabilities
 ```bash
 ./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 3
 ```
-* 10 games, max depth 5, uncompressed model, multithreating in expectimax (**best reasonable settings**):
+* 10 games, max 100ms per move, uncompressed model, multithreating in expectimax (**best reasonable settings**):
 ```bash
-./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 5 --eval_multithreading
+./bin/main --strategy data/2048_strategies/eval-function.bin.special --games 10 --depth 100 --time 100 --eval_multithreading
 ```
 * 100 games, max depth 5, uncompressed model, playing 4 games in pararell:
 ```bash
