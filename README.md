@@ -1,18 +1,19 @@
 # 2048 AI #
 
-The best AI Controller for the puzzle [game 2048](https://gabrielecirulli.github.io/2048/) (as of December 2015). It scores **532636±11444** (1000 games average) at depth 3 (ca. 2500 moves/s), and **589355±22042** (300 games average) when given 100ms per move. Stats:
+The best AI Controller for the puzzle [game 2048](https://gabrielecirulli.github.io/2048/) (as of March 2016). It score depends on the search settings:
 
-Tile combination | Achieved
------------------|------------------
-2048             | 100%
-4096             | 100%
-8192             | 100%
-16384            |  97%
-16384,8192,4096  |  93%
-32768            |  64%
-32768,16384,4096 |  39%
-32768,16384,8192 |  24%
-32768,16384,8192,4096 | 10%
+| Search limit | Average score | 32768 [%] | 16384 [%] | 8192 [%] | Games | Moves/s
+| -------------|---------------|-----------:|-----------:|----------:|-------:|--------------:
+| 1-ply        | 324710 ± 11043 | 19 | 68 |  90 | 1000 | 258371 
+| 2-ply        | 457079 ± 11112 | 34 | 91 |  99 | 1000 | 20524 
+| 3-ply        | 511759 ± 12021 | 50 | 92 |  99 | 1000 | 1484 
+| 5-ply        | 545833 ± 21500 | 54 | 97 | 100 | 300  | 16 
+| 1 ms         | 527099 ± 11486 | 54 | 95 | 100 | 1000 | 916 
+| 50 ms        | 576655 ± 20839 | 62 | 97 | 99  | 300  | 20 
+| 100 ms       | 589355 ± 20432 | 65 | 96 | 100 | 300  | 10 
+| 200 ms       | 591380 ± 21870 | 67 | 97 | 99  | 300  | 5 
+| 1000 ms      | **609104 ± 38433** | 69 | 97 | 98  | 100  | 1
+
 
 ## Algorithm ##
 
