@@ -19,11 +19,11 @@ The best AI Controller for the puzzle [game 2048](https://gabrielecirulli.github
 
 The program uses expectimax with an n-tuple network for state evaluation function, which has been learned from scratch using a new variant of temporal difference learning. The learning method is described in:
 
-> Mastering 2048 with Delayed Temporal Coherence Learning, Multi-State Weight Promotion, Redundant Encoding and Carousel Shaping, Wojciech Jaśkowski, 2016 (http://arxiv.org/abs/1604.05085)
+> Wojciech Jaśkowski, Mastering 2048 with Delayed Temporal Coherence Learning, Multi-State Weight Promotion, Redundant Encoding and Carousel Shaping, 2016 (http://arxiv.org/abs/1604.05085)
 
 which extends our previous work:
 
-> Temporal Difference Learning of N-Tuple Networks for the Game 2048, Marcin Szubert and Wojciech Jaśkowski, Proceedings of IEEE Conference on Computational Intelligence and Games, pp. 1-8, August 2014, Dortmund, Germany, (preprint)
+> Marcin Szubert and Wojciech Jaśkowski, Temporal Difference Learning of N-Tuple Networks for the Game 2048, Proceedings of IEEE Conference on Computational Intelligence and Games, pp. 1-8, August 2014, Dortmund, Germany, ([preprint](http://www.cs.put.poznan.pl/mszubert/pub/szubert2014cig.pdf))
 
 ## Authors ##
 * [Wojciech Jaśkowski](http://www.cs.put.poznan.pl/wjaskowski) (the learning algorithm)
