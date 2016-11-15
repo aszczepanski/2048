@@ -25,6 +25,8 @@ which extends our previous work:
 
 > Marcin Szubert and Wojciech Jaśkowski, Temporal Difference Learning of N-Tuple Networks for the Game 2048, Proceedings of IEEE Conference on Computational Intelligence and Games, pp. 1-8, August 2014, Dortmund, Germany, ([preprint](http://www.cs.put.poznan.pl/mszubert/pub/szubert2014cig.pdf))
 
+**The code used for training thie agent is available in a [seperate repo](https://github.com/wjaskowski/mastering-2048)**
+
 ## Authors ##
 * [Wojciech Jaśkowski](http://www.cs.put.poznan.pl/wjaskowski) (the learning algorithm)
 * Adam Szczepański (this code)
